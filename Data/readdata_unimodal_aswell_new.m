@@ -8,7 +8,6 @@
 % Col 8?: -45 when Col4 ~= 2. Otherwise, looks random. -> Audio stim position estimate of subject.
 % Col 9?: -45 when Col4 ~= 1. Otherwise, looks random. -> Visual stim position estimate of subject.
 % Col 10: report for same/diff judgment, either 1 (same) or 2 (diff). 0 for trials with other demands.
-cd('C:\Users\liu_s\OneDrive\桌面\MATLAB\AudioVisual\Analysis')
 close all; clear all;
 
 addpath ../matlab

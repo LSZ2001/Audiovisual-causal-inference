@@ -1,9 +1,7 @@
 % Shuze Liu
 % This code visualizes the audio-visual effect and heterskedasticity. 
 close all; clear all;
-cd('C:\Users\liu_s\OneDrive\桌面\MATLAB\AudioVisual\Data')
 load("alldata.mat");
-cd('C:\Users\liu_s\OneDrive\桌面\MATLAB\AudioVisual\Plots')
 
 %% Calls function
 %names = {'aaron' 'allison' 'avauna' 'clare' 'connie' 'daisy' 'david' 'gabriela' 'jeff' 'jobyeon' 'julia' 'katherine' 'priyanka' 'stephanie' 'wendy'} ;
@@ -25,8 +23,7 @@ is_bimodal=false; is_save=false;
 discard_outliers=false; discard_thres = 50;
 
 [data_stratified, s_cond_s_hat_means, s_cond_s_hat_stds] = Aud_RawDataPlots(data, colors, subj_idx, s_a_range, is_bimodal, is_save, discard_outliers, discard_thres, is_rescale, rescale);
-cd('C:\Users\liu_s\OneDrive\桌面\MATLAB\AudioVisual\Analysis')
-save('data_stratified_UA', 'data_stratified')
+%save('data_stratified_UA', 'data_stratified')
 %%
 function [data_stratified, s_cond_s_hat_means, s_cond_s_hat_stds] = Aud_RawDataPlots(data, colors, subj_idx, s_range, is_bimodal, is_save, discard_outliers, discard_thres, is_rescale, rescale)
     % For bimodal, this does not separate according to 3 visual coherence

@@ -8,6 +8,7 @@ png_dpi = 500;
 plot_lapse = true;
 lapse_type = "Uniform";
 model_path = "..\ModelFits\";
+data_path = "..\Data\";
 
 
 %% UJoint parametric model response distribution visualization
@@ -187,9 +188,9 @@ function [UnimodalData_ModelComparison_FinalTables] = UnimodalData_ModelComparis
     num_models = length(priors);
     num_subjects = 15;
 
-    load("data_stratified_UV.mat");
+    load(data_path+"data_stratified_UV.mat");
     data_stratified_UV = data_stratified;
-    load("data_stratified_UA.mat");
+    load(data_path+"data_stratified_UA.mat");
     data_stratified_UA = data_stratified;
     data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
     data_UA = data_stratified_to_data(data_stratified_UA, false, false);
@@ -403,11 +404,11 @@ function [out_struct_allmodels] = AllData_ModelComparison_Visualize_helper(causa
     num_subjects = 15;
     
     % Get number of observations for BIC
-    load("BAV_data.mat");
-    load("BC_data.mat");
-    load("data_stratified_UV.mat");
+    load(data_path+"BAV_data.mat");
+    load(data_path+"BC_data.mat");
+    load(data_path+"data_stratified_UV.mat");
     data_stratified_UV = data_stratified;
-    load("data_stratified_UA.mat");
+    load(data_path+"data_stratified_UA.mat");
     data_stratified_UA = data_stratified;
     data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
     data_UA = data_stratified_to_data(data_stratified_UA, false, false);
@@ -491,8 +492,8 @@ function [] = NonparamIndv_SigmaFun_Prior_Visualization(fontsize, figspec)
     num_iters = 81*15;
     num_inits = 81;
 
-    filename_basis = "Truefittedparams_UJoint_Nonparam_mixture_bothrescalefree9_indv_CMAES_flat";
-    load(filename_basis);
+    filename_basis = "fittedparams_UJoint_Semiparam_rescalefree_lapseUniform.mat";
+    load(model_path + filename_basis);
     theta_fitted_cmaes = theta_fitted;
     F_vals_cmaes = F_vals;
 
