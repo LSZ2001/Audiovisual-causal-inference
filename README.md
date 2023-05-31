@@ -8,6 +8,8 @@ Before running any code, go to *Analysis\bads_master* and run **install.m** to i
 
 For description of each folder's contents, see below.
 
+All code assumes that the current directory of Matlab is the *Analysis* folder.
+
 ## *Data*
 - The actual datafiles used for ModelFits and Plots is only the following four files: *data_stratified_UA.mat*, *data_stratified_UV.mat*, *BC_data.mat*, *BAV_data.mat*. They store the 15 human subject's data on UA, UV, BC, BA+BV trials respectively. Each *.mat* file is a cell(1,15) corresponding to the 15 subjects. 
   - For *data_stratified_UV.mat*, *data_stratified_UA.mat*, each of the 15 subjects is additionally stratfied to cell(1,7), corresponding to the 7 stimulus bins by true stimulus location (useful for visualizations purposes). For either file, different rows are trials. Col 1 is the stimulus location s, Col 2 is the subject's response r_S. For UV data, there is an additional Col 3 denoting the visual reliability level (1 corresponding to highest reliability, 3 lowest). To unstratify by the 7 stimulus bins (removing the second-level cell(1,7)'s), use **data_stratified_to_data.m** (which is often used in the model fitting code). 
