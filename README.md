@@ -17,7 +17,7 @@ For description of each folder's contents, see below.
 ## ModelFits
 This folder only saves the fitted params for each model. For how these models are fitted (Note: the *.m* code are all in the *Analysis* folder instead), see descriptions below.
 - In the *Analysis* folder, **fit_UJointModel_parametric.m**, **fit_UJointModel_semiparam.m**, **fit_AllDataModel_semiparamInsp_resc.m**, **fit_AllDataModel_parametric_resc.m** are the improved model fits code. They fit parametric models on UV+UA data, the semiparametric model on UV+UA data, the semiparametric-inspired models on all the data, and parametric models on all the data respectively. The fitted parameters are saved in the *ModelFits* folder.
-  - **fit_AllDataModel_semiparamInsp_resc.m** requires the saved fitted parameters from **fit_UJointModel_semiparam.m**.
+  - **fit_AllDataModel_semiparamInsp_resc.m** requires the saved fitted parameters from **fit_UJointModel_semiparam.m**, called *fittedparams_UJoint_Semiparam_rescalefree_lapseUniform.mat*.
 - In the *Analysis* folder, the NLL code for parametric models are is **NLLfun_UAV_parametric.m**, **NLLfun_BC_parametric.m**, and **NLLfun_BAV_parametric.m**. They each take in a set of parameters and data, and return either their summed NLL (for model fitting), each trial's likelihood (never used; can be an option for visualizing UV data and model fits), or generatives posterior predictive samples using the dataset's stimulus and input parameters (for all model fit visualizations). 
 - In the *Analysis* folder, the NLL code for the semiparametric model is **NLLfun_UAV_semiparam.m**. Its functions are similar to above. The model parameters are explained below:
 ```
@@ -47,6 +47,7 @@ Not parallelized -- each fit takes around 6-10 hours.
 bads.m optimizer
 NLLfun_UAV_parametric.m;
 'fittedparams_UJoint_'+hetero_type+"-"+prior_type + "_rescale"+rescale + "_lapse"+lapse_type + iter;
+Note: it allows the fitting of models with truncated Gaussian lapse (additional parameter sigma_{lapse} involved).
 
 semiparam on UV+UA data: 
 time reserved per iter 10:00:00
