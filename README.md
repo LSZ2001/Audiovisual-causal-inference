@@ -74,16 +74,25 @@ This folder only saves the manuscript figures. For how these figures are generat
 - **Manuscript_AllPlots.m** creates all figures for the manuscript. It contains some functions itself, and additionally calls **Manuscript_UJoint_RespDistrVisualization.m**, **Manuscript_UJoint_RespDistrVisualization_semiparam.m**, **Manuscript_AllFits_RespDistrVisualization_resc.m**, **Manuscript_AllFits_RespDistrVisualization_semiparamInsp_resc.m** to create model fit response distribution plots. These secondary functions in turn call **Manuscript_UnimodalFits_Visualization.m**, **Manuscript_BimodalCFits_Visualization_resc.m**, **Manuscript_BimodalAVFits_Visualization_resc.m**, which can be universally used for parametric, nonparamIndv, and nonparamInsp model fits. 
 
 ## Other code in the Analysis folder
+#### Helper functions
 - **UniformGaussianLapseComparison.m** does model comparison for the Exp-GaussianLaplace model fitted on UA+UV data, either assuming uniform lapse or truncated-Gaussian lapse. 
+- **heterotype_to_sigmafun.m** generates symbolic functions for the sensory noise function sigma(s) from the function family names "constant" or "exp".
+- **complete_thetaUA_for_UJointFits.m** is for parametric model's NLL on UA data only. It completes the UA parameters by joining UA unique parameters and UA+UV shared parameters. 
+
+#### Optimizer-related
 - **bads.m** and **cmaes.m** are numerical optimizers used for model fitting.
   - Acerbi, L. & Ma, W. J. (2017). Practical Bayesian Optimization for Model Fitting with Bayesian Adaptive Direct Search. In Advances in Neural Information Processing Systems 30, pages 1834-1844. https://github.com/acerbilab/bads
   - N. Hansen, S. D. Müller and P. Koumoutsakos, "Reducing the Time Complexity of the Derandomized Evolution Strategy with Covariance Matrix Adaptation (CMA-ES)," in Evolutionary Computation, vol. 11, no. 1, pp. 1-18, March 2003, doi: 10.1162/106365603321828970. https://cma-es.github.io/
 - **cmaes_modded** is a set of CMAES options in Acerbi, L. (2019). An Exploration of Acquisition and Mean Functions in Variational Bayesian Monte Carlo. In Proc. Machine Learning Research 96: 1-10. 1st Symposium on Advances in Approximate Bayesian Inference, Montréal, Canada. https://github.com/acerbilab/vbmc
+
+#### Numerical Integration
 - **qtrapz.m** is code for trapezoidal numerical integration for posterior mean computation. It is written by Luigi Acerbi.
+
+#### Visualization aesthetics
 - **patchline.m** and **colorbrewer.m** contribute to visualization aesthetics. 
   - Brett Shoelson (2023). Patchline (https://www.mathworks.com/matlabcentral/fileexchange/36953-patchline), MATLAB Central File Exchange. Retrieved May 31, 2023.
   - Stephen23 (2023). ColorBrewer: Attractive and Distinctive Colormaps (https://github.com/DrosteEffect/BrewerMap/releases/tag/3.2.3), GitHub. Retrieved May 31, 2023.
+ 
+#### Truncated-Gaussian sampling
 - **trandn.m** generates posterior predictive samples out of the truncated Gaussian lapse distribution. Used for visualization for truncated-Gaussian lapse models. 
   - Zdravko Botev (2023). Truncated Normal Generator (https://www.mathworks.com/matlabcentral/fileexchange/53180-truncated-normal-generator), MATLAB Central File Exchange. Retrieved May 31, 2023.
-- **heterotype_to_sigmafun.m** generates symbolic functions for the sensory noise function sigma(s) from the function family names "constant" or "exp".
-- **complete_thetaUA_for_UJointFits.m** is for parametric model's NLL on UA data only. It completes the UA parameters by joining UA unique parameters and UA+UV shared parameters. 
