@@ -113,10 +113,9 @@ function [output] = NLLfun_UAV_parametric(ModelComponents, theta, R, S, return_p
             % Assume input only contains one reliability level (1 to 4)!!
             rel_level = reliabilities(1);
             if(rel_level ~=4) % visual
-                rel_multiply_factor = rel_multiply_factors_uniq(rel_level);
+            rel_multiply_factor = rel_multiply_factors_uniq(rel_level);
             else
-                rel_multiply_factor = rel_multiply_factors_uniq;
-            end
+                rel_multi
             
             sigma = sigma_fun(S, sigma0, k) .* rel_multiply_factor;
             
