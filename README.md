@@ -76,7 +76,7 @@ log_prior = log(p_s);
 - The NLL code for semiparamInspired models are **nllfun_uav_semiparaminsp.m**, **nllfun_bc_semiparaminsp.m**, and **nllfun_bav_semiparaminsp.m**. Its functions are similar to above.
 
 ### Model visualization code
-**manuscript_allplots** in the main folder calls functions in this subfolder. It calls **Manuscript_UJoint_RespDistrVisualization.m**, **Manuscript_UJoint_RespDistrVisualization_semiparam.m**, **Manuscript_AllFits_RespDistrVisualization_resc.m**, **Manuscript_AllFits_RespDistrVisualization_semiparamInsp_resc.m** to create model fit response distribution plots. These secondary functions in turn call **Manuscript_UnimodalFits_Visualization.m**, **Manuscript_BimodalCFits_Visualization_resc.m**, **Manuscript_BimodalAVFits_Visualization_resc.m**, which can be universally used for parametric, semiparam, and semiparamInsp model fits. 
+**manuscript_allplots** in the main folder calls functions in this subfolder. It calls **manuscript_ujoint_respdistrvisualization.m**, **manuscript_ujoint_respdistrvisualization_semiparam.m**, **manuscript_allfits_respdistrvisualization_resc.m**, **manuscript_allfits_respdistrvisualization_semiparaminsp_resc.m** to create model fit response distribution plots. These 4 secondary functions in turn call **manuscript_unimodalfits_visualization.m**, **manuscript_bimodalcFits_visualization_resc.m**, **manuscript_bimodalavFits_visualization_resc.m**, which can be universally used for parametric, semiparam, and semiparamInsp model fits. 
 
 ## *plots* subfolder
 This folder only saves the manuscript figures created by **manuscript_allplots**. 
