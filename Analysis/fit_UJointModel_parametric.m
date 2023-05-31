@@ -1,25 +1,25 @@
 function [out_struct] = fit_ujointmodel_parametric(iter,prior_type,hetero_type,lapse_type, rescale_aud, num_inits, data_path, model_path_temp)
     if(nargin==0)
         iter=1; prior_type = "SingleGaussian"; hetero_type="constant"; lapse_type="Uniform"; rescale_aud = "free";
-        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+        num_inits = 10; data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif(nargin==1)
         prior_type = "SingleGaussian"; hetero_type="constant"; lapse_type="Uniform"; rescale_aud = "free";
-        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+        num_inits = 10; data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif(nargin==2)
         hetero_type="constant"; lapse_type="Uniform"; rescale_aud = "free";
-        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+        num_inits = 10; data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif (nargin==3)
         lapse_type="Uniform"; rescale_aud = "free";
-        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+        num_inits = 10; data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif(nargin==4)
         rescale_aud = "free";
-        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+        num_inits = 10; data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif(nargin==5)
-        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+        num_inits = 10; data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif(nargin==6)
-        data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+        data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif(nargin==7)
-        model_path_temp = "..\modelfits\temp\";
+        model_path_temp = "modelfits\temp\";
     end
 
     prior_type

@@ -3,13 +3,13 @@
 
 function [out_struct] = fit_ujointmodel_semiparam(iter, num_inits, data_path, model_path_temp)
     if(nargin==0)
-        iter=1; num_inits = 81; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+        iter=1; num_inits = 81; data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif(nargin==1)
-        num_inits = 81; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
-    elseif(nargin==2);
-        data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+        num_inits = 81; data_path = "data\"; model_path_temp = "modelfits\temp\";
+    elseif(nargin==2)
+        data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif(nargin==3)
-        model_path_temp = "..\modelfits\temp\";
+        model_path_temp = "modelfits\temp\";
     end
     lapse_type = "Uniform";
     num_params = 40;

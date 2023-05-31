@@ -2,18 +2,18 @@ function [out_struct] = fit_alldatamodel_semiparaminsp_resc(iter,causal_inf_stra
 if(nargin==0)
     iter=1;
     causal_inf_strategy = "ModelAveraging"; 
-    num_inits = 100; data_path = "..\data\"; model_path = "..\modelfits\";  model_path_temp = "..\modelfits\temp";
+    num_inits = 100; data_path = "data\"; model_path = "modelfits\";  model_path_temp = "modelfits\temp";
 elseif(nargin==1)
     causal_inf_strategy = "ModelAveraging"; 
-    num_inits = 100; data_path = "..\data\"; model_path = "..\modelfits\"; model_path_temp = "..\modelfits\temp";
+    num_inits = 100; data_path = "data\"; model_path = "modelfits\"; model_path_temp = "modelfits\temp";
 elseif(nargin==2)
-    num_inits = 100; data_path = "..\data\"; model_path = "..\modelfits\"; model_path_temp = "..\modelfits\temp";
+    num_inits = 100; data_path = "data\"; model_path = "modelfits\"; model_path_temp = "modelfits\temp";
 elseif(nargin==3)
-    data_path = "..\data\"; model_path = "..\modelfits\"; model_path_temp = "..\modelfits\temp";
+    data_path = "data\"; model_path = "modelfits\"; model_path_temp = "modelfits\temp";
 elseif(nargin==4)
-    model_path = "..\modelfits\"; model_path_temp = "..\modelfits\temp";
+    model_path = "modelfits\"; model_path_temp = "modelfits\temp";
 elseif(nargin==5)
-    model_path_temp = "..\modelfits\temp";
+    model_path_temp = "modelfits\temp";
 end
 lapse_type="Uniform"; rescale_aud = "free";
 

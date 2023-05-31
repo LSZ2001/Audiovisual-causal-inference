@@ -1,22 +1,22 @@
 function [out_struct] = fit_alldatamodel_parametric_resc(iter,prior_type,hetero_type,causal_inf_strategy, num_inits, data_path, model_path_temp)
     if(nargin==0)
         iter=1; prior_type = "SingleGaussian"; hetero_type="constant"; causal_inf_strategy="ModelAveraging";
-        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+        num_inits = 10; data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif(nargin==1)
          prior_type = "SingleGaussian"; hetero_type="constant"; causal_inf_strategy="ModelAveraging";
-         num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+         num_inits = 10; data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif(nargin==2)
          hetero_type="constant"; causal_inf_strategy="ModelAveraging";
-         num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+         num_inits = 10; data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif (nargin==3)
         causal_inf_strategy="ModelAveraging";
-        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+        num_inits = 10; data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif(nargin==4)
-        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+        num_inits = 10; data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif(nargin==5)
-        data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+        data_path = "data\"; model_path_temp = "modelfits\temp\";
     elseif(nargin==6)
-        model_path_temp = "..\modelfits\temp\";
+        model_path_temp = "modelfits\temp\";
     end
     lapse_type="Uniform"; rescale_aud = "free";
     

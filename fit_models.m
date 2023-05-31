@@ -1,8 +1,8 @@
 clear all; close all;
 cd('C:\Users\liu_s\Audiovisual-causal-inference')
-model_path = "\modelfits\";
+model_path = "modelfits\";
 model_path_temp = model_path+"temp\";
-data_path = "\data\";
+data_path = "data\";
 num_subjects = 15;
 
 %% Parametric models on UA+UV data

@@ -1,14 +1,14 @@
 clear all; close all;
-% cd('C:\Users\liu_s\Audiovisual-causal-inference\analysis')
+% cd('C:\Users\liu_s\Audiovisual-causal-inference')
 figsize = get(0, 'ScreenSize');
 figformat = "svg";
-figpath = "..\plots\";
+figpath = "plots\";
 fontsize=9;
 png_dpi = 500;
 plot_lapse = true;
 lapse_type = "Uniform";
-model_path = "..\modelfits\";
-data_path = "..\data\";
+model_path = "modelfits\";
+data_path = "data\";
 
 
 %% UJoint parametric model response distribution visualization
