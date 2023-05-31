@@ -1,5 +1,6 @@
 ## Setup
 Before running any code, go to *Analysis\bads_master* and run **install.m** to install BADS. 
+
 For description of each folder's contents, see below.
 
 ## Data
