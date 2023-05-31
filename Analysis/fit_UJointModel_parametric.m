@@ -1,14 +1,25 @@
-function [out_struct] = fit_ujointmodel_parametric(iter,prior_type,hetero_type,lapse_type, rescale_aud)
+function [out_struct] = fit_ujointmodel_parametric(iter,prior_type,hetero_type,lapse_type, rescale_aud, num_inits, data_path, model_path_temp)
     if(nargin==0)
         iter=1; prior_type = "SingleGaussian"; hetero_type="constant"; lapse_type="Uniform"; rescale_aud = "free";
+        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
     elseif(nargin==1)
-         prior_type = "SingleGaussian"; hetero_type="constant"; lapse_type="Uniform"; rescale_aud = "free";
+        prior_type = "SingleGaussian"; hetero_type="constant"; lapse_type="Uniform"; rescale_aud = "free";
+        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
     elseif(nargin==2)
-         hetero_type="constant"; lapse_type="Uniform"; rescale_aud = "free";
+        hetero_type="constant"; lapse_type="Uniform"; rescale_aud = "free";
+        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
     elseif (nargin==3)
         lapse_type="Uniform"; rescale_aud = "free";
+        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
     elseif(nargin==4)
         rescale_aud = "free";
+        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+    elseif(nargin==5)
+        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+    elseif(nargin==6)
+        data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+    elseif(nargin==7)
+        model_path_temp = "..\modelfits\temp\";
     end
 
     prior_type
@@ -16,22 +27,18 @@ function [out_struct] = fit_ujointmodel_parametric(iter,prior_type,hetero_type,l
     lapse_type
     rescale_aud
 
-    data_path = "..\data\";
-    model_path = "..\modelfits\";
     s_a_range = -15:5:15;
     s_v_range = -20:1:20;
 
     model_type="PM"; % two gaussians components of the prior both centered at 0. 
     PMIntegrationParams = [-45,45,201]; % PM midpoint Rule bounds and numbins.
-    consider_lapse=true; % fit a lapse parameter.
-    
-    num_subjects=15;
-    num_inits=10; 
+    consider_lapse=true; % fit a lapse parameter. 
 
     load(data_path+"data_stratified_uv.mat");
     load(data_path+"data_stratified_ua.mat");
     data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
     data_UA = data_stratified_to_data(data_stratified_UA, false, false);
+    num_subjects = length(data_stratified_UA);
     UAV_data = cell(1,num_subjects);
     Gaussian_lapse_SDs = zeros(1,num_subjects); % If assume Gaussian Lapse, then its SD is just the SD across all UAV trials for that subject. 
     for i=1:num_subjects
@@ -136,5 +143,5 @@ function [out_struct] = fit_ujointmodel_parametric(iter,prior_type,hetero_type,l
         filename = filename_basis + "_rescale4over3";
     end
     filename = filename + "_lapse"+lapse_type;
-    save(model_path+filename+"_"+num2str(iter), 'out_struct','model_spec');
+    save(model_path_temp+filename+"_"+num2str(iter), 'out_struct','model_spec');
 end

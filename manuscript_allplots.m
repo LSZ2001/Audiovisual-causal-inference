@@ -123,6 +123,7 @@ causal_inf_strategy = "ProbMatching";
 save_name = "PM";
 manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 
+%%
 causal_inf_strategy = "ModelSelection";
 save_name = "MS";
 manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);

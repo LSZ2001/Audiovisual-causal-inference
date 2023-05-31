@@ -1,18 +1,17 @@
 % This code assumes a free audivisual rescaling parameter for auditory
 % trials.
 
-function [out_struct] = fit_ujointmodel_semiparam(iter, lapse_type)
-    data_path = "..\data\";
-    model_path = "..\modelfits\";
+function [out_struct] = fit_ujointmodel_semiparam(iter, num_inits, data_path, model_path_temp)
     if(nargin==0)
-        iter=1; lapse_type="Uniform"; 
+        iter=1; num_inits = 81; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
     elseif(nargin==1)
-        lapse_type="Uniform";
+        num_inits = 81; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+    elseif(nargin==2);
+        data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+    elseif(nargin==3)
+        model_path_temp = "..\modelfits\temp\";
     end
-    lapse_type
-    
-    num_inits_new = 81;
-    num_subjects = 15;
+    lapse_type = "Uniform";
     num_params = 40;
     
     %%
@@ -54,7 +53,7 @@ function [out_struct] = fit_ujointmodel_semiparam(iter, lapse_type)
     % I am creating theta_inits for all the iters per iteration, but in
     % fact only one of them is used. Then in the next iteration, everything
     % is recreated. This is redundant, but not very time-consuming.
-    theta_inits = zeros(num_inits_new, num_subjects, num_params);
+    theta_inits = zeros(num_inits, num_subjects, num_params);
     
     % Flat prior
     theta_inits(:,:,(2*num_pivots+1):(3*num_pivots-1)) = 0;
@@ -67,7 +66,7 @@ function [out_struct] = fit_ujointmodel_semiparam(iter, lapse_type)
     end
     theta_inits(:,:,2:num_pivots) = 0;
 
-    for i=1:num_inits_new
+    for i=1:num_inits
         i_mod = mod(i,num_sigmafun_vals);
         if(i_mod==0)
             i_mod = num_sigmafun_vals;
@@ -79,8 +78,8 @@ function [out_struct] = fit_ujointmodel_semiparam(iter, lapse_type)
     
     % 5 remaining params -- uniform between PLB and PUB
     plb = [1,1,0,0.25,1]'; pub = [5,10,0.05,1,2]';
-    PLB = permute(repmat(plb,1,num_inits_new, num_subjects), [2,3,1]);
-    PUB = permute(repmat(pub,1,num_inits_new, num_subjects), [2,3,1]);
+    PLB = permute(repmat(plb,1,num_inits, num_subjects), [2,3,1]);
+    PUB = permute(repmat(pub,1,num_inits, num_subjects), [2,3,1]);
     theta_inits(:,:,(end-4):end) = rand(size(PLB)).*(PUB-PLB) + PLB;
 
     % insigma
@@ -169,7 +168,7 @@ function [out_struct] = fit_ujointmodel_semiparam(iter, lapse_type)
     ub = [4,repmat(5,1,num_pivots-1),4,repmat(5,1,num_pivots-1), repmat(eps,1,num_pivots-1), 20,20,1,2,3];
 
 
-    theta_inits = min(max(theta_inits, permute(repmat(lb'+2*eps,1,num_inits_new, num_subjects),[2,3,1])),permute(repmat(ub'-2*eps,1,num_inits_new, num_subjects),[2,3,1]));
+    theta_inits = min(max(theta_inits, permute(repmat(lb'+2*eps,1,num_inits, num_subjects),[2,3,1])),permute(repmat(ub'-2*eps,1,num_inits, num_subjects),[2,3,1]));
     
     %% Check that theta_inits are within LB, UB.
 %     for i=1:(num_subjects*num_inits_new)
@@ -197,11 +196,11 @@ function [out_struct] = fit_ujointmodel_semiparam(iter, lapse_type)
     %% Fit nonparam models starting from nonparam inits.
     fun_name = convertStringsToChars("nllfun_uav_semiparam");
 
-    init = mod(iter, num_inits_new);
+    init = mod(iter, num_inits);
     if(init==0)
-        init=num_inits_new;
+        init=num_inits;
     end
-    subj = ceil(iter/num_inits_new);
+    subj = ceil(iter/num_inits);
 
     % Setup options for CMA-ES optimization
     cmaes_opts = cmaes_modded('defaults');
@@ -242,7 +241,7 @@ function [out_struct] = fit_ujointmodel_semiparam(iter, lapse_type)
     out_struct.T_end = t_end;
     out_struct.theta0 = theta0;
     
-    save(model_path+"fittedparams_UJoint_Semiparam_rescalefree_lapseUniform_"+iter, 'out_struct', 'cmaes_opts');
+    save(model_path_temp+"fittedparams_UJoint_Semiparam_rescalefree_lapseUniform_"+iter, 'out_struct', 'cmaes_opts');
     
     Q = "Code finished."
 

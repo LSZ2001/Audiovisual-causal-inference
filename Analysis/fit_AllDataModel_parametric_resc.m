@@ -1,18 +1,25 @@
-function [out_struct] = fit_alldatamodel_parametric_resc(iter,prior_type,hetero_type,causal_inf_strategy, lapse_type, rescale_aud)
+function [out_struct] = fit_alldatamodel_parametric_resc(iter,prior_type,hetero_type,causal_inf_strategy, num_inits, data_path, model_path_temp)
     if(nargin==0)
-        iter=1; prior_type = "SingleGaussian"; hetero_type="constant"; causal_inf_strategy="ModelAveraging"; lapse_type="Uniform"; rescale_aud = "free";
+        iter=1; prior_type = "SingleGaussian"; hetero_type="constant"; causal_inf_strategy="ModelAveraging";
+        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
     elseif(nargin==1)
-         prior_type = "SingleGaussian"; hetero_type="constant"; causal_inf_strategy="ModelAveraging"; lapse_type="Uniform"; rescale_aud = "free";
+         prior_type = "SingleGaussian"; hetero_type="constant"; causal_inf_strategy="ModelAveraging";
+         num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
     elseif(nargin==2)
-         hetero_type="constant"; causal_inf_strategy="ModelAveraging"; lapse_type="Uniform"; rescale_aud = "free";
+         hetero_type="constant"; causal_inf_strategy="ModelAveraging";
+         num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
     elseif (nargin==3)
-        causal_inf_strategy="ModelAveraging"; lapse_type="Uniform"; rescale_aud = "free";
+        causal_inf_strategy="ModelAveraging";
+        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
     elseif(nargin==4)
-        lapse_type="Uniform"; rescale_aud = "free";
+        num_inits = 10; data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
     elseif(nargin==5)
-        rescale_aud = "free";
+        data_path = "..\data\"; model_path_temp = "..\modelfits\temp\";
+    elseif(nargin==6)
+        model_path_temp = "..\modelfits\temp\";
     end
-
+    lapse_type="Uniform"; rescale_aud = "free";
+    
     prior_type
     hetero_type
     causal_inf_strategy
@@ -20,23 +27,19 @@ function [out_struct] = fit_alldatamodel_parametric_resc(iter,prior_type,hetero_
     rescale_aud
     prior_assumption = "independent" % independent or empirical.
 
-    data_path = "..\data\";
-    model_path = "..\modelfits\";
     s_a_range = -15:5:15;
     s_v_range = -20:1:20;
 
     model_type="PM"; % two gaussians components of the prior both centered at 0. 
     PMIntegrationParams = [-45,45,201]; % PM midpoint Rule bounds and numbins.
-    consider_lapse=true; % fit a lapse parameter.
-    
-    num_subjects=15;
-    num_inits=10; 
+    consider_lapse=true; % fit a lapse parameter. 
 
     % Load the fake data for param recov. 
     load(data_path+"bav_data.mat")
     load(data_path+"bc_data.mat")
     load(data_path+"data_stratified_uv.mat");
     load(data_path+"data_stratified_ua.mat");
+    num_subjects = length(data_stratified_UA);
     data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
     data_UA = data_stratified_to_data(data_stratified_UA, false, false);
     UAV_data = cell(1,num_subjects);
@@ -161,5 +164,5 @@ function [out_struct] = fit_alldatamodel_parametric_resc(iter,prior_type,hetero_
         filename = filename_basis + "_rescale4over3";
     end
     filename = filename + "_lapse"+lapse_type;
-    save(model_path+filename+"_"+num2str(iter), 'out_struct','model_spec');
+    save(model_path_temp+filename+"_"+num2str(iter), 'out_struct','model_spec');
 end

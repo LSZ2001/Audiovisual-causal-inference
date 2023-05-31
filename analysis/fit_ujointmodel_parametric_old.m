@@ -1,5 +1,5 @@
 model_path = "..\modelfits\";
-data_path = "..\data\";
+data_path = "..\data\temp";
 
 prior_type = "GaussianLaplaceBothFixedZero";
 hetero_type = "exp";

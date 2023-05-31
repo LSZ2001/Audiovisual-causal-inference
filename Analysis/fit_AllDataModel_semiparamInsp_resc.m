@@ -1,14 +1,21 @@
-function [out_struct] = fit_alldatamodel_semiparaminsp_resc(iter,causal_inf_strategy, lapse_type, rescale_aud)
+function [out_struct] = fit_alldatamodel_semiparaminsp_resc(iter,causal_inf_strategy, num_inits, data_path, model_path, model_path_temp)
 if(nargin==0)
     iter=1;
-    causal_inf_strategy = "ModelAveraging"; lapse_type="Uniform"; rescale_aud = "free";
+    causal_inf_strategy = "ModelAveraging"; 
+    num_inits = 100; data_path = "..\data\"; model_path = "..\modelfits\";  model_path_temp = "..\modelfits\temp";
 elseif(nargin==1)
-    causal_inf_strategy = "ModelAveraging"; lapse_type="Uniform"; rescale_aud = "free";
+    causal_inf_strategy = "ModelAveraging"; 
+    num_inits = 100; data_path = "..\data\"; model_path = "..\modelfits\"; model_path_temp = "..\modelfits\temp";
 elseif(nargin==2)
-    lapse_type="Uniform"; rescale_aud = "free";
+    num_inits = 100; data_path = "..\data\"; model_path = "..\modelfits\"; model_path_temp = "..\modelfits\temp";
 elseif(nargin==3)
-     rescale_aud = "free";
+    data_path = "..\data\"; model_path = "..\modelfits\"; model_path_temp = "..\modelfits\temp";
+elseif(nargin==4)
+    model_path = "..\modelfits\"; model_path_temp = "..\modelfits\temp";
+elseif(nargin==5)
+    model_path_temp = "..\modelfits\temp";
 end
+lapse_type="Uniform"; rescale_aud = "free";
 
 causal_inf_strategy
 lapse_type
@@ -17,26 +24,15 @@ rescale_aud
 rng('default')
 rng(iter)
 
-num_subjects=15;
-num_inits=100;
-model_path = "..\modelfits\";
-data_path = "..\data\";
-
 PMIntegrationParams = [-45,45,201]; % PM midpoint Rule bounds and numbins.
 consider_lapse=true; % fit a lapse parameter.
 
-%% Load data corresponding to subj specified by iter.
-% Get which subject and init to fit.
-subjidxs = repelem(1:num_subjects,num_inits);
-rand_inits = repmat(1:num_inits, 1,num_subjects)';
-subjidx = subjidxs(iter);
-init=rand_inits(iter);
-
-% Load the fake data for param recov. 
+%% Load the fake data for param recov. 
 load(data_path+"bav_data.mat")
 load(data_path+"bc_data.mat")
 load(data_path+"data_stratified_uv.mat");
 load(data_path+"data_stratified_ua.mat");
+num_subjects = length(data_stratified_UA);
 data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
 data_UA = data_stratified_to_data(data_stratified_UA, false, false);
 UAV_data = cell(1,num_subjects);
@@ -46,6 +42,13 @@ for i=1:num_subjects
     UAV_data{i} = [data_UV{i}; data_UA{i}];
     Gaussian_lapse_SDs(i) = std([UAV_data{i}(:,2); BAV_data{i}(:,4)]);
 end
+
+%% Load data corresponding to subj specified by iter.
+% Get which subject and init to fit.
+subjidxs = repelem(1:num_subjects,num_inits);
+rand_inits = repmat(1:num_inits, 1,num_subjects)';
+subjidx = subjidxs(iter);
+init=rand_inits(iter);
 
 %% Load the nonparametrically fitted params, as base shapes for sigma(s) vis, sigma(s) aud, p(s). 
 load(model_path + "fittedparams_UJoint_Semiparam_rescalefree_lapseUniform");
@@ -213,5 +216,5 @@ elseif(rescale=="4/3")
     filename = filename_basis + "_rescale4over3";
 end
 filename = filename + "_lapse"+lapse_type;
-save(model_path+filename+"_"+num2str(iter), 'out_struct', 'ModelComponents');
+save(model_path_temp+filename+"_"+num2str(iter), 'out_struct', 'ModelComponents');
 end
