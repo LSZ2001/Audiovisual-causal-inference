@@ -82,7 +82,7 @@ exportgraphics(gcf,figpath+'Semiparam_FittedRespDistr'+'.pdf',"ContentType","vec
 
 %%
 % sigma(s), p(s) visualization
-NonparamIndv_SigmaFun_Prior_Visualization(fontsize+1, 1.*[0 0 figsize(4)*4/3 figsize(4)]);
+Semiparam_SigmaFun_Prior_Visualization(fontsize+1, 1.*[0 0 figsize(4)*4/3 figsize(4)],model_path);
 ax = gca; 
 ax.FontSize = fontsize+1; 
 exportgraphics(gcf,figpath+'Semiparam_FittedParams'+'.png','Resolution',png_dpi);
@@ -98,7 +98,7 @@ num_params = [40,14,13,13,12,10,14,8,7,7];
 % Vanila 3 models on unimodal data only
 figure('Position', [0 0 figsize(4)*0.9*0.65 figsize(4)*0.9]);
 set(gcf, 'Color', 'w')
-UnimodalData_ModelComparison_FinalTables_Vanilla = UnimodalData_ModelComparison_Visualize(priors((end-2):end), noises((end-2):end), rescales((end-2):end), model_types((end-2):end), num_params((end-2):end), true, fontsize+1, model_path);
+UnimodalData_ModelComparison_FinalTables_Vanilla = UnimodalData_ModelComparison_Visualize(priors((end-2):end), noises((end-2):end), rescales((end-2):end), model_types((end-2):end), num_params((end-2):end), true, fontsize+1, model_path, data_path);
 ax = gca; 
 ax.FontSize = fontsize+1; 
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_vanilla'+'.png','Resolution',png_dpi);
@@ -108,7 +108,7 @@ save('UnimodalData_ModelComparison_FinalTables_Vanilla','UnimodalData_ModelCompa
 % All models on unimodal data 
 figure('Position', [0 0 figsize(4)*0.9*5/4 figsize(4)*0.9]);
 set(gcf, 'Color', 'w')
-UnimodalData_ModelComparison_FinalTables = UnimodalData_ModelComparison_Visualize(priors, noises, rescales, model_types, num_params, true, fontsize+1, model_path);
+UnimodalData_ModelComparison_FinalTables = UnimodalData_ModelComparison_Visualize(priors, noises, rescales, model_types, num_params, true, fontsize+1, model_path, data_path);
 ax = gca; 
 ax.FontSize = fontsize+1; 
 exportgraphics(gcf,figpath+'UJoint_ModelSelection'+'.png','Resolution',png_dpi);
@@ -120,7 +120,6 @@ causal_inf_strategy = "ProbMatching";
 save_name = "PM";
 Manuscript_AllFits_RespDistrVisualization_semiparamInsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 
-%%
 causal_inf_strategy = "ModelSelection";
 save_name = "MS";
 Manuscript_AllFits_RespDistrVisualization_semiparamInsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
@@ -142,7 +141,7 @@ param_model_names = ["paramBest", "semiparamInsp","exp-GaussianLaplace","exp-Sin
 
 figure('Position', [0 0 figsize(4)*0.9*4/3 figsize(4)*0.9]);
 set(gcf, 'Color', 'w')
-AllData_ModelComparison_FinalTables = AllData_ModelComparison_Visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path);
+AllData_ModelComparison_FinalTables = AllData_ModelComparison_Visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection'+'.pdf',"ContentType","vector");
 save('AllData_ModelComparison_FinalTables','AllData_ModelComparison_FinalTables');
@@ -184,7 +183,7 @@ exportgraphics(gcf,figpath+'SensoryNoisePriorParamFamilies'+'.pdf',"ContentType"
 
 
 %% BELOW: Helper Functions 
-function [UnimodalData_ModelComparison_FinalTables] = UnimodalData_ModelComparison_Visualize(priors, noises, rescales, model_types, num_params, is_plot, fontsize, model_path)
+function [UnimodalData_ModelComparison_FinalTables] = UnimodalData_ModelComparison_Visualize(priors, noises, rescales, model_types, num_params, is_plot, fontsize, model_path, data_path)
     num_models = length(priors);
     num_subjects = 15;
 
@@ -238,6 +237,7 @@ function [UnimodalData_ModelComparison_FinalTables] = UnimodalData_ModelComparis
     NLL_sum_bootstraps = zeros(num_models,num_bootstrap_samps);
     AIC_sum_bootstraps = zeros(num_models,num_bootstrap_samps);
     BIC_sum_bootstraps = zeros(num_models,num_bootstrap_samps);
+    rng("default")
     rng(0)
     for samp = 1:num_bootstrap_samps
         sampled_subj = datasample(1:num_subjects,num_subjects); 
@@ -296,7 +296,7 @@ end
 
 
 %%
-function [AllData_ModelComparison_FinalTables] = AllData_ModelComparison_Visualize(causal_inf_strategies, param_model_names, is_plot, fontsize, model_path)
+function [AllData_ModelComparison_FinalTables] = AllData_ModelComparison_Visualize(causal_inf_strategies, param_model_names, is_plot, fontsize, model_path, data_path)
     num_strategies = length(causal_inf_strategies);
     num_models = length(param_model_names);
     num_subjects = 15;
@@ -307,7 +307,7 @@ function [AllData_ModelComparison_FinalTables] = AllData_ModelComparison_Visuali
     BIC_allmodels = zeros(num_models*num_strategies, 15);
     for causal_inf_strategy_idx=1:num_strategies
         causal_inf_strategy_idx
-        out_struct = AllData_ModelComparison_Visualize_helper(causal_inf_strategies(causal_inf_strategy_idx), model_path);
+        out_struct = AllData_ModelComparison_Visualize_helper(causal_inf_strategies(causal_inf_strategy_idx), model_path, data_path);
         out_structs{causal_inf_strategy_idx} = out_struct;
         NLL_allmodels(causal_inf_strategy_idx:3:end,:) = out_struct.NLLs;
         AIC_allmodels(causal_inf_strategy_idx:3:end,:) = out_struct.AICs;
@@ -394,7 +394,7 @@ end
 
 
 %%
-function [out_struct_allmodels] = AllData_ModelComparison_Visualize_helper(causal_inf_strategy, model_path)
+function [out_struct_allmodels] = AllData_ModelComparison_Visualize_helper(causal_inf_strategy, model_path, data_path)
     if(nargin==0)
         causal_inf_strategy = "ModelSelection";
         is_plot=false;
@@ -486,7 +486,7 @@ end
 
 
 %% Plot nonparam fitted sigma(s) and p(s) shapes
-function [] = NonparamIndv_SigmaFun_Prior_Visualization(fontsize, figspec)
+function [] = Semiparam_SigmaFun_Prior_Visualization(fontsize, figspec, model_path)
     num_subjects = 15;
     num_params = 40;
     num_iters = 81*15;
