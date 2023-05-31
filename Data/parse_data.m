@@ -1,5 +1,5 @@
 clear all;
-cd('C:\Users\liu_s\Audiovisual-causal-inference\Analysis')
+% cd('C:\Users\liu_s\Audiovisual-causal-inference\Analysis')
 data_path = "..\Data\";
 load(data_path+"alldata.mat");
 
