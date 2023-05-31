@@ -80,7 +80,7 @@ log_prior = log(p_s);
 ## *plots* subfolder
 This folder only saves the manuscript figures created by **manuscript_allplots**. 
 
-## *utils*
+## *utils* subfolder
 #### Helper functions
 - **heterotype_to_sigmafun.m** is for parametric models only. It generates symbolic functions for the sensory noise function sigma(s) from the function family names "constant" or "exp".
 - **complete_thetaua_for_ujointFits.m** is for parametric model's NLL on UA data only. It completes the UA parameters by joining UA unique parameters and UA+UV shared parameters. 
