@@ -1,4 +1,5 @@
-model_path = "ModelFits\";
+model_path = "..\ModelFits\";
+data_path = "..\Data\";
 num_models = 2;
 num_subjects=15;
 
@@ -15,9 +16,9 @@ AICs = 2.*(NLLs + num_model_params);
 delta_AICs = AICs - AICs(1,:);
 AIC_allmodels_sumdiff = sum(delta_AICs,2);
 
-load("data_stratified_UV.mat");
+load(data_path+"data_stratified_UV.mat");
 data_stratified_UV = data_stratified;
-load("data_stratified_UA.mat");
+load(data_path+"data_stratified_UA.mat");
 data_stratified_UA = data_stratified;
 data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
 data_UA = data_stratified_to_data(data_stratified_UA, false, false);
