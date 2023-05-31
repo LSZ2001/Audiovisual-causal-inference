@@ -107,7 +107,7 @@ ax = gca;
 ax.FontSize = fontsize+1; 
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_vanilla'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_vanilla'+'.pdf',"ContentType","vector");
-save(analysis_path+'unimodaldata_modelcomparison_finaltables_vanilla','UnimodalData_ModelComparison_FinalTables_Vanilla');
+save('unimodaldata_modelcomparison_finaltables_vanilla','UnimodalData_ModelComparison_FinalTables_Vanilla');
 
 % All models on unimodal data 
 figure('Position', [0 0 figsize(4)*0.9*5/4 figsize(4)*0.9]);
@@ -117,7 +117,7 @@ ax = gca;
 ax.FontSize = fontsize+1; 
 exportgraphics(gcf,figpath+'UJoint_ModelSelection'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'UJoint_ModelSelection'+'.pdf',"ContentType","vector");
-save(analysis_path+'unimodaldata_modelcomparison_finaltables','UnimodalData_ModelComparison_FinalTables');
+save('unimodaldata_modelcomparison_finaltables','UnimodalData_ModelComparison_FinalTables');
 
 %% AllData semiparamInsp Response distribution visualization
 causal_inf_strategy = "ProbMatching";
@@ -149,7 +149,7 @@ set(gcf, 'Color', 'w')
 AllData_ModelComparison_FinalTables = alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection'+'.pdf',"ContentType","vector");
-save(analysis_path+'alldata_modelcomparison_finaltables','AllData_ModelComparison_FinalTables');
+save('alldata_modelcomparison_finaltables','AllData_ModelComparison_FinalTables');
 
 
 %% sigma(s) and p(s) examples
