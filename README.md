@@ -9,7 +9,7 @@ Before running any code, install BADS at Acerbi, L. & Ma, W. J. (2017). Practica
 All code assumes that the current directory of Matlab is the *analysis* folder.
 
 - **parse_data** creates the datafiles needed *data_stratified_UA.mat*, *data_stratified_UV.mat*, *BC_data.mat*, *BAV_data.mat*, from the raw datafile *alldata.mat*.
-- **fit_models** contains sample model fits for one parametric model on UA+UV data, the semiparametric model on UA+UV data, one semiparametric-inspired model on all data, and one parametric model on all data. The number of iters per subject in the code is used to generate the saved *.mat* files (model fits) in the *modelfits* folder.
+- **fit_models** contains sample model fits for one parametric model on UA+UV data, the semiparametric model on UA+UV data, one semiparamInspired model on all data, and one parametric model on all data. The number of iters per subject in the code is used to generate the saved *.mat* files (model fits) in the *modelfits* folder.
 - **manuscript_allplots** creates all figures for the manuscript, based on the datafiles and the saved model fits.
 
 ## *data* subfolder
@@ -50,7 +50,7 @@ NLLfun_UAV_parametric.m, NLLfun_BC_parametric.m, NLLfun_BAV_parametric.m
 
 ## *analysis* subfolder
 ### Model fitting code 
-- **fit_ujointmodel_parametric.m**, **fit_ujointmodel_semiparam.m**, **fit_alldatamodel_semiparaminsp_resc.m**, **fit_alldatamodel_parametric_resc.m** are the model fits code being called by **fit_models.m**. They fit parametric models on UV+UA data, the semiparametric model on UV+UA data, the semiparametric-inspired models on all the data, and parametric models on all the data respectively. The fitted parameters are saved in the *modelfits* folder.
+- **fit_ujointmodel_parametric.m**, **fit_ujointmodel_semiparam.m**, **fit_alldatamodel_semiparaminsp_resc.m**, **fit_alldatamodel_parametric_resc.m** are the model fits code being called by **fit_models.m**. They fit parametric models on UV+UA data, the semiparametric model on UV+UA data, the semiparamInspired models on all the data, and parametric models on all the data respectively. The fitted parameters are saved in the *modelfits* folder.
   - **fit_alldatamodel_semiparaminsp_resc.m** requires the saved fitted parameters from **fit_ujointmodel_semiparam.m**, called *fittedparams_UJoint_Semiparam_rescalefree_lapseUniform.mat*.
 - The NLL code for parametric models are is **nllfun_uav_parametric.m**, **nllfun_bc_parametric.m**, and **nllfun_bav_parametric.m**. They each take in a set of parameters and data, and return either their summed NLL (for model fitting), each trial's likelihood (never used; can be an option for visualizing UV data and model fits), or generatives posterior predictive samples using the dataset's stimulus and input parameters (for all model fit visualizations). 
 - The NLL code for the semiparametric model is **nllfun_uav_semiparam.m**. Its functions are similar to above. The model parameters are explained below:
@@ -72,10 +72,10 @@ sigma_fun_aud = @(s)  min([repmat(45,length(s),1) , interp1(s_pivot_full, exp(si
 p_s = exp(interp1(s_pivot_full, (prior_pivots), s_grid_integrate, 'pchip'));
 log_prior = log(p_s);
 ```
-- The NLL code for semiparametric inspired models are **nllfun_uav_semiparaminsp.m**, **nllfun_bc_semiparaminsp.m**, and **nllfun_bav_semiparaminsp.m**. Its functions are similar to above.
+- The NLL code for semiparamInspired models are **nllfun_uav_semiparaminsp.m**, **nllfun_bc_semiparaminsp.m**, and **nllfun_bav_semiparaminsp.m**. Its functions are similar to above.
 
 ### Model visualization code
-**manuscript_allplots** in the main folder calls functions in this subfolder. It calls **Manuscript_UJoint_RespDistrVisualization.m**, **Manuscript_UJoint_RespDistrVisualization_semiparam.m**, **Manuscript_AllFits_RespDistrVisualization_resc.m**, **Manuscript_AllFits_RespDistrVisualization_semiparamInsp_resc.m** to create model fit response distribution plots. These secondary functions in turn call **Manuscript_UnimodalFits_Visualization.m**, **Manuscript_BimodalCFits_Visualization_resc.m**, **Manuscript_BimodalAVFits_Visualization_resc.m**, which can be universally used for parametric, nonparamIndv, and nonparamInsp model fits. 
+**manuscript_allplots** in the main folder calls functions in this subfolder. It calls **Manuscript_UJoint_RespDistrVisualization.m**, **Manuscript_UJoint_RespDistrVisualization_semiparam.m**, **Manuscript_AllFits_RespDistrVisualization_resc.m**, **Manuscript_AllFits_RespDistrVisualization_semiparamInsp_resc.m** to create model fit response distribution plots. These secondary functions in turn call **Manuscript_UnimodalFits_Visualization.m**, **Manuscript_BimodalCFits_Visualization_resc.m**, **Manuscript_BimodalAVFits_Visualization_resc.m**, which can be universally used for parametric, semiparam, and semiparamInsp model fits. 
 
 ## *plots* subfolder
 This folder only saves the manuscript figures created by **manuscript_allplots**. 
