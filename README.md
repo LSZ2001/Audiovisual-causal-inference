@@ -2,10 +2,13 @@
 Before running any code, go to *Analysis\bads_master* and run **install.m** to install BADS. 
 
 ## Data
-- The actual datafiles used for ModelFits and Plots is only the following four files: *data_stratified_UV.mat*, *data_stratified_UA.mat*, *BC_data.mat*, *BAV_data.mat*. They store the 15 human subject's data on UV. UA, BC, BA+BV trials respectively. Each *.mat* file is a cell(1,15) corresponding to the 15 subjects. 
+- The actual datafiles used for ModelFits and Plots is only the following four files: *data_stratified_UA.mat*, *data_stratified_UV.mat*, *BC_data.mat*, *BAV_data.mat*. They store the 15 human subject's data on UV. UA, BC, BA+BV trials respectively. Each *.mat* file is a cell(1,15) corresponding to the 15 subjects. 
   - For *data_stratified_UV.mat*, *data_stratified_UA.mat*, each of the 15 subjects is additionally stratfied to cell(1,7), corresponding to the 7 stimulus bins by true stimulus location (useful for visualizations purposes). For either file, different rows are trials. Col 1 is the stimulus location s, Col 2 is the subject's response r_S. For UV data, there is an additional Col 3 denoting the visual reliability level (1 corresponding to highest reliability, 3 lowest).
   - For *BC_data.mat*, the second level is just a matrix containing trial information. Different rows are trials. Col 1 is visual reliability level, Col 2 is the auditory stimulus location s_A, Col 3 is the visual stimulus location s_V, Col 4 is the subject's response r_C (1 is "same", 2 is "different").
   - For *BAV_data.mat*, the second level is also just a matrix containing trial information. Different rows are trials. Col 1 is visual reliability level, Col 2 is the auditory stimulus location s_A, Col 3 is the visual stimulus location s_V, Col 4 is the subject's response r_S, and Col 5 denotes whether the response is a location estimate for the visual (1) or auditory (2) stimulus.
+
+### How the four data files are generated
+ - *alldata.mat* is the raw data files, containing data from all 5 tasks. **UA_data_visualization.m**, **UV_data_visualization.m**, **BC_data_visualization.m**, **BAV_data_visualization.m** operate on *alldata.mat* to generate *data_stratified_UA.mat*, *data_stratified_UV.mat*, *BC_data.mat*, *BAV_data.mat* respectively.
 
 ## ModelFits
 - **fit_UJointModel_parametric.m**, **fit_UJointModel_semiparam.m**, **fit_AllDataModel_semiparamInsp_resc.m**, **fit_AllDataModel_parametric_resc.m** are the improved model fits code. They fit parametric models on UV+UA data, the semiparametric model on UV+UA data, the semiparametric-inspired models on all the data, and parametric models on all the data respectively. 
