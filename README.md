@@ -83,6 +83,7 @@ This folder only saves the manuscript figures. For how these figures are generat
 - **UniformGaussianLapseComparison.m** does model comparison for the Exp-GaussianLaplace model fitted on UA+UV data, either assuming uniform lapse or truncated-Gaussian lapse. 
 - **heterotype_to_sigmafun.m** generates symbolic functions for the sensory noise function sigma(s) from the function family names "constant" or "exp".
 - **complete_thetaUA_for_UJointFits.m** is for parametric model's NLL on UA data only. It completes the UA parameters by joining UA unique parameters and UA+UV shared parameters. 
+- **merge_UJoint_BADsbounds.m** and **sigmafun_BADSbounds_comprehensive.m** output the parameter bounds for BADS model fitting, according to the parametric model specifications.
 
 #### Optimizer-related
 - **bads.m** and **cmaes.m** are numerical optimizers used for model fitting.
