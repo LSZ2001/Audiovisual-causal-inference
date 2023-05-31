@@ -48,43 +48,44 @@ function [out_struct] = fit_ujointmodel_parametric(iter,prior_type,hetero_type,l
     end
 
     % UV data model components
-    ModelComponents_V.PriorType=prior_type;
-    ModelComponents_V.SensoryNoise=hetero_type;
-    ModelComponents_V.LapseRange = [-45,45];
-    ModelComponents_V.IsFixedPriorMean=(model_type=="PM");
-    ModelComponents_V.Rescale="1";
-    ModelComponents_V.MotorNoise="Gaussian";
-    ModelComponents_V.IsMLModel=(model_type=="ML");
-    ModelComponents_V.NumReliabilityLevels = 3; % Get number of reliability levels
-    ModelComponents_V.LapseType = lapse_type;
-    ModelComponents_V.GaussianLapseSDs = Gaussian_lapse_SDs;
-    ModelComponents_V.PMIntegrationParams = PMIntegrationParams;
+    ModelComponents_UV.PriorType=prior_type;
+    ModelComponents_UV.SensoryNoise=hetero_type;
+    ModelComponents_UV.LapseRange = [-45,45];
+    ModelComponents_UV.IsFixedPriorMean=(model_type=="PM");
+    ModelComponents_UV.Rescale="1";
+    ModelComponents_UV.MotorNoise="Gaussian";
+    ModelComponents_UV.IsMLModel=(model_type=="ML");
+    ModelComponents_UV.NumReliabilityLevels = 3; % Get number of reliability levels
+    ModelComponents_UV.LapseType = lapse_type;
+    ModelComponents_UV.GaussianLapseSDs = Gaussian_lapse_SDs;
+    ModelComponents_UV.PMIntegrationParams = PMIntegrationParams;
 
-    sigma_fun = heterotype_to_sigmafun(ModelComponents_V.SensoryNoise);
-    [LB_V, UB_V, PLB_V, PUB_V] = sigmafun_badsbounds_comprehensive(ModelComponents_V);
-    num_V_params = length(LB_V);
+    sigma_fun = heterotype_to_sigmafun(ModelComponents_UV.SensoryNoise);
+    [LB_UV, UB_UV, PLB_UV, PUB_UV] = sigmafun_badsbounds_comprehensive(ModelComponents_UV);
+    num_UV_params = length(LB_UV);
 
 
     % UA data model components -> same prior/noise model/lapse/motor noise as UV,
     % but different noise params sigma0, k1, k2 and include a rescale.
-    ModelComponents_A = ModelComponents_V;
-    ModelComponents_A.Rescale = rescale_aud;
-    ModelComponents_A.NumReliabilityLevels = 1; % Get number of reliability levels
-    [LB_A, UB_A, PLB_A, PUB_A] = sigmafun_badsbounds_comprehensive(ModelComponents_A);
+    ModelComponents_UA = ModelComponents_UV;
+    ModelComponents_UA.Rescale = rescale_aud;
+    ModelComponents_UA.NumReliabilityLevels = 1; % Get number of reliability levels
+    [LB_UA, UB_UA, PLB_UA, PUB_UA] = sigmafun_badsbounds_comprehensive(ModelComponents_UA);
 
     % Merge the BADS bounds of UV and UA to one vector, UV in front.
-    [LB, UB, PLB, PUB, A_param_keep_idx] = merge_ujoint_badsbounds(LB_V,UB_V,PLB_V,PUB_V,LB_A,UB_A,PLB_A,PUB_A,ModelComponents_A);
+    [LB, UB, PLB, PUB, UA_param_keep_idx] = merge_ujoint_badsbounds(LB_UV,UB_UV,PLB_UV,PUB_UV,LB_UA,UB_UA,PLB_UA,PUB_UA,ModelComponents_UA);
 
-    % Add in final parameter constraints -- p_same, which is just Pr[C=1], and
-    % then the unimodal-bimodal rescale. 
-    LB = [LB, 0, 0.7, 0.7];
-    PLB = [PLB, 0, 1, 1];
-    PUB = [PUB, 1, 2, 2];
-    UB = [UB, 1, 3, 3];
-    num_A_uniq_params = length(LB) - length(LB_A) - 2;
+    num_UA_uniq_params = length(LB) - length(LB_UA);
 
+    %% If Gaussian lapse, add a parameter for the Gaussian lapse distribution's width.
+    if(lapse_type=="Gaussian")
+        LB = [LB, 1];
+        PLB = [PLB, 5];
+        PUB = [PUB, 20];
+        UB = [UB, 90];
+    end
 
-    % IBS/BADS settings
+    %% IBS/BADS settings
     options = bads('defaults');
     options.SpecifyTargetNoise = false;  
     options.UncertaintyHandling = false;  
@@ -109,9 +110,16 @@ function [out_struct] = fit_ujointmodel_parametric(iter,prior_type,hetero_type,l
         S_UA = data_subj_UA(:,1);
         R_UV = data_subj_UV(:,2); % add in rescale
         R_UA = data_subj_UA(:,2); % add in rescale
-        nllfun = @(theta) nllfun_uav_parametric(ModelComponents_V, theta(1:num_V_params),R_UV,S_UV, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx))...
-        + nllfun_uav_parametric(ModelComponents_A, complete_thetaua_for_ujointfits(theta(1:(end-3)), A_param_keep_idx, ModelComponents_V.Rescale=="free"),R_UA,S_UA, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx));
-
+        
+        switch lapse_type
+            case "Uniform"
+                nllfun = @(theta) nllfun_uav_parametric(ModelComponents_UV, theta(1:num_UV_params),R_UV,S_UV, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx)) ...
+                        + nllfun_uav_parametric(ModelComponents_UA, complete_thetaUA_for_UJointFits(theta, UA_param_keep_idx, ModelComponents_UV.Rescale=="free"),R_UA,S_UA, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx));
+            case "Gaussian"
+                nllfun = @(theta) nllfun_uav_parametric(ModelComponents_UV, theta([1:num_UV_params, length(theta)]),R_UV,S_UV, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx)) ...
+                        + nllfun_uav_parametric(ModelComponents_UA, [complete_thetaUA_for_UJointFits(theta(1:(end-1)), UA_param_keep_idx, ModelComponents_UV.Rescale=="free"), theta(end)],R_UA,S_UA, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx));
+        end
+        
         theta0 = rand(size(LB)).*(PUB-PLB) + PLB;
         tStart2 = tic;
         [Theta_fitted_cell, F_vals_cell] = bads(nllfun,theta0,LB,UB,PLB,PUB,[],options);
@@ -119,7 +127,7 @@ function [out_struct] = fit_ujointmodel_parametric(iter,prior_type,hetero_type,l
  
     model_spec.prior_type = prior_type;
     model_spec.hetero_type = hetero_type;
-    model_spec.Arescale = ModelComponents_A.Rescale;
+    model_spec.Arescale = ModelComponents_UA.Rescale;
     model_spec.LapseType = lapse_type;
 
     out_struct.iter = iter;
@@ -134,11 +142,11 @@ function [out_struct] = fit_ujointmodel_parametric(iter,prior_type,hetero_type,l
     %% Find best fitted params for each subject, across random initializations.
     close all;
     filename_basis = 'fittedparams_UJoint_'+hetero_type+"-"+prior_type;
-    rescale = ModelComponents_A.Rescale;
+    rescale = ModelComponents_UA.Rescale;
     if(rescale=="free")
         filename = filename_basis + "_rescalefree";
     elseif(rescale=="1")
-        filename = filename_basis + "rescale1";
+        filename = filename_basis + "_rescale1";
     elseif(rescale=="4/3")
         filename = filename_basis + "_rescale4over3";
     end

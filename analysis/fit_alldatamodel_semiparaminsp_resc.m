@@ -211,7 +211,7 @@ rescale = ModelComponents.RescaleAud;
 if(rescale=="free")
     filename = filename_basis + "_rescalefree";
 elseif(rescale=="1")
-    filename = filename_basis + "rescale1";
+    filename = filename_basis + "_rescale1";
 elseif(rescale=="4/3")
     filename = filename_basis + "_rescale4over3";
 end
