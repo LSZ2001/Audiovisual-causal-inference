@@ -6,11 +6,11 @@ data_path = "data\";
 num_subjects = 15;
 
 %% Parametric models on UA+UV data
-prior_type = "SingleGaussian"; % Can also be "SingleGaussian", "TwoGaussiansBothFixedZero"
-hetero_type = "constant"; % Can also be "exp";
-lapse_type = "Uniform"; % Can also be "Gaussian";
-rescale_aud = "1"; % Can also be "4/3" or "free";
-num_inits_persubj = 10;
+prior_type = "SingleGaussian"; % "SingleGaussian", "GaussianLaplaceBothFixedZero", or "TwoGaussiansBothFixedZero"
+hetero_type = "constant"; % "constant" or "exp";
+lapse_type = "Uniform"; % "Uniform" or "Gaussian";
+rescale_aud = "1"; % "1", "4/3", or "free";
+num_inits_persubj = 10; % Number of random initializations per subject.
 parfor iter = 1:(num_inits_persubj * num_subjects)
     fit_ujointmodel_parametric(iter,prior_type,hetero_type, lapse_type, rescale_aud, num_inits_persubj, data_path, model_path_temp)
 end
@@ -24,7 +24,7 @@ end
 merge_semiparam_ujointfits_files(num_iters_persubj, model_path, model_path_temp)
 
 %% SemiparamInsp models on all data
-causal_inf_strategy = "ProbMatching"; % Can also either be "ModelSelection" or "ModelAveraging"
+causal_inf_strategy = "ProbMatching"; % "ModelSelection", "ModelAveraging", or "ProbMatching".
 num_inits_persubj = 100;
 for iter = 1:(num_inits_persubj * num_subjects)
     fit_alldatamodel_semiparaminsp_resc(iter,causal_inf_strategy, num_inits_persubj, data_path, model_path, model_path_temp)
@@ -32,9 +32,9 @@ end
 merge_semiparaminsp_alldatafits_files(causal_inf_strategy, num_iters_persubj, model_path, model_path_temp)
 
 %% Parametric models on all data
-prior_type = "GaussianLaplaceBothFixedZero"; % Can also be "SingleGaussian", "TwoGaussiansBothFixedZero"
-hetero_type = "exp"; % Can also be "constant";
-causal_inf_strategy = "ProbMatching"; % Can also either be "ModelSelection" or "ModelAveraging"
+prior_type = "GaussianLaplaceBothFixedZero"; % "SingleGaussian", "GaussianLaplaceBothFixedZero", or "TwoGaussiansBothFixedZero"
+hetero_type = "exp"; % "constant" or "exp";
+causal_inf_strategy = "ProbMatching"; % "ModelSelection", "ModelAveraging", or "ProbMatching".
 num_inits_persubj = 10;
 for iter = 1:(num_inits_persubj * num_subjects)
     fit_alldatamodel_parametric_resc(iter,prior_type,hetero_type,causal_inf_strategy, num_inits_persubj, data_path, model_path_temp)

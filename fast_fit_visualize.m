@@ -9,11 +9,11 @@ model_path_temp = model_path+"temp\";
 
 
 %% Fit a model on UV+UA data quickly, using only one random init per subject.
-prior_type = "GaussianLaplaceBothFixedZero"; % Can also be "SingleGaussian", "TwoGaussiansBothFixedZero"
-hetero_type = "exp"; % Can also be "constant";
-lapse_type = "Uniform"; % Can also be "Gaussian";
-rescale_aud = "free"; % Can also be "4/3" or "free";
-num_inits_persubj = 1;
+prior_type = "GaussianLaplaceBothFixedZero"; % "SingleGaussian", "GaussianLaplaceBothFixedZero", or "TwoGaussiansBothFixedZero"
+hetero_type = "exp"; % "constant" or "exp"
+lapse_type = "Uniform"; % "Uniform" or "Gaussian";
+rescale_aud = "free"; % "1", "4/3" or "free";
+num_inits_persubj = 1; % Number of random initializations per subject.
 parfor iter = 1:(num_inits_persubj * num_subjects)
     fit_ujointmodel_parametric(iter,prior_type,hetero_type, lapse_type, rescale_aud, num_inits_persubj, data_path, model_path_temp)
 end
