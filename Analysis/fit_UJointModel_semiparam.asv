@@ -56,11 +56,10 @@ function [out_struct] = fit_UJointModel_semiparam(iter, lapse_type)
         Gaussian_lapse_SDs(i) = std(UAV_data{i}(:,2));
     end
 
-    %% Get inits with flat prior and/or flat sigma(s) vis and/or flat sigma(s) aud. 
-        
+    %% Get inits with flat prior and/or flat sigma(s) vis and/or flat sigma(s) aud.
+    
     % I am creating theta_inits for all the iters per iteration, but in
-    % fact only one of them is used. Then in the next iteration, everything
-    % is recreated. This is redundant, but not very time-consuming.
+    % fact only one of them is used. 
     theta_inits = zeros(num_inits_new, num_subjects, num_params);
     
     % Flat prior
@@ -95,6 +94,7 @@ function [out_struct] = fit_UJointModel_semiparam(iter, lapse_type)
     insigma(1:(3*num_pivots-1)) = 0.5;
     insigma((3*num_pivots):end) = (pub-plb)./sqrt(12);
 
+  
     %% Plot the inits
 % s_pivot = ModelComponents.SPivot;
 % s_pivot_full = [-fliplr(s_pivot(2:end)), s_pivot];
@@ -231,7 +231,7 @@ function [out_struct] = fit_UJointModel_semiparam(iter, lapse_type)
 
     indx=[subj, init]   
     %nllfun = @(theta) midpoint_NLLfun_comprehensive_nonparam_mixture_indv_CMAES(theta, {data{j}});
-    theta0 = squeeze(theta_inits(init,subj,:)); %+ randn(1,num_params); 
+    theta0 = squeeze(theta_inits); %+ randn(1,num_params); 
     tStart = tic;
     [theta_fitted_iter, f_val,COUNTEVAL, STOPFLAG, OUT, BESTEVER] = cmaes(fun_name,...
                                                 theta0, ...    % objective variables initial point, determines N
