@@ -211,7 +211,7 @@ function [output] = NLLfun_UAV_parametric(ModelComponents, theta, R, S, return_p
             p_x_given_s = normpdf(x_grid, S_rel, sigma_fun(S_rel,sigma0,k).*rel_multiply_factor);
             %p_x_given_s = p_x_given_s ./ sum(p_x_given_s,2);
             
-            % Midpoint Rule to get s_hat_PMs along x_grid.
+            % Trapezoid Rule to get s_hat_PMs along x_grid.
             binedges = linspace(a,b,num_bins+1);
             binwidth =  binedges(2)-binedges(1);
             s_grid_integrate = (binedges(1:end-1) + binwidth/2)';

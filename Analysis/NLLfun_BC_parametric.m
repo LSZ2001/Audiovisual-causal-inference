@@ -235,7 +235,7 @@ function [output] = NLLfun_BC_parametric(ModelComponents_V, ModelComponents_A, t
             p_x_given_s_A = reshape(p_x_given_s_A_raw, [length(S_A_rel), Nx_A, 1]);
             clear p_x_given_s_V_raw p_x_given_s_A_raw
             
-            % Midpoint Rule to get s_hat_PMs along x_grid.
+            % Trapezoid Rule to get s_hat_PMs along x_grid.
             binedges = linspace(a,b,num_bins);
             binwidth =  binedges(2)-binedges(1);
             s_grid_integrate = (binedges(1:end-1) + binwidth/2)';
