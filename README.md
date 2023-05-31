@@ -1,3 +1,9 @@
+# AudioVisual-causal-inference
+
+- AudioVisual Perception Modeling with Dr. Luigi Acerbi and Dr. Wei Ji Ma. 
+- **Bold** words are .m filenames.
+- *Italicized* words are .mat filenames or directory folder names.
+
 ## Setup
 Before running any code, go to *Analysis\bads_master* and run **install.m** to install BADS. 
 
