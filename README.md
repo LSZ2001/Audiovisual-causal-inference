@@ -14,7 +14,7 @@ Before running any code, go to *Analysis\bads_master* and run **install.m** to i
 
 ## ModelFits
 - **fit_UJointModel_parametric.m**, **fit_UJointModel_semiparam.m**, **fit_AllDataModel_semiparamInsp_resc.m**, **fit_AllDataModel_parametric_resc.m** are the improved model fits code. They fit parametric models on UV+UA data, the semiparametric model on UV+UA data, the semiparametric-inspired models on all the data, and parametric models on all the data respectively. 
-  - **fit_AllDataModel_parametric_resc.m** requires the saved fitted parameters from **fit_UJointModel_semiparam.m**.
+  - **fit_AllDataModel_semiparamInsp_resc.m** requires the saved fitted parameters from **fit_UJointModel_semiparam.m**.
 - The NLL code for parametric models are is **NLLfun_UAV_parametric.m**, **NLLfun_BC_parametric.m**, and **NLLfun_BAV_parametric.m**. They each take in a set of parameters and data, and return either their summed NLL (for model fitting), each trial's likelihood (never used; can be an option for visualizing UV data and model fits), or generatives posterior predictive samples using the dataset's stimulus and input parameters (for all model fit visualizations). 
 - The NLL code for the semiparametric model is **NLLfun_UAV_semiparam.m**. Its functions are similar to above. The model parameters are explained below:
 ```
