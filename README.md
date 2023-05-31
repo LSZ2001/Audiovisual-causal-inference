@@ -86,6 +86,7 @@ This folder only saves the manuscript figures created by **manuscript_allplots**
 - **complete_thetaua_for_ujointFits.m** is for parametric model's NLL on UA data only. It completes the UA parameters by joining UA unique parameters and UA+UV shared parameters. 
 - **merge_ujoint_badsbounds.m** and **sigmafun_badsbounds_comprehensive.m** output the parameter bounds for BADS model fitting, according to the parametric model specifications.
 - **qtrapz.m** is code for trapezoidal numerical integration, used for computing posterior means. 
+  - Acerbi, L. (2019). An Exploration of Acquisition and Mean Functions in Variational Bayesian Monte Carlo. In Proc. Machine Learning Research 96: 1-10. 1st Symposium on Advances in Approximate Bayesian Inference, Montréal, Canada. https://github.com/acerbilab/vbmc
 
 #### Optimizer-related
 - **cmaes.m** is a numerical optimizer used for Semiparametric model fitting.
