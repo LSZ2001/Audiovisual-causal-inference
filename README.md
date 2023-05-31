@@ -4,8 +4,8 @@ AudioVisual Perception Modeling with Dr. Luigi Acerbi and Dr. Wei Ji Ma.
 - **Bold** words are .m filenames.
 - *Italicized* words are .mat filenames or directory folder names.
 
-Before running any code, install BADS at:
-  - Acerbi, L. & Ma, W. J. (2017). Practical Bayesian Optimization for Model Fitting with Bayesian Adaptive Direct Search. In Advances in Neural Information Processing Systems 30, pages 1834-1844. https://github.com/acerbilab/bads. It is used for model fitting.
+Before running any code, install BADS at the following link for model fitting:
+  - Acerbi, L. & Ma, W. J. (2017). Practical Bayesian Optimization for Model Fitting with Bayesian Adaptive Direct Search. In Advances in Neural Information Processing Systems 30, pages 1834-1844. https://github.com/acerbilab/bads
 
 All code assumes that the current directory of Matlab is the main folder.
 
