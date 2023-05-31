@@ -8,7 +8,7 @@ Before running any code, go to *Analysis\bads_master* and run **install.m** to i
 
 For description of each folder's contents, see below.
 
-## Data
+## *Data*
 - The actual datafiles used for ModelFits and Plots is only the following four files: *data_stratified_UA.mat*, *data_stratified_UV.mat*, *BC_data.mat*, *BAV_data.mat*. They store the 15 human subject's data on UA, UV, BC, BA+BV trials respectively. Each *.mat* file is a cell(1,15) corresponding to the 15 subjects. 
   - For *data_stratified_UV.mat*, *data_stratified_UA.mat*, each of the 15 subjects is additionally stratfied to cell(1,7), corresponding to the 7 stimulus bins by true stimulus location (useful for visualizations purposes). For either file, different rows are trials. Col 1 is the stimulus location s, Col 2 is the subject's response r_S. For UV data, there is an additional Col 3 denoting the visual reliability level (1 corresponding to highest reliability, 3 lowest). To unstratify by the 7 stimulus bins (removing the second-level cell(1,7)'s), use **data_stratified_to_data.m** (which is often used in the model fitting code). 
   - For *BC_data.mat*, the second level is just a matrix containing trial information. Different rows are trials. Col 1 is visual reliability level, Col 2 is the auditory stimulus location s_A, Col 3 is the visual stimulus location s_V, Col 4 is the subject's response r_C (1 is "same", 2 is "different").
@@ -19,7 +19,7 @@ For description of each folder's contents, see below.
  - **UA_data_visualization.m**, **UV_data_visualization.m**, **BC_data_visualization.m**, **BAV_data_visualization.m** operate on *alldata.mat* to generate *data_stratified_UA.mat*, *data_stratified_UV.mat*, *BC_data.mat*, *BAV_data.mat* respectively.
 
 
-## ModelFits
+## *ModelFits*
 This folder only saves the fitted params for each model. For how these models are fitted (Note: the *.m* code are all in the *Analysis* folder instead), see descriptions below.
 - In the *Analysis* folder, **fit_UJointModel_parametric.m**, **fit_UJointModel_semiparam.m**, **fit_AllDataModel_semiparamInsp_resc.m**, **fit_AllDataModel_parametric_resc.m** are the improved model fits code. They fit parametric models on UV+UA data, the semiparametric model on UV+UA data, the semiparametric-inspired models on all the data, and parametric models on all the data respectively. The fitted parameters are saved in the *ModelFits* folder.
   - **fit_AllDataModel_semiparamInsp_resc.m** requires the saved fitted parameters from **fit_UJointModel_semiparam.m**, called *fittedparams_UJoint_Semiparam_rescalefree_lapseUniform.mat*.
@@ -74,7 +74,7 @@ NLLfun_UAV_parametric.m, NLLfun_BC_parametric.m, NLLfun_BAV_parametric.m
 ```
 (Still need to upload code that combines files from different iterations but same model into one large file, which are the *.mat* files currently in the folder)
 
-## Plots
+## *Plots*
 This folder only saves the manuscript figures. For how these figures are generated (Note: the *.m* code are all in the *Analysis* folder instead), see descriptions below.
 - **Manuscript_AllPlots.m** creates all figures for the manuscript. It contains some functions itself, and additionally calls **Manuscript_UJoint_RespDistrVisualization.m**, **Manuscript_UJoint_RespDistrVisualization_semiparam.m**, **Manuscript_AllFits_RespDistrVisualization_resc.m**, **Manuscript_AllFits_RespDistrVisualization_semiparamInsp_resc.m** to create model fit response distribution plots. These secondary functions in turn call **Manuscript_UnimodalFits_Visualization.m**, **Manuscript_BimodalCFits_Visualization_resc.m**, **Manuscript_BimodalAVFits_Visualization_resc.m**, which can be universally used for parametric, nonparamIndv, and nonparamInsp model fits. 
 
