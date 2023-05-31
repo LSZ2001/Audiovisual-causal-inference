@@ -84,7 +84,7 @@ This folder only saves the manuscript figures. For how these figures are generat
 - **heterotype_to_sigmafun.m** generates symbolic functions for the sensory noise function sigma(s) from the function family names "constant" or "exp".
 - **complete_thetaUA_for_UJointFits.m** is for parametric model's NLL on UA data only. It completes the UA parameters by joining UA unique parameters and UA+UV shared parameters. 
 - **merge_UJoint_BADsbounds.m** and **sigmafun_BADSbounds_comprehensive.m** output the parameter bounds for BADS model fitting, according to the parametric model specifications.
-- **qtrapz.m** is code for trapezoidal numerical integration, used in the code for computing posterior means. 
+- **qtrapz.m** is code for trapezoidal numerical integration, used for computing posterior means. 
   - Acerbi, L. (2019). An Exploration of Acquisition and Mean Functions in Variational Bayesian Monte Carlo. In Proc. Machine Learning Research 96: 1-10. 1st Symposium on Advances in Approximate Bayesian Inference, Montréal, Canada. https://github.com/acerbilab/vbmc
 
 #### Optimizer-related
