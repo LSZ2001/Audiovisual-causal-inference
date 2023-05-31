@@ -54,5 +54,5 @@ function [] = merge_parametric_ujointfits_files_fast(prior_type,hetero_type,laps
         NLL_fitted(i) = F_vals(i, min_idx(i));
     end
     
-    save(model_path+filename, "Theta_fitted", "T_Ends","F_vals", "theta_fitted");
+    save(model_path+filename+"_fast", "Theta_fitted", "T_Ends","F_vals", "theta_fitted");
 end

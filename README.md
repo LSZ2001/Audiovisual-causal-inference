@@ -9,12 +9,13 @@ Before running any code, install BADS at Acerbi, L. & Ma, W. J. (2017). Practica
 All code assumes that the current directory of Matlab is the *analysis* folder.
 
 ## Main folder
-- **parse_data** creates the datafiles needed *data_stratified_UA.mat*, *data_stratified_UV.mat*, *BC_data.mat*, *BAV_data.mat*, from the raw datafile *alldata.mat*.
-- **fit_models** contains example model fits for one parametric model on UA+UV data, the semiparametric model on UA+UV data, one semiparamInspired model on all data, and one parametric model on all data. The number of iters per subject in the code is used to generate the saved *.mat* files (model fits) in the *modelfits* folder.
-- **manuscript_allplots** creates all figures for the manuscript, based on the datafiles and the saved model fits.
+- **fit_models.m** contains example model fits for one parametric model on UA+UV data, the semiparametric model on UA+UV data, one semiparamInspired model on all data, and one parametric model on all data. The number of iters per subject in the code is used to generate the saved *.mat* files (model fits) in the *modelfits* folder.
+- **manuscript_allplots.m** creates all figures for the manuscript, based on the datafiles and the saved model fits.
+- **fast_fit_visualzize.m** is an example code for fitting and visualizing models.  It serves as a pipeline example for what the other two pieces of code above do. It fits the Exp-GaussianLaplace model with free audiovisual rescale and uniform lapse on UV+UA data (only 1 init per subject), and visualizes the fits. The resulting model fits are saved in a separate subfolder *fast_modefit_example*, to avoid confusion and overwriting of the proper model fits saved in the *modelfits* subfolder. 
 
 ## *data* subfolder
 - *alldata.mat* is the raw datafile.
+- **parse_data.m** creates the datafiles needed *data_stratified_UA.mat*, *data_stratified_UV.mat*, *BC_data.mat*, *BAV_data.mat*, from the raw datafile *alldata.mat*.
 - The actual datafiles used for ModelFits and Plots is only the following four files: *data_stratified_UA.mat*, *data_stratified_UV.mat*, *BC_data.mat*, *BAV_data.mat*. They store the 15 human subject's data on UA, UV, BC, BA+BV trials respectively. Each *.mat* file is a cell(1,15) corresponding to the 15 subjects. 
   - For *data_stratified_UV.mat*, *data_stratified_UA.mat*, each of the 15 subjects is additionally stratfied to cell(1,7), corresponding to the 7 stimulus bins by true stimulus location (useful for visualizations purposes). For either file, different rows are trials. Col 1 is the stimulus location s, Col 2 is the subject's response r_S. For UV data, there is an additional Col 3 denoting the visual reliability level (1 corresponding to highest reliability, 3 lowest). To unstratify by the 7 stimulus bins (removing the second-level cell(1,7)'s), use **data_stratified_to_data.m** (which is often used in the model fitting code). 
   - For *BC_data.mat*, the second level is just a matrix containing trial information. Different rows are trials. Col 1 is visual reliability level, Col 2 is the auditory stimulus location s_A, Col 3 is the visual stimulus location s_V, Col 4 is the subject's response r_C (1 is "same", 2 is "different").
