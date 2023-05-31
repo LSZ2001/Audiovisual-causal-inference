@@ -1,4 +1,4 @@
-function Manuscript_UnimodalFits_Visualization(data_stratified, fitted_params_PM, ModelComponents, is_visual, colors, s_range, model_family, plot_lapse, is_pred_samples, fontsize, figspecs, lapse_type, Gaussian_lapse_SDs)
+function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM, ModelComponents, is_visual, colors, s_range, model_family, plot_lapse, is_pred_samples, fontsize, figspecs, lapse_type, Gaussian_lapse_SDs)
     %cd('C:\Users\liu_s\OneDrive\桌面\MATLAB\AudioVisual\Analysis')
     return_predictive_samples = true;
     return_response_distribution=false;
@@ -83,14 +83,14 @@ function Manuscript_UnimodalFits_Visualization(data_stratified, fitted_params_PM
                     switch model_family                  
                         case "parametric"
                             S_vals = data{i}(:,[1,3]);
-                            samples = NLLfun_UAV_parametric(ModelComponents,fitted_params_PM(i,:),R_grid,S_vals, return_predictive_samples, return_response_distribution, plot_lapse, lapse_type, Gaussian_lapse_SD);
+                            samples = nllfun_uav_parametric(ModelComponents,fitted_params_PM(i,:),R_grid,S_vals, return_predictive_samples, return_response_distribution, plot_lapse, lapse_type, Gaussian_lapse_SD);
                         case "semiparam"
-                            samples = NLLfun_UAV_semiparam(fitted_params_PM(i,:)', {data{i}}, return_predictive_samples, return_response_distribution, plot_lapse, lapse_type, Gaussian_lapse_SD);
+                            samples = nllfun_uav_semiparam(fitted_params_PM(i,:)', {data{i}}, return_predictive_samples, return_response_distribution, plot_lapse, lapse_type, Gaussian_lapse_SD);
                             samples = samples{1};
                         case "semiparamInsp"
                             ModelComponents.PriorUnnormalized = ModelComponents.PriorUnnormalizedAllSubjs(:,i);
                             ModelComponents.SigmaFuns = ModelComponents.SigmaFunsAllSubjs{i};
-                            samples = NLLfun_UAV_semiparamInsp(fitted_params_PM(i,:),data{i},ModelComponents,return_predictive_samples, return_response_distribution,plot_lapse, lapse_type, Gaussian_lapse_SD);
+                            samples = nllfun_uav_semiparaminsp(fitted_params_PM(i,:),data{i},ModelComponents,return_predictive_samples, return_response_distribution,plot_lapse, lapse_type, Gaussian_lapse_SD);
                     end
 
                     PMR_distr_params(i,j,:) = [mean(samples(:)),mean(std(samples,[],1)), mean(iqr(samples,1))];
@@ -122,13 +122,13 @@ function Manuscript_UnimodalFits_Visualization(data_stratified, fitted_params_PM
                             S_vals = data{i}(:,1);
                             Gaussian_lapse_SD = Gaussian_lapse_SDs(i);
                             %PMRs_vector = midpoint_postmean_NLLfun_comprehensive(ModelComponents,fitted_params_PM(i,:),R_grid,S_vals, NaN,[-45,45,201], false, true,plot_lapse, lapse_type, Gaussian_lapse_SD);
-                            PMRs_vector = NLLfun_UAV_parametric(ModelComponents,fitted_params_PM(i,:),R_grid,S_vals, false, true,plot_lapse, lapse_type, Gaussian_lapse_SD);
+                            PMRs_vector = nllfun_uav_parametric(ModelComponents,fitted_params_PM(i,:),R_grid,S_vals, false, true,plot_lapse, lapse_type, Gaussian_lapse_SD);
                         case "semiparam"
-                            PMRs_vector = NLLfun_UAV_semiparam(fitted_params_PM(i,:)', {data{i}}, return_predictive_samples,return_response_distribution);
+                            PMRs_vector = nllfun_uav_semiparam(fitted_params_PM(i,:)', {data{i}}, return_predictive_samples,return_response_distribution);
                         case "semiparamInsp"
                             ModelComponents.PriorUnnormalized = ModelComponents.PriorUnnormalizedAllSubjs(:,i);
                             ModelComponents.SigmaFuns = ModelComponents.SigmaFunsAllSubjs{i};
-                            PMRs_vector = NLLfun_UAV_semiparamInsp(fitted_params_PM(i,:),data{i},ModelComponents,return_predictive_samples, return_response_distribution,plot_lapse);
+                            PMRs_vector = nllfun_uav_semiparaminsp(fitted_params_PM(i,:),data{i},ModelComponents,return_predictive_samples, return_response_distribution,plot_lapse);
                     end
 
                     Q1 = find(cumsum(PMRs_vector) <= 0.25*sum(PMRs_vector)); Q3 = find(cumsum(PMRs_vector) > 0.75*sum(PMRs_vector));

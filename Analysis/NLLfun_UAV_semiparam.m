@@ -2,7 +2,7 @@
 % midpoint_NLLfun_comprehensive_nonparam_mixture_indv2, but removes many
 % function arguments due to constraints of the cmaes() optimization
 % algorithm.
-function [output] = NLLfun_UAV_semiparam(theta, data, return_predictive_samples, return_response_distr, plot_consider_lapse, lapse_type, Gaussian_lapse_SD)
+function [output] = nllfun_uav_semiparam(theta, data, return_predictive_samples, return_response_distr, plot_consider_lapse, lapse_type, Gaussian_lapse_SD)
     if(nargin==2)
         return_predictive_samples=false; 
         return_response_distr=false;

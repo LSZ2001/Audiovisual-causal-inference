@@ -26,7 +26,7 @@
 % elseif want to return NLL=-log(sum(p(r|s)) of all trials, return_predictive_samples=false, return_response_distr=false;
 
 
-function [output] = NLLfun_BC_UBresc_semiparamInsp(theta, data, ModelComponents, return_predictive_samples, return_response_distr, plot_consider_lapse)
+function [output] = nllfun_bc_ubresc_semiparaminsp(theta, data, ModelComponents, return_predictive_samples, return_response_distr, plot_consider_lapse)
     if(nargin==3) % default is to return NLL, not posterior preditive samples vectorized response distribition.
         return_predictive_samples = false; return_response_distr=false; plot_consider_lapse=true;
     elseif(nargin==4) % if return posterior predictive samples and not vectorized response distribution, default is not include lapse mixture component.

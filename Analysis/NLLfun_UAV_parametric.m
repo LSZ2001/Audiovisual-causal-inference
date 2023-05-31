@@ -1,4 +1,4 @@
-function [output] = NLLfun_UAV_parametric(ModelComponents, theta, R, S, return_predictive_samples, return_response_distr, plot_consider_lapse, lapse_type, Gaussian_lapse_SD)
+function [output] = nllfun_uav_parametric(ModelComponents, theta, R, S, return_predictive_samples, return_response_distr, plot_consider_lapse, lapse_type, Gaussian_lapse_SD)
     
     if(nargin==4) % default is to return NLL, not posterior preditive samples vectorized response distribition.
          return_predictive_samples = false; return_response_distr=false; lapse_type = "Uniform";

@@ -1,5 +1,5 @@
-model_path = "..\ModelFits\";
-data_path = "..\Data\";
+model_path = "..\modelfits\";
+data_path = "..\data\";
 
 prior_type = "GaussianLaplaceBothFixedZero";
 hetero_type = "exp";
@@ -10,8 +10,8 @@ lapse_type = "Gaussian";
 s_a_range = -15:5:15;
 s_v_range = -20:1:20;
 
-load(data_path+"data_stratified_UV.mat");
-load(data_path+"data_stratified_UA.mat");
+load(data_path+"data_stratified_uv.mat");
+load(data_path+"data_stratified_ua.mat");
 % Unstratify data. 
 data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
 data_UA = data_stratified_to_data(data_stratified_UA, false, false);
@@ -43,7 +43,7 @@ ModelComponents_UV.LapseType = lapse_type;
 ModelComponents_UV.PMIntegrationParams = PMIntegrationParams;
 ModelComponents_UV.GaussianLapseSDs = Gaussian_lapse_SDs;
 sigma_fun = heterotype_to_sigmafun(ModelComponents_UV.SensoryNoise);
-[LB_UV, UB_UV, PLB_UV, PUB_UV] = sigmafun_BADSbounds_comprehensive(ModelComponents_UV);
+[LB_UV, UB_UV, PLB_UV, PUB_UV] = sigmafun_badsbounds_comprehensive(ModelComponents_UV);
 num_UV_params = length(LB_UV);
 
 
@@ -52,10 +52,10 @@ num_UV_params = length(LB_UV);
 ModelComponents_UA = ModelComponents_UV;
 ModelComponents_UA.Rescale=aud_rescale;
 ModelComponents_UA.NumReliabilityLevels = 1; % Get number of reliability levels
-[LB_UA, UB_UA, PLB_UA, PUB_UA] = sigmafun_BADSbounds_comprehensive(ModelComponents_UA);
+[LB_UA, UB_UA, PLB_UA, PUB_UA] = sigmafun_badsbounds_comprehensive(ModelComponents_UA);
 
 % Merge the BADS bounds of UV and UA to one vector, UV in front.
-[LB, UB, PLB, PUB, UA_param_keep_idx] = merge_UJoint_BADsbounds(LB_UV,UB_UV,PLB_UV,PUB_UV,LB_UA,UB_UA,PLB_UA,PUB_UA,ModelComponents_UA);
+[LB, UB, PLB, PUB, UA_param_keep_idx] = merge_ujoint_badsbounds(LB_UV,UB_UV,PLB_UV,PUB_UV,LB_UA,UB_UA,PLB_UA,PUB_UA,ModelComponents_UA);
 
 
 num_UA_uniq_params = length(LB) - length(LB_UA);
@@ -93,11 +93,11 @@ for subjidx=1:num_subjects
     
     switch lapse_type
         case "Uniform"
-            nllfun = @(theta) NLLfun_UAV_parametric(ModelComponents_UV, theta(1:num_UV_params),R_UV,S_UV, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx)) ...
-                    + NLLfun_UAV_parametric(ModelComponents_UA, complete_thetaUA_for_UJointFits(theta, UA_param_keep_idx, ModelComponents_UV.Rescale=="free"),R_UA,S_UA, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx));
+            nllfun = @(theta) nllfun_uav_parametric(ModelComponents_UV, theta(1:num_UV_params),R_UV,S_UV, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx)) ...
+                    + nllfun_uav_parametric(ModelComponents_UA, complete_thetaua_for_ujointfits(theta, UA_param_keep_idx, ModelComponents_UV.Rescale=="free"),R_UA,S_UA, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx));
         case "Gaussian"
-            nllfun = @(theta) NLLfun_UAV_parametric(ModelComponents_UV, theta([1:num_UV_params, length(theta)]),R_UV,S_UV, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx)) ...
-                    + NLLfun_UAV_parametric(ModelComponents_UA, [complete_thetaUA_for_UJointFits(theta(1:(end-1)), UA_param_keep_idx, ModelComponents_UV.Rescale=="free"), theta(end)],R_UA,S_UA, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx));
+            nllfun = @(theta) nllfun_uav_parametric(ModelComponents_UV, theta([1:num_UV_params, length(theta)]),R_UV,S_UV, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx)) ...
+                    + nllfun_uav_parametric(ModelComponents_UA, [complete_thetaua_for_ujointfits(theta(1:(end-1)), UA_param_keep_idx, ModelComponents_UV.Rescale=="free"), theta(end)],R_UA,S_UA, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx));
     end
     
     parfor i=1:num_inits

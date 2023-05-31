@@ -12,7 +12,7 @@
 %    rescale only present when ~FixedRescale && IsFitRescale. 
 %    (sigma_center, w) only present for PriorType="TwoGaussiansOneFixedZero".
 
-function [LB, UB, PLB, PUB] = sigmafun_BADSbounds_comprehensive(ModelComponents)
+function [LB, UB, PLB, PUB] = sigmafun_badsbounds_comprehensive(ModelComponents)
     prior_type = ModelComponents.PriorType;
     hetero_type = ModelComponents.SensoryNoise;
     rescale = ModelComponents.Rescale;

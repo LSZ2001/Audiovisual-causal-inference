@@ -26,7 +26,7 @@
 % elseif want to return NLL=-log(sum(p(r|s)) of all trials, return_predictive_samples=false, return_response_distr=false;
 
 
-function [output] = NLLfun_BC_parametric(ModelComponents_V, ModelComponents_A, theta_raw, R, S_V, S_A, return_predictive_samples, return_response_distr, plot_consider_lapse, causal_inf_strategy)
+function [output] = nllfun_bc_parametric(ModelComponents_V, ModelComponents_A, theta_raw, R, S_V, S_A, return_predictive_samples, return_response_distr, plot_consider_lapse, causal_inf_strategy)
     if(nargin<7) % default is to return NLL, not posterior preditive samples vectorized response distribition.
          return_predictive_samples = false; return_response_distr=false; causal_inf_strategy="ProbMatching";
     elseif(nargin<8) % if return posterior predictive samples and not vectorized response distribution, default is not include lapse mixture component.
@@ -47,13 +47,13 @@ function [output] = NLLfun_BC_parametric(ModelComponents_V, ModelComponents_A, t
     p_same = theta_raw(end);
     theta = theta_raw(1:(end-1));
     % Get separate params for V and A.
-    [LB_V, UB_V, PLB_V, PUB_V] = sigmafun_BADSbounds_comprehensive(ModelComponents_V);
+    [LB_V, UB_V, PLB_V, PUB_V] = sigmafun_badsbounds_comprehensive(ModelComponents_V);
     num_V_params = length(LB_V);
-    [LB_A, UB_A, PLB_A, PUB_A] = sigmafun_BADSbounds_comprehensive(ModelComponents_A);
-    [LB, ~, ~, ~, A_param_keep_idx] = merge_UJoint_BADsbounds(LB_V,UB_V,PLB_V,PUB_V,LB_A,UB_A,PLB_A,PUB_A,ModelComponents_A);
+    [LB_A, UB_A, PLB_A, PUB_A] = sigmafun_badsbounds_comprehensive(ModelComponents_A);
+    [LB, ~, ~, ~, A_param_keep_idx] = merge_ujoint_badsbounds(LB_V,UB_V,PLB_V,PUB_V,LB_A,UB_A,PLB_A,PUB_A,ModelComponents_A);
     num_A_uniq_params = length(LB) - length(LB_A) - 1;
     theta_vis = theta(1:num_V_params);
-    theta_aud = complete_thetaUA_for_UJointFits(theta, A_param_keep_idx, ModelComponents_V.Rescale=="free");
+    theta_aud = complete_thetaua_for_ujointfits(theta, A_param_keep_idx, ModelComponents_V.Rescale=="free");
       
     prior_type = ModelComponents_V.PriorType;
     hetero_type = ModelComponents_V.SensoryNoise;

@@ -1,11 +1,11 @@
-function [] = Manuscript_AllFits_RespDistrVisualization_semiparamInsp_resc(causal_inf_strategy, fontsize, figspecs, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
+function [] = manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figspecs, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
     model_family="semiparamInsp";
     if(nargin==0)
         causal_inf_strategy = "ProbMatching";
         fontsize=9;
         figsize = get(0, 'ScreenSize');
         figspecs = [0 0 figsize(4)*4/3 figsize(4)];
-        model_path = "ModelFits\";
+        model_path = "modelfits\";
         plot_lapse = true; lapse_type = "Uniform";
     elseif(nargin==7)
         % plot the lapse component in fitted response distributions
@@ -22,11 +22,11 @@ function [] = Manuscript_AllFits_RespDistrVisualization_semiparamInsp_resc(causa
     colors = colors([1,2,3,4,5,7,8],:);
 
     %% Load data files.
-    load("BAV_data.mat")
-    load("BC_data.mat")
-    load("data_stratified_UV.mat");
+    load("bav_data.mat")
+    load("bc_data.mat")
+    load("data_stratified_uv.mat");
     num_subjects = length(BAV_data);
-    load("data_stratified_UA.mat");
+    load("data_stratified_ua.mat");
     data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
     data_UA = data_stratified_to_data(data_stratified_UA, false, false);
     num_subjects = length(data_UA);
@@ -60,21 +60,21 @@ function [] = Manuscript_AllFits_RespDistrVisualization_semiparamInsp_resc(causa
     UV_use_pred_samples = true;
     UA_use_pred_samples = true; % can be false;
     ModelComponents.NumReliabilityLevels=3;
-    Manuscript_UnimodalFits_Visualization(data_stratified_UV, fitted_params_PM, ModelComponents, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize, figspecs, lapse_type, Gaussian_lapse_SDs)
+    manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM, ModelComponents, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize, figspecs, lapse_type, Gaussian_lapse_SDs)
     ModelComponents.NumReliabilityLevels=1;
-    Manuscript_UnimodalFits_Visualization(data_stratified_UA, fitted_params_PM, ModelComponents, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize, NaN, lapse_type, Gaussian_lapse_SDs)
+    manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM, ModelComponents, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize, NaN, lapse_type, Gaussian_lapse_SDs)
 
     exportgraphics(gcf,figpath+save_name+'-UAV.png','Resolution',png_dpi);
     exportgraphics(gcf,figpath+save_name+'-UAV.pdf',"ContentType","vector");
 
 
     %% BC
-    Manuscript_BimodalCFits_Visualization_resc(BC_data, fitted_params_PM, ModelComponents, ModelComponents, model_family, plot_lapse, ModelComponents.CausalInfStrategy, fontsize, figspecs)
+    manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, ModelComponents, ModelComponents, model_family, plot_lapse, ModelComponents.CausalInfStrategy, fontsize, figspecs)
 
     exportgraphics(gcf,figpath+save_name+'-BC.png','Resolution',png_dpi);
     exportgraphics(gcf,figpath+save_name+'-BC.pdf',"ContentType","vector");
 
     %% BA, BV
-    Manuscript_BimodalAVFits_Visualization_resc(BAV_data, fitted_params_PM, ModelComponents, ModelComponents, PMIntegrationParams, NaN, model_family, plot_lapse, ModelComponents.CausalInfStrategy, unique_bins_subj, fontsize, figspecs, figpath, save_name, png_dpi, lapse_type, Gaussian_lapse_SDs);
+    manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM, ModelComponents, ModelComponents, PMIntegrationParams, NaN, model_family, plot_lapse, ModelComponents.CausalInfStrategy, unique_bins_subj, fontsize, figspecs, figpath, save_name, png_dpi, lapse_type, Gaussian_lapse_SDs);
 
 end

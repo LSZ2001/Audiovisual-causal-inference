@@ -1,4 +1,4 @@
-function [theta_UA] = complete_thetaUA_for_UJointFits(theta_joint, UA_param_keep_idx, UV_has_rescale)
+function [theta_UA] = complete_thetaua_for_ujointfits(theta_joint, UA_param_keep_idx, UV_has_rescale)
     % theta_joint is in fact [theta_UV, theta_UA_unique];
     % Assume same prior/lapse/sigma_motor for UA and UV. Also same sensory
     % noise type.

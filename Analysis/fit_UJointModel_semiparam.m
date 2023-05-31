@@ -1,9 +1,9 @@
 % This code assumes a free audivisual rescaling parameter for auditory
 % trials.
 
-function [out_struct] = fit_UJointModel_semiparam(iter, lapse_type)
-    data_path = "..\Data\";
-    model_path = "..\ModelFits\";
+function [out_struct] = fit_ujointmodel_semiparam(iter, lapse_type)
+    data_path = "..\data\";
+    model_path = "..\modelfits\";
     if(nargin==0)
         iter=1; lapse_type="Uniform"; 
     elseif(nargin==1)
@@ -19,8 +19,8 @@ function [out_struct] = fit_UJointModel_semiparam(iter, lapse_type)
     s_a_range = -15:5:15;
     s_v_range = -20:1:20;
 
-    load(data_path+"data_stratified_UV.mat");
-    load(data_path+"data_stratified_UA.mat");
+    load(data_path+"data_stratified_uv.mat");
+    load(data_path+"data_stratified_ua.mat");
 
     model_type="PM"; % two gaussians components of the prior both centered at 0. 
     PMIntegrationParams = [-45,45,201]; % PM midpoint Rule bounds and numbins.
@@ -200,7 +200,7 @@ function [out_struct] = fit_UJointModel_semiparam(iter, lapse_type)
    
 
     %% Fit nonparam models starting from nonparam inits.
-    fun_name = convertStringsToChars("NLLfun_UAV_semiparam");
+    fun_name = convertStringsToChars("nllfun_uav_semiparam");
 
     init = mod(iter, num_inits_new);
     if(init==0)

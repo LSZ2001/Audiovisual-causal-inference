@@ -1,28 +1,28 @@
 clear all; close all;
-% cd('C:\Users\liu_s\Audiovisual-causal-inference\Analysis')
+% cd('C:\Users\liu_s\Audiovisual-causal-inference\analysis')
 figsize = get(0, 'ScreenSize');
 figformat = "svg";
-figpath = "..\Plots\";
+figpath = "..\plots\";
 fontsize=9;
 png_dpi = 500;
 plot_lapse = true;
 lapse_type = "Uniform";
-model_path = "..\ModelFits\";
-data_path = "..\Data\";
+model_path = "..\modelfits\";
+data_path = "..\data\";
 
 
 %% UJoint parametric model response distribution visualization
 prior = "SingleGaussian";
 noise = "constant";
 aud_rescale = "1";
-Manuscript_UJoint_RespDistrVisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Const-SingleGaussian_rescaleaud1'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Const-SingleGaussian_rescaleaud1'+'.pdf',"ContentType","vector");
 %%
 prior = "SingleGaussian";
 noise = "constant";
 aud_rescale = "free";
-Manuscript_UJoint_RespDistrVisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Const-SingleGaussian'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Const-SingleGaussian'+'.pdf',"ContentType","vector");
 
@@ -30,8 +30,8 @@ exportgraphics(gcf,figpath+'Const-SingleGaussian'+'.pdf',"ContentType","vector")
 prior = "GaussianLaplaceBothFixedZero";
 noise = "exp";
 aud_rescale = "free";
-%Manuscript_UJoint_RespDistrVisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)]);
-Manuscript_UJoint_RespDistrVisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+%manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)]);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace'+'.pdf',"ContentType","vector");
 
@@ -39,7 +39,7 @@ exportgraphics(gcf,figpath+'Exp-GaussianLaplace'+'.pdf',"ContentType","vector");
 prior = "GaussianLaplaceBothFixedZero";
 noise = "exp";
 aud_rescale = "free";
-Manuscript_UJoint_RespDistrVisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, false, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, false, lapse_type);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_nolapse'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_nolapse'+'.pdf',"ContentType","vector");
 
@@ -47,42 +47,45 @@ exportgraphics(gcf,figpath+'Exp-GaussianLaplace_nolapse'+'.pdf',"ContentType","v
 prior = "GaussianLaplaceBothFixedZero";
 noise = "exp";
 aud_rescale = "free";
-Manuscript_UJoint_RespDistrVisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, true, "Gaussian");
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, true, "Gaussian");
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Gaussianlapse'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Gaussianlapse'+'.pdf',"ContentType","vector");
+
+% Compute model comparison between uniform lapse model.
+UnimodalData_ModelComparison_FinalTables_uniformgaussianlapse = unimodaldata_modelcomparison_visualize_uniformgaussianlapse(model_path, data_path);
 
 %%
 prior = "SingleGaussian";
 noise = "exp";
 aud_rescale = "free";
-Manuscript_UJoint_RespDistrVisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Exp-SingleGaussian'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-SingleGaussian'+'.pdf',"ContentType","vector");
 
 prior = "GaussianLaplaceBothFixedZero";
 noise = "constant";
 aud_rescale = "free";
-Manuscript_UJoint_RespDistrVisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Const-GaussianLaplace'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Const-GaussianLaplace'+'.pdf',"ContentType","vector");
 
 prior = "TwoGaussiansBothFixedZero";
 noise = "exp";
 aud_rescale = "free";
-Manuscript_UJoint_RespDistrVisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Exp-TwoGaussians'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-TwoGaussians'+'.pdf',"ContentType","vector");
 
 %% Unimodal semiparam model 
 % Response distribution visualization
-% Manuscript_UJoint_RespDistrVisualization_semiparam(fontsize, [0 0 figsize(4)*4/3 figsize(4)]);
-Manuscript_UJoint_RespDistrVisualization_semiparam(fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+% manuscript_ujoint_respdistrvisualization_semiparam(fontsize, [0 0 figsize(4)*4/3 figsize(4)]);
+manuscript_ujoint_respdistrvisualization_semiparam(fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Semiparam_FittedRespDistr'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Semiparam_FittedRespDistr'+'.pdf',"ContentType","vector");
 
 %%
 % sigma(s), p(s) visualization
-Semiparam_SigmaFun_Prior_Visualization(fontsize+1, 1.*[0 0 figsize(4)*4/3 figsize(4)],model_path);
+semiparam_sigmafun_prior_visualization(fontsize+1, 1.*[0 0 figsize(4)*4/3 figsize(4)],model_path);
 ax = gca; 
 ax.FontSize = fontsize+1; 
 exportgraphics(gcf,figpath+'Semiparam_FittedParams'+'.png','Resolution',png_dpi);
@@ -98,42 +101,42 @@ num_params = [40,14,13,13,12,10,14,8,7,7];
 % Vanila 3 models on unimodal data only
 figure('Position', [0 0 figsize(4)*0.9*0.65 figsize(4)*0.9]);
 set(gcf, 'Color', 'w')
-UnimodalData_ModelComparison_FinalTables_Vanilla = UnimodalData_ModelComparison_Visualize(priors((end-2):end), noises((end-2):end), rescales((end-2):end), model_types((end-2):end), num_params((end-2):end), true, fontsize+1, model_path, data_path);
+UnimodalData_ModelComparison_FinalTables_Vanilla = unimodaldata_modelcomparison_visualize(priors((end-2):end), noises((end-2):end), rescales((end-2):end), model_types((end-2):end), num_params((end-2):end), true, fontsize+1, model_path, data_path);
 ax = gca; 
 ax.FontSize = fontsize+1; 
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_vanilla'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_vanilla'+'.pdf',"ContentType","vector");
-save('UnimodalData_ModelComparison_FinalTables_Vanilla','UnimodalData_ModelComparison_FinalTables_Vanilla');
+save('unimodaldata_modelcomparison_finaltables_vanilla','UnimodalData_ModelComparison_FinalTables_Vanilla');
 
 % All models on unimodal data 
 figure('Position', [0 0 figsize(4)*0.9*5/4 figsize(4)*0.9]);
 set(gcf, 'Color', 'w')
-UnimodalData_ModelComparison_FinalTables = UnimodalData_ModelComparison_Visualize(priors, noises, rescales, model_types, num_params, true, fontsize+1, model_path, data_path);
+UnimodalData_ModelComparison_FinalTables = unimodaldata_modelcomparison_visualize(priors, noises, rescales, model_types, num_params, true, fontsize+1, model_path, data_path);
 ax = gca; 
 ax.FontSize = fontsize+1; 
 exportgraphics(gcf,figpath+'UJoint_ModelSelection'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'UJoint_ModelSelection'+'.pdf',"ContentType","vector");
-save('UnimodalData_ModelComparison_FinalTables','UnimodalData_ModelComparison_FinalTables');
+save('unimodaldata_modelcomparison_finaltables','UnimodalData_ModelComparison_FinalTables');
 
 %% AllData semiparamInsp Response distribution visualization
 causal_inf_strategy = "ProbMatching";
 save_name = "PM";
-Manuscript_AllFits_RespDistrVisualization_semiparamInsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
+manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 
 causal_inf_strategy = "ModelSelection";
 save_name = "MS";
-Manuscript_AllFits_RespDistrVisualization_semiparamInsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
+manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 
 causal_inf_strategy = "ModelAveraging";
 save_name = "MA";
-Manuscript_AllFits_RespDistrVisualization_semiparamInsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
+manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 
 %% AllData parametric model response distributions
 prior_type = "GaussianLaplaceBothFixedZero";
 hetero_type = "exp";
 causal_inf_strategy = "ProbMatching";
 save_name = "exp-GaussianLaplace-PM";
-Manuscript_AllFits_RespDistrVisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
+manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
 
 %% AllData ModelComparison
 causal_inf_strategies = ["ModelSelection","ModelAveraging","ProbMatching"];
@@ -141,16 +144,16 @@ param_model_names = ["paramBest", "semiparamInsp","exp-GaussianLaplace","exp-Sin
 
 figure('Position', [0 0 figsize(4)*0.9*4/3 figsize(4)*0.9]);
 set(gcf, 'Color', 'w')
-AllData_ModelComparison_FinalTables = AllData_ModelComparison_Visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path);
+AllData_ModelComparison_FinalTables = alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection'+'.pdf',"ContentType","vector");
-save('AllData_ModelComparison_FinalTables','AllData_ModelComparison_FinalTables');
+save('alldata_modelcomparison_finaltables','AllData_ModelComparison_FinalTables');
 
 
 %% sigma(s) and p(s) examples
 figure('Position', [0 0 figsize(3)*0.9 figsize(4)*0.9]);
 set(gcf, 'Color', 'w')
-SigmaFun_Prior_Examples(fontsize+1);
+sigmafun_prior_examples(fontsize+1);
 %% Need to adjust legend position, then save....
 exportgraphics(gcf,figpath+'SensoryNoisePriorParamFamilies'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'SensoryNoisePriorParamFamilies'+'.pdf',"ContentType","vector");
@@ -183,7 +186,7 @@ exportgraphics(gcf,figpath+'SensoryNoisePriorParamFamilies'+'.pdf',"ContentType"
 
 
 %% BELOW: Helper Functions 
-function [UnimodalData_ModelComparison_FinalTables] = UnimodalData_ModelComparison_Visualize(priors, noises, rescales, model_types, num_params, is_plot, fontsize, model_path, data_path)
+function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparison_visualize(priors, noises, rescales, model_types, num_params, is_plot, fontsize, model_path, data_path)
     num_models = length(priors);
     num_subjects = 15;
 
@@ -292,9 +295,97 @@ function [UnimodalData_ModelComparison_FinalTables] = UnimodalData_ModelComparis
     set(gca,'fontsize', fontsize)
 end
 
+function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparison_visualize_uniformgaussianlapse(model_path, data_path) 
+    num_models = 2;
+    num_subjects=15;
+
+    NLLs = [];
+    load(model_path + "fittedparams_UJoint_exp-GaussianLaplaceBothFixedZero_rescalefree_lapseUniform.mat")
+    NLLs = [NLLs; min(F_vals,[],2)'];
+    load(model_path + "fittedparams_UJoint_exp-GaussianLaplaceBothFixedZero_rescalefree_lapseGaussian.mat")
+    NLLs = [NLLs; min(F_vals,[],2)'];
+    delta_NLLs = NLLs - NLLs(1,:);
+    NLL_allmodels_sumdiff = sum(delta_NLLs,2);
+
+    num_model_params = [14;15];
+    AICs = 2.*(NLLs + num_model_params);
+    delta_AICs = AICs - AICs(1,:);
+    AIC_allmodels_sumdiff = sum(delta_AICs,2);
+
+    load(data_path+"data_stratified_UV.mat");
+    load(data_path+"data_stratified_UA.mat");
+    data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
+    data_UA = data_stratified_to_data(data_stratified_UA, false, false);
+    n_data = zeros(1,15);
+    for subjidx=1:15
+        n_data(subjidx) = length(data_UA{subjidx}) +length(data_UV{subjidx}); 
+    end
+    BICs = 2.*NLLs + num_model_params.*log(n_data);
+    delta_BICs = BICs - BICs(1,:);
+    BIC_allmodels_sumdiff = sum(delta_BICs,2);
+
+    % AIC/BIC bootstrapping
+    num_bootstrap_samps = 100000;
+    NLL_sum_bootstraps = zeros(num_models,num_bootstrap_samps);
+    AIC_sum_bootstraps = zeros(num_models,num_bootstrap_samps);
+    BIC_sum_bootstraps = zeros(num_models,num_bootstrap_samps);
+    rng('default')
+    rng(0)
+    for samp = 1:num_bootstrap_samps
+        sampled_subj = datasample(1:num_subjects,num_subjects); 
+        for model=1:num_models
+            NLL_sum_bootstraps(model, samp) = sum(NLLs(model, sampled_subj));
+            AIC_sum_bootstraps(model, samp) = sum(AICs(model, sampled_subj));
+            BIC_sum_bootstraps(model, samp) = sum(BICs(model, sampled_subj));
+        end
+    end
+    NLL_bootstraps_diff = NLL_sum_bootstraps - NLL_sum_bootstraps(1,:);
+    AIC_bootstraps_diff = AIC_sum_bootstraps - AIC_sum_bootstraps(1,:);
+    BIC_bootstraps_diff = BIC_sum_bootstraps - BIC_sum_bootstraps(1,:);
+    NLL_bootstraps_errorbars = prctile(NLL_bootstraps_diff,[2.5, 97.5], 2);
+    AIC_bootstraps_errorbars = prctile(AIC_bootstraps_diff,[2.5, 97.5], 2);
+    BIC_bootstraps_errorbars = prctile(BIC_bootstraps_diff,[2.5, 97,5], 2);
+
+    % Plot
+    bootstraps_errorbars_allstats = {NLL_bootstraps_errorbars, AIC_bootstraps_errorbars, BIC_bootstraps_errorbars};
+    allstats = {NLL_allmodels_sumdiff, AIC_allmodels_sumdiff, BIC_allmodels_sumdiff};
+    stat_names = ["$\Delta NLL$", "$\Delta AIC$", "$\Delta BIC$"];
+
+    if(false)
+        tiledlayout(length(stat_names),1, 'TileSpacing', 'compact','Padding', 'none')
+        for statistic=1:length(stat_names)
+            nexttile
+            bootstraps_errorbars = bootstraps_errorbars_allstats{statistic};
+            mean_stat = allstats{statistic};
+            hold on
+            bar(1:(num_models),mean_stat,'FaceColor','k', 'FaceAlpha',0.2)
+            errorbar(1:(num_models)',mean_stat,mean_stat-squeeze(bootstraps_errorbars(:, 1)),squeeze(bootstraps_errorbars(:, 2))-mean_stat, 'k.')
+            if(statistic~=length(stat_names))
+                xticklabels([])
+            else
+                xticks(1:(3*num_models));
+                xticklabels(allmodel_xticklabels)
+                xtickangle(20)
+            end
+            ylabel(stat_names(statistic), 'interpreter', 'latex')
+            xlim([0, num_models+0.7])
+        end
+    end
+
+    % Create a .mat file with the delta NLL, AIC, and BIC tables
+    UnimodalData_ModelComparison_FinalTables = cell(1,3); 
+    for stat=1:3
+        final_table = zeros(num_models,3);
+        final_table(:,1) = bootstraps_errorbars_allstats{stat}(:,1); % 2.5% percentile
+        final_table(:,2) = allstats{stat}; % Sum
+        final_table(:,3) = bootstraps_errorbars_allstats{stat}(:,2); % 97.5% percentile
+        UnimodalData_ModelComparison_FinalTables{stat} = final_table;
+    end
+
+end
 
 %%
-function [AllData_ModelComparison_FinalTables] = AllData_ModelComparison_Visualize(causal_inf_strategies, param_model_names, is_plot, fontsize, model_path, data_path)
+function [AllData_ModelComparison_FinalTables] = alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, is_plot, fontsize, model_path, data_path)
     num_strategies = length(causal_inf_strategies);
     num_models = length(param_model_names);
     num_subjects = 15;
@@ -305,7 +396,7 @@ function [AllData_ModelComparison_FinalTables] = AllData_ModelComparison_Visuali
     BIC_allmodels = zeros(num_models*num_strategies, 15);
     for causal_inf_strategy_idx=1:num_strategies
         causal_inf_strategy_idx
-        out_struct = AllData_ModelComparison_Visualize_helper(causal_inf_strategies(causal_inf_strategy_idx), model_path, data_path);
+        out_struct = alldata_modelcomparison_visualize_helper(causal_inf_strategies(causal_inf_strategy_idx), model_path, data_path);
         out_structs{causal_inf_strategy_idx} = out_struct;
         NLL_allmodels(causal_inf_strategy_idx:3:end,:) = out_struct.NLLs;
         AIC_allmodels(causal_inf_strategy_idx:3:end,:) = out_struct.AICs;
@@ -392,7 +483,7 @@ end
 
 
 %%
-function [out_struct_allmodels] = AllData_ModelComparison_Visualize_helper(causal_inf_strategy, model_path, data_path)
+function [out_struct_allmodels] = alldata_modelcomparison_visualize_helper(causal_inf_strategy, model_path, data_path)
     if(nargin==0)
         causal_inf_strategy = "ModelSelection";
         is_plot=false;
@@ -482,7 +573,7 @@ end
 
 
 %% Plot nonparam fitted sigma(s) and p(s) shapes
-function [] = Semiparam_SigmaFun_Prior_Visualization(fontsize, figspec, model_path)
+function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_path)
     num_subjects = 15;
     num_params = 40;
     num_iters = 81*15;
@@ -607,7 +698,7 @@ end
 
 
 %%
-function [] = SigmaFun_Prior_Examples(fontsize)
+function [] = sigmafun_prior_examples(fontsize)
     s_grid = -45:0.1:45;
     sigma0_vals = [0.5,1,2,3];
     colors = brewermap(12,"Set1");

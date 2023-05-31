@@ -1,4 +1,4 @@
-function Manuscript_BimodalCFits_Visualization_resc(BC_data, fitted_params_PM, ModelComponents_V, ModelComponents_A, model_family, plot_lapse, causal_inf_strategy, fontsize, figspecs)
+function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, ModelComponents_V, ModelComponents_A, model_family, plot_lapse, causal_inf_strategy, fontsize, figspecs)
     % Note: if model_family=="semiparamInsp", then ModelComponents_A,
     % PMIntegrationParams, dx_max, causal_inf_strategy arguments are useless.
 
@@ -65,13 +65,13 @@ function Manuscript_BimodalCFits_Visualization_resc(BC_data, fitted_params_PM, M
 
                 switch model_family   
                     case "parametric"
-                        Prob_C1_given_s_modelfit = NLLfun_BC_parametric(ModelComponents_V, ModelComponents_A, fitted_params_PM(i,:), R_condsubj, S_V_condsubj, S_A_condsubj, return_predictive_samples, return_response_distr, plot_lapse, causal_inf_strategy);
+                        Prob_C1_given_s_modelfit = nllfun_bc_parametric(ModelComponents_V, ModelComponents_A, fitted_params_PM(i,:), R_condsubj, S_V_condsubj, S_A_condsubj, return_predictive_samples, return_response_distr, plot_lapse, causal_inf_strategy);
                     case "semiparamInsp"
                         ModelComponents.PriorUnnormalized = ModelComponents.PriorUnnormalizedAllSubjs(:,i);
                         ModelComponents.SigmaFuns = ModelComponents.SigmaFunsAllSubjs{i};
                         data = trials_consubj;
                         data(:,4) = R_condsubj;
-                        Prob_C1_given_s_modelfit = NLLfun_BC_UBresc_semiparamInsp(fitted_params_PM(i,:), data, ModelComponents, return_predictive_samples, return_response_distr, plot_lapse);
+                        Prob_C1_given_s_modelfit = nllfun_bc_ubresc_semiparaminsp(fitted_params_PM(i,:), data, ModelComponents, return_predictive_samples, return_response_distr, plot_lapse);
                 end
 
                 % For human data visualization

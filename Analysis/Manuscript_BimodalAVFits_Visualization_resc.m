@@ -1,4 +1,4 @@
-function Manuscript_BimodalAVFits_Visualization_resc(BAV_data, fitted_params_PM, ModelComponents_V, ModelComponents_A, PMIntegrationParams, dx_max, model_family, plot_lapse, causal_inf_strategy, unique_bins_subj, fontsize, figspecs, figpath, save_name, png_dpi, lapse_type, Gaussian_lapse_SDs)
+function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM, ModelComponents_V, ModelComponents_A, PMIntegrationParams, dx_max, model_family, plot_lapse, causal_inf_strategy, unique_bins_subj, fontsize, figspecs, figpath, save_name, png_dpi, lapse_type, Gaussian_lapse_SDs)
     % Note: if model_family=="semiparamInsp", then ModelComponents_A,
     % PMIntegrationParams, dx_max, causal_inf_strategy arguments are useless.
     if(nargin<15)
@@ -140,11 +140,11 @@ function Manuscript_BimodalAVFits_Visualization_resc(BAV_data, fitted_params_PM,
             for samp=1:num_samps
                 switch model_family
                     case "parametric"
-                        shats_given_s_modelfit(:, samp) = NLLfun_BAV_parametric(ModelComponents_V, ModelComponents_A, fitted_params_PM(i,:), R_condsubj, S_V_condsubj, S_A_condsubj, PMIntegrationParams, return_predictive_samples, return_response_distr, plot_lapse, dx_max, causal_inf_strategy, lapse_type, Gaussian_lapse_SDs(i));
+                        shats_given_s_modelfit(:, samp) = nllfun_bav_parametric(ModelComponents_V, ModelComponents_A, fitted_params_PM(i,:), R_condsubj, S_V_condsubj, S_A_condsubj, PMIntegrationParams, return_predictive_samples, return_response_distr, plot_lapse, dx_max, causal_inf_strategy, lapse_type, Gaussian_lapse_SDs(i));
                     case "semiparamInsp"	
                         ModelComponents.PriorUnnormalized = ModelComponents.PriorUnnormalizedAllSubjs(:,i);
                         ModelComponents.SigmaFuns = ModelComponents.SigmaFunsAllSubjs{i};
-                        shats_given_s_modelfit(:, samp) = NLLfun_BAV_UBresc_semiparamInsp(fitted_params_PM(i,:), trials_consubj, ModelComponents, return_predictive_samples, return_response_distr, plot_lapse, lapse_type, Gaussian_lapse_SDs(i));
+                        shats_given_s_modelfit(:, samp) = nllfun_bav_ubresc_semiparaminsp(fitted_params_PM(i,:), trials_consubj, ModelComponents, return_predictive_samples, return_response_distr, plot_lapse, lapse_type, Gaussian_lapse_SDs(i));
                 end
             end
 

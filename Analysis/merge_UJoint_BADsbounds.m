@@ -6,7 +6,7 @@
 % same sensory noise type. Only the noise parameters can differ between UA
 % and UV.
 
-function [LB, UB, PLB, PUB, UA_param_keep_idx] = merge_UJoint_BADsbounds(LB_UV,UB_UV,PLB_UV,PUB_UV,LB_UA,UB_UA,PLB_UA,PUB_UA, ModelComponents_UA)
+function [LB, UB, PLB, PUB, UA_param_keep_idx] = merge_ujoint_badsbounds(LB_UV,UB_UV,PLB_UV,PUB_UV,LB_UA,UB_UA,PLB_UA,PUB_UA, ModelComponents_UA)
     % Merge the BADS bounds of UV and UA to one vector, UV in front.
     if(ModelComponents_UA.SensoryNoise ~= "exp")
         UA_param_keep_idx = [1,2,5]; % sigma0, k, rescale

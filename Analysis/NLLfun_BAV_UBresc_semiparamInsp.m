@@ -27,7 +27,7 @@
 
 % Takes in either BA or BV data (but not both) and returns NLL. (fittype
 % either "BA" or "BV"
-function [output] = NLLfun_BAV_UBresc_semiparamInsp(theta, data, ModelComponents, return_predictive_samples, return_response_distr, plot_consider_lapse, lapse_type, Gaussian_lapse_SD)
+function [output] = nllfun_bav_ubresc_semiparaminsp(theta, data, ModelComponents, return_predictive_samples, return_response_distr, plot_consider_lapse, lapse_type, Gaussian_lapse_SD)
     if(nargin==3) % default is to return NLL, not posterior preditive samples vectorized response distribition.
         return_predictive_samples = false; return_response_distr=false; plot_consider_lapse=true;
         lapse_type = "Uniform";  Gaussian_lapse_SD = NaN;

@@ -27,7 +27,7 @@
 
 % Takes in either BA or BV data (but not both) and returns NLL. (fittype
 % either "BA" or "BV"
-function [output] = NLLfun_BAV_parametric(ModelComponents_V, ModelComponents_A, theta_raw, R, S_V, S_A, PMIntegrationParams, return_predictive_samples, return_response_distr, plot_consider_lapse, dx_max, causal_inf_strategy, lapse_type, Gaussian_lapse_SD)
+function [output] = nllfun_bav_parametric(ModelComponents_V, ModelComponents_A, theta_raw, R, S_V, S_A, PMIntegrationParams, return_predictive_samples, return_response_distr, plot_consider_lapse, dx_max, causal_inf_strategy, lapse_type, Gaussian_lapse_SD)
     if(nargin<8) % default is to return NLL, not posterior preditive samples vectorized response distribition.
          return_predictive_samples = false; return_response_distr=false; dx_max = 0.5; causal_inf_strategy="ProbMatching";
          lapse_type = "Uniform";  Gaussian_lapse_SD = NaN;
@@ -53,13 +53,13 @@ function [output] = NLLfun_BAV_parametric(ModelComponents_V, ModelComponents_A, 
     p_same = theta_raw(end);
     theta = theta_raw(1:(end-1));
     % Get separate params for V and A.
-    [LB_V, UB_V, PLB_V, PUB_V] = sigmafun_BADSbounds_comprehensive(ModelComponents_V);
+    [LB_V, UB_V, PLB_V, PUB_V] = sigmafun_badsbounds_comprehensive(ModelComponents_V);
     num_V_params = length(LB_V);
-    [LB_A, UB_A, PLB_A, PUB_A] = sigmafun_BADSbounds_comprehensive(ModelComponents_A);
-    [LB, ~, ~, ~, A_param_keep_idx] = merge_UJoint_BADsbounds(LB_V,UB_V,PLB_V,PUB_V,LB_A,UB_A,PLB_A,PUB_A,ModelComponents_A);
+    [LB_A, UB_A, PLB_A, PUB_A] = sigmafun_badsbounds_comprehensive(ModelComponents_A);
+    [LB, ~, ~, ~, A_param_keep_idx] = merge_ujoint_badsbounds(LB_V,UB_V,PLB_V,PUB_V,LB_A,UB_A,PLB_A,PUB_A,ModelComponents_A);
     num_A_uniq_params = length(LB) - length(LB_A) - 1;
     theta_vis = theta(1:num_V_params);
-    theta_aud = complete_thetaUA_for_UJointFits(theta, A_param_keep_idx, ModelComponents_V.Rescale=="free");
+    theta_aud = complete_thetaua_for_ujointfits(theta, A_param_keep_idx, ModelComponents_V.Rescale=="free");
     
     
     if(ModelComponents_V.IsMLModel)

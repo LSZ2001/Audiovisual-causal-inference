@@ -1,4 +1,4 @@
-function [out_struct] = fit_AllDataModel_semiparamInsp_resc(iter,causal_inf_strategy, lapse_type, rescale_aud)
+function [out_struct] = fit_alldatamodel_semiparaminsp_resc(iter,causal_inf_strategy, lapse_type, rescale_aud)
 if(nargin==0)
     iter=1;
     causal_inf_strategy = "ModelAveraging"; lapse_type="Uniform"; rescale_aud = "free";
@@ -19,8 +19,8 @@ rng(iter)
 
 num_subjects=15;
 num_inits=100;
-model_path = "..\ModelFits\";
-data_path = "..\Data\";
+model_path = "..\modelfits\";
+data_path = "..\data\";
 
 PMIntegrationParams = [-45,45,201]; % PM midpoint Rule bounds and numbins.
 consider_lapse=true; % fit a lapse parameter.
@@ -33,10 +33,10 @@ subjidx = subjidxs(iter);
 init=rand_inits(iter);
 
 % Load the fake data for param recov. 
-load(data_path+"BAV_data.mat")
-load(data_path+"BC_data.mat")
-load(data_path+"data_stratified_UV.mat");
-load(data_path+"data_stratified_UA.mat");
+load(data_path+"bav_data.mat")
+load(data_path+"bc_data.mat")
+load(data_path+"data_stratified_uv.mat");
+load(data_path+"data_stratified_ua.mat");
 data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
 data_UA = data_stratified_to_data(data_stratified_UA, false, false);
 UAV_data = cell(1,num_subjects);
@@ -186,9 +186,9 @@ BC_data_subj = BC_data{subjidx};
 % UA, UV data
 UAV_data_subj = UAV_data{subjidx};
 
-nllfun = @(theta) NLLfun_BAV_UBresc_semiparamInsp(theta, BAV_data_subj, ModelComponents, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx))...
-+ NLLfun_BC_UBresc_semiparamInsp(theta, BC_data_subj, ModelComponents, false, false, consider_lapse)...
-+ NLLfun_UAV_semiparamInsp(theta([1:5,end]), UAV_data_subj, ModelComponents, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx));
+nllfun = @(theta) nllfun_bav_ubresc_semiparaminsp(theta, BAV_data_subj, ModelComponents, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx))...
++ nllfun_bc_ubresc_semiparaminsp(theta, BC_data_subj, ModelComponents, false, false, consider_lapse)...
++ nllfun_uav_semiparaminsp(theta([1:5,end]), UAV_data_subj, ModelComponents, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx));
 
 tStart = tic;
 [Theta_fitted_cell, F_vals_cell] = bads(nllfun,theta0,LB,UB,PLB,PUB,[],options);

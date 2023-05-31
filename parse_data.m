@@ -12,7 +12,7 @@ BC_data = cell(1,num_subjects);
 for i=1:num_subjects
     BC_data{i} = data{i}.dataC;
 end
-save(data_path + 'BC_data.mat', 'BC_data');
+save(data_path + 'bc_data.mat', 'BC_data');
 
 %% BAV data
 BAV_data = cell(1,num_subjects);
@@ -21,7 +21,7 @@ for i=1:num_subjects
     BA_subj = [data{i}.dataA, repmat(2,length(data{i}.dataA),1)];
     BAV_data{i} = [BV_subj; BA_subj];
 end
-save(data_path + 'BAV_data.mat', 'BAV_data');
+save(data_path + 'bav_data.mat', 'BAV_data');
 
 %% UA data
 data_stratified = cell(1,15);
@@ -38,7 +38,7 @@ for i=1:num_subjects
     end
 end
 data_stratified_UA = data_stratified;
-save(data_path+'data_stratified_UA', 'data_stratified_UA')
+save(data_path+'data_stratified_ua', 'data_stratified_UA')
 
 %% UV data
 s_v_bin_centers = (s_v_binedges(1:end-1) + s_v_binedges(2:end)) ./ 2;
@@ -58,4 +58,4 @@ for i=1:num_subjects
     end
 end
 data_stratified_UV = data_stratified;
-save(data_path+'data_stratified_UV', 'data_stratified_UV')
+save(data_path+'data_stratified_uv', 'data_stratified_UV')

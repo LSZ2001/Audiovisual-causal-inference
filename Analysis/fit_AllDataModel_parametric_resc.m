@@ -1,4 +1,4 @@
-function [out_struct] = fit_AllDataModel_parametric_newresc(iter,prior_type,hetero_type,causal_inf_strategy, lapse_type, rescale_aud)
+function [out_struct] = fit_alldatamodel_parametric_newresc(iter,prior_type,hetero_type,causal_inf_strategy, lapse_type, rescale_aud)
     if(nargin==0)
         iter=1; prior_type = "SingleGaussian"; hetero_type="constant"; causal_inf_strategy="ModelAveraging"; lapse_type="Uniform"; rescale_aud = "free";
     elseif(nargin==1)
@@ -20,8 +20,8 @@ function [out_struct] = fit_AllDataModel_parametric_newresc(iter,prior_type,hete
     rescale_aud
     prior_assumption = "independent" % independent or empirical.
 
-    data_path = "..\Data\";
-    model_path = "..\ModelFits\";
+    data_path = "..\data\";
+    model_path = "..\modelfits\";
     s_a_range = -15:5:15;
     s_v_range = -20:1:20;
 
@@ -31,10 +31,10 @@ function [out_struct] = fit_AllDataModel_parametric_newresc(iter,prior_type,hete
     num_subjects=15;
 
     % Load the fake data for param recov. 
-    load(data_path+"BAV_data.mat")
-    load(data_path+"BC_data.mat")
-    load(data_path+"data_stratified_UV.mat");
-    load(data_path+"data_stratified_UA.mat");
+    load(data_path+"bav_data.mat")
+    load(data_path+"bc_data.mat")
+    load(data_path+"data_stratified_uv.mat");
+    load(data_path+"data_stratified_ua.mat");
     data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
     data_UA = data_stratified_to_data(data_stratified_UA, false, false);
     UAV_data = cell(1,num_subjects);
@@ -61,7 +61,7 @@ function [out_struct] = fit_AllDataModel_parametric_newresc(iter,prior_type,hete
     ModelComponents_V.PMIntegrationParams = PMIntegrationParams;
 
     sigma_fun = heterotype_to_sigmafun(ModelComponents_V.SensoryNoise);
-    [LB_V, UB_V, PLB_V, PUB_V] = sigmafun_BADSbounds_comprehensive(ModelComponents_V);
+    [LB_V, UB_V, PLB_V, PUB_V] = sigmafun_badsbounds_comprehensive(ModelComponents_V);
     num_V_params = length(LB_V);
 
 
@@ -70,10 +70,10 @@ function [out_struct] = fit_AllDataModel_parametric_newresc(iter,prior_type,hete
     ModelComponents_A = ModelComponents_V;
     ModelComponents_A.Rescale = rescale_aud;
     ModelComponents_A.NumReliabilityLevels = 1; % Get number of reliability levels
-    [LB_A, UB_A, PLB_A, PUB_A] = sigmafun_BADSbounds_comprehensive(ModelComponents_A);
+    [LB_A, UB_A, PLB_A, PUB_A] = sigmafun_badsbounds_comprehensive(ModelComponents_A);
 
     % Merge the BADS bounds of UV and UA to one vector, UV in front.
-    [LB, UB, PLB, PUB, A_param_keep_idx] = merge_UJoint_BADsbounds(LB_V,UB_V,PLB_V,PUB_V,LB_A,UB_A,PLB_A,PUB_A,ModelComponents_A);
+    [LB, UB, PLB, PUB, A_param_keep_idx] = merge_ujoint_badsbounds(LB_V,UB_V,PLB_V,PUB_V,LB_A,UB_A,PLB_A,PUB_A,ModelComponents_A);
 
     % Add in final parameter constraints -- p_same, which is just Pr[C=1], and
     % then the unimodal-bimodal rescale. 
@@ -121,10 +121,10 @@ function [out_struct] = fit_AllDataModel_parametric_newresc(iter,prior_type,hete
         S_UA = data_subj_UA(:,1);
         R_UV = data_subj_UV(:,2); % add in rescale
         R_UA = data_subj_UA(:,2); % add in rescale
-        nllfun = @(theta) NLLfun_BAV_parametric(ModelComponents_V, ModelComponents_A, theta,R_BAV,S_V_BAV,S_A_BAV, PMIntegrationParams, false, false, consider_lapse, dx_max, ModelComponents_V.CausalInfStrategy, lapse_type, Gaussian_lapse_SDs(subjidx))...
-        + NLLfun_BC_parametric(ModelComponents_V, ModelComponents_A, theta,R_BC,S_V_BC,S_A_BC, false, false, consider_lapse, ModelComponents_V.CausalInfStrategy)...
-        + NLLfun_UAV_parametric(ModelComponents_V, theta(1:num_V_params),R_UV,S_UV, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx))...
-        + NLLfun_UAV_parametric(ModelComponents_A, complete_thetaUA_for_UJointFits(theta(1:(end-3)), A_param_keep_idx, ModelComponents_V.Rescale=="free"),R_UA,S_UA, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx));
+        nllfun = @(theta) nllfun_bav_parametric(ModelComponents_V, ModelComponents_A, theta,R_BAV,S_V_BAV,S_A_BAV, PMIntegrationParams, false, false, consider_lapse, dx_max, ModelComponents_V.CausalInfStrategy, lapse_type, Gaussian_lapse_SDs(subjidx))...
+        + nllfun_bc_parametric(ModelComponents_V, ModelComponents_A, theta,R_BC,S_V_BC,S_A_BC, false, false, consider_lapse, ModelComponents_V.CausalInfStrategy)...
+        + nllfun_uav_parametric(ModelComponents_V, theta(1:num_V_params),R_UV,S_UV, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx))...
+        + nllfun_uav_parametric(ModelComponents_A, complete_thetaua_for_ujointfits(theta(1:(end-3)), A_param_keep_idx, ModelComponents_V.Rescale=="free"),R_UA,S_UA, false, false, consider_lapse, lapse_type, Gaussian_lapse_SDs(subjidx));
 
         theta0 = rand(size(LB)).*(PUB-PLB) + PLB;
         tStart2 = tic;

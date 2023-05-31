@@ -2,7 +2,7 @@
 % midpoint_NLLfun_comprehensive_nonparam_mixture_indv2, but removes many
 % function arguments due to constraints of the cmaes() optimization
 % algorithm.
-function [output] = NLLfun_UAV_semiparamInsp(theta, data, ModelComponents, return_predictive_samples, return_response_distr, plot_consider_lapse, lapse_type, Gaussian_lapse_SD)
+function [output] = nllfun_uav_semiparaminsp(theta, data, ModelComponents, return_predictive_samples, return_response_distr, plot_consider_lapse, lapse_type, Gaussian_lapse_SD)
     if(nargin==3) % default is to return NLL, not posterior preditive samples vectorized response distribition.
         return_predictive_samples = false; return_response_distr=false; plot_consider_lapse=true; lapse_type = "Uniform";  Gaussian_lapse_SD = NaN;
     elseif(nargin==4) % if return posterior predictive samples and not vectorized response distribution, default is not include lapse mixture component.
