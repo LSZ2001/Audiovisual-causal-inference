@@ -43,7 +43,7 @@ log_prior = log(p_s);
 The data files they save follow the naming conventions below. These saved *.mat* files are the only contents in the *ModelFits* folder.
 ```
 parametric on UA+UV data: 
-Not parallelized -- each fit takes around 6-10 hours.
+Not parallelized -- each fit (all 15 subjects, 10 inits each) takes around 6-10 hours.
 bads.m optimizer
 NLLfun_UAV_parametric.m;
 'fittedparams_UJoint_'+hetero_type+"-"+prior_type + "_rescale"+rescale + "_lapse"+lapse_type + iter;
