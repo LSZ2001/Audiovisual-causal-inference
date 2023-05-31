@@ -84,15 +84,14 @@ This folder only saves the manuscript figures. For how these figures are generat
 - **heterotype_to_sigmafun.m** generates symbolic functions for the sensory noise function sigma(s) from the function family names "constant" or "exp".
 - **complete_thetaUA_for_UJointFits.m** is for parametric model's NLL on UA data only. It completes the UA parameters by joining UA unique parameters and UA+UV shared parameters. 
 - **merge_UJoint_BADsbounds.m** and **sigmafun_BADSbounds_comprehensive.m** output the parameter bounds for BADS model fitting, according to the parametric model specifications.
+- **qtrapz.m** is code for trapezoidal numerical integration, used in the code for computing posterior means. It is written by Luigi Acerbi.
 
 #### Optimizer-related
 - **bads.m** and **cmaes.m** are numerical optimizers used for model fitting.
   - Acerbi, L. & Ma, W. J. (2017). Practical Bayesian Optimization for Model Fitting with Bayesian Adaptive Direct Search. In Advances in Neural Information Processing Systems 30, pages 1834-1844. https://github.com/acerbilab/bads
   - N. Hansen, S. D. Müller and P. Koumoutsakos, "Reducing the Time Complexity of the Derandomized Evolution Strategy with Covariance Matrix Adaptation (CMA-ES)," in Evolutionary Computation, vol. 11, no. 1, pp. 1-18, March 2003, doi: 10.1162/106365603321828970. https://cma-es.github.io/
-- **cmaes_modded** is a set of CMAES options in Acerbi, L. (2019). An Exploration of Acquisition and Mean Functions in Variational Bayesian Monte Carlo. In Proc. Machine Learning Research 96: 1-10. 1st Symposium on Advances in Approximate Bayesian Inference, Montréal, Canada. https://github.com/acerbilab/vbmc
-
-#### Numerical Integration
-- **qtrapz.m** is code for trapezoidal numerical integration for posterior mean computation. It is written by Luigi Acerbi.
+- **cmaes_modded** is a set of CMAES options developed in: 
+  - Acerbi, L. (2019). An Exploration of Acquisition and Mean Functions in Variational Bayesian Monte Carlo. In Proc. Machine Learning Research 96: 1-10. 1st Symposium on Advances in Approximate Bayesian Inference, Montréal, Canada. https://github.com/acerbilab/vbmc
 
 #### Visualization aesthetics
 - **patchline.m** and **colorbrewer.m** contribute to visualization aesthetics. 
