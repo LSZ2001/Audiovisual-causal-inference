@@ -16,7 +16,7 @@ For description of each folder's contents, see below.
 
 ### How the four data files are generated
  - *alldata.mat* is the raw data files, containing data from all 5 tasks. 
- - **UA_data_visualization.m**, **UV_data_visualization.m**, **BC_data_visualization.m**, **BAV_data_visualization.m** operate on *alldata.mat* to generate *data_stratified_UA.mat*, *data_stratified_UV.mat*, *BC_data.mat*, *BAV_data.mat* respectively.
+ - **parse_data.m** operates on *alldata.mat* to generate *data_stratified_UA.mat*, *data_stratified_UV.mat*, *BC_data.mat*, *BAV_data.mat*.
 
 
 ## *ModelFits*
