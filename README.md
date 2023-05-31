@@ -39,20 +39,29 @@ log_prior = log(p_s);
 
 The data files they save follow the naming conventions below:
 ```
+parametric on UA+UV data: 
+Not parallelized -- each fit takes around 6-10 hours.
+bads.m optimizer
+NLLfun_UAV_parametric.m;
+'fittedparams_UJoint_'+hetero_type+"-"+prior_type + "_rescale"+rescale + "_lapse"+lapse_type + iter;
+
 semiparam on UV+UA data: 
-time reserve 10:00:00
+time reserved per iter 10:00:00
+cmaes.m optimizer
 NLLfun_UAV_semiparam.m
-"fittedparams_UJoint_semiparamIndv_Arescalefree_" + iter;
+"fittedparams_UJoint_Semiparam_rescalefree_lapseUniform" + iter;
 
 semiparamInsp parametric on all data: 
-time reserve 10:00:00
-NLLfun_UAV_parametric.m, NLLfun_BC_parametric.m, NLLfun_BAV_parametric.m
-'fittedparams_All_UBresc_semiparamInspired_'+causal_inf_strategy+"_lapse"+lapse_type+"_Arescalefree_" + iter;
+time reserved per iter 10:00:00
+bads.m optimizer
+NLLfun_UAV_semiparamInsp.m, NLLfun_BC_semiparamInsp.m, and NLLfun_BAV_semiparamInsp.m
+'fittedparams_All_UBresc_SemiparamInspired_'+causal_inf_strategy+"_rescalefree_lapseUniform" + iter;
 
 parametric on all data: 
-time reserve 23:00:00
-NLLfun_UAV_semiparamInsp.m, NLLfun_BC_semiparamInsp.m, and NLLfun_BAV_semiparamInsp.m
-'fittedparams_All_UBresc_'+hetero_type+"-"+prior_type+"-"+causal_inf_strategy+"_lapse"+lapse_type+"_Arescalefree_" + iter;
+time reserved per iter 23:00:00
+bads.m optimizer
+NLLfun_UAV_parametric.m, NLLfun_BC_parametric.m, NLLfun_BAV_parametric.m
+'fittedparams_All_UBresc_'+hetero_type+"-"+prior_type+"-"+causal_inf_strategy+"_rescalefree_lapseUniform" + iter;
 ```
 
 ## Plots
