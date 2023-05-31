@@ -7,7 +7,7 @@ num_subjects = 15;
 
 %% Parametric models on UA+UV data
 prior_type = "SingleGaussian"; % Can also be "SingleGaussian", "TwoGaussiansBothFixedZero"
-hetero_type = "constant"; % Can also be "constant";
+hetero_type = "constant"; % Can also be "exp";
 lapse_type = "Uniform"; % Can also be "Gaussian";
 rescale_aud = "1"; % Can also be "4/3" or "free";
 num_inits_persubj = 10;
