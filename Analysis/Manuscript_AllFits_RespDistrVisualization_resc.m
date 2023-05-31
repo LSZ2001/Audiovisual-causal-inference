@@ -27,9 +27,7 @@ function [] = Manuscript_AllFits_RespDistrVisualization_resc(prior_type, hetero_
     load("BAV_data.mat")
     load("BC_data.mat")
     load("data_stratified_UV.mat");
-    data_stratified_UV = data_stratified;
     load("data_stratified_UA.mat");
-    data_stratified_UA = data_stratified;
     data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
     data_UA = data_stratified_to_data(data_stratified_UA, false, false);
     num_subjects = length(data_UA);

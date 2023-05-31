@@ -188,9 +188,7 @@ function [UnimodalData_ModelComparison_FinalTables] = UnimodalData_ModelComparis
     num_subjects = 15;
 
     load(data_path+"data_stratified_UV.mat");
-    data_stratified_UV = data_stratified;
     load(data_path+"data_stratified_UA.mat");
-    data_stratified_UA = data_stratified;
     data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
     data_UA = data_stratified_to_data(data_stratified_UA, false, false);
     n_data = zeros(1,15);
@@ -407,9 +405,7 @@ function [out_struct_allmodels] = AllData_ModelComparison_Visualize_helper(causa
     load(data_path+"BAV_data.mat");
     load(data_path+"BC_data.mat");
     load(data_path+"data_stratified_UV.mat");
-    data_stratified_UV = data_stratified;
     load(data_path+"data_stratified_UA.mat");
-    data_stratified_UA = data_stratified;
     data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
     data_UA = data_stratified_to_data(data_stratified_UA, false, false);
     UAV_data = cell(1,num_subjects);

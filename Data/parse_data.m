@@ -37,8 +37,8 @@ for i=1:num_subjects
         data_stratified{i}{j} = [s_vals(relevant_trials), s_hats_relevant];
     end
 end
-save(data_path+'data_stratified_UA', 'data_stratified')
 data_stratified_UA = data_stratified;
+save(data_path+'data_stratified_UA', 'data_stratified_UA')
 
 %% UV data
 s_v_bin_centers = (s_v_binedges(1:end-1) + s_v_binedges(2:end)) ./ 2;
@@ -57,5 +57,5 @@ for i=1:num_subjects
         data_stratified{i}{j} = [s_vals(relevant_trials), s_hats_relevant, reliability_vals(relevant_trials)];
     end
 end
-save(data_path+'data_stratified_UV', 'data_stratified')
 data_stratified_UV = data_stratified;
+save(data_path+'data_stratified_UV', 'data_stratified_UV')

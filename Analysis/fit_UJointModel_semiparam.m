@@ -20,9 +20,7 @@ function [out_struct] = fit_UJointModel_semiparam(iter, lapse_type)
     s_v_range = -20:1:20;
 
     load(data_path+"data_stratified_UV.mat");
-    data_stratified_UV = data_stratified;
     load(data_path+"data_stratified_UA.mat");
-    data_stratified_UA = data_stratified;
 
     model_type="PM"; % two gaussians components of the prior both centered at 0. 
     PMIntegrationParams = [-45,45,201]; % PM midpoint Rule bounds and numbins.
