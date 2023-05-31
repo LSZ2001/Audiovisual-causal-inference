@@ -332,7 +332,7 @@ function [output] = NLLfun_BAV_UBresc_semiparamInsp(theta, data, ModelComponents
                 log_PMintegrand_C2 = log_PMintegrand_C2 - log_offset_PMintegrand_C2;
                 PMintegrand_C2 = exp(log_PMintegrand_C2);
 
-                clear log_prior log_PMintegrand_C2 log_offset_PMintegrand_C2 log_p_xV_given_s_integrate log_p_xA_given_s_integrate
+                clear log_PMintegrand_C2 log_offset_PMintegrand_C2 log_p_xV_given_s_integrate log_p_xA_given_s_integrate
 
                 %E[s (either V or A)|C=2, xV, xA]
                 sPM_C2 = squeeze((qtrapz(PMintegrand_C2.*s_grid_integrate.*ds,1)))'; % This is now [x_A, x_V].           
@@ -400,7 +400,7 @@ function [output] = NLLfun_BAV_UBresc_semiparamInsp(theta, data, ModelComponents
         LL_idx(rel_trial_idx) = ll_idx;
     end
     end
-
+    clear log_prior
 
     if(return_response_distr)
         output=LL_idx;

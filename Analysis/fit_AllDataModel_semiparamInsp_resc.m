@@ -14,6 +14,7 @@ causal_inf_strategy
 lapse_type
 rescale_aud
 
+rng('default')
 rng(iter)
 
 num_subjects=15;
