@@ -10,7 +10,25 @@ Before running any code, go to *Analysis\bads_master* and run **install.m** to i
 ## ModelFits
 - **fit_UJointModel_parametric.m**, **fit_UJointModel_semiparam.m**, **fit_AllDataModel_semiparamInsp_resc.m**, **fit_AllDataModel_parametric_resc.m** are the improved model fits code. They fit parametric models on UV+UA data, the semiparametric model on UV+UA data, the semiparametric-inspired models on all the data, and parametric models on all the data respectively. 
 - The NLL code for parametric models are is **NLLfun_UAV_parametric.m**, **NLLfun_BC_parametric.m**, and **NLLfun_BAV_parametric.m**. They each take in a set of parameters and data, and return either their summed NLL (for model fitting), each trial's likelihood (never used; can be an option for visualizing UV data and model fits), or generatives posterior predictive samples using the dataset's stimulus and input parameters (for all model fit visualizations). 
-- The NLL code for the semiparametric model is **NLLfun_UAV_semiparam.m**. Its functions are similar to above.
+- The NLL code for the semiparametric model is **NLLfun_UAV_semiparam.m**. Its functions are similar to above. The model parameters are explained below:
+```
+% For each subject, conduct a separate fit with the following 40 parameters:
+% theta = [sigma_fun_vis_pivot_params, sigma_fun_aud_pivot_params, prior_pivot_params, scale_rel_med, scale_rel_low, lapse, sigma_motor, rescale_aud]
+
+s_pivot = [0,0.1,0.3,1,2,4,6,8,10,15,20,45]; 
+num_pivots = length(s_pivot); % = 12
+sigma_fun_vis_rel_high_pivots = cumsum(theta(1:num_pivots)); % cumsum of sigma_fun_vis_pivot_params -> monotonically increasing.
+sigma_fun_aud_pivots = cumsum(theta((num_pivots+1):(2*num_pivots))); % cumsum of sigma_fun_aud_pivot_params
+sigma_fun_vis_rel_high_pivots = [fliplr(sigma_fun_vis_rel_high_pivots(2:end)), sigma_fun_vis_rel_high_pivots]; % assume symmetry across s=0
+sigma_fun_aud_pivots = [fliplr(sigma_fun_aud_pivots(2:end)), sigma_fun_aud_pivots];
+prior_pivots = cumsum([1,theta((2*num_pivots+1):(3*num_pivots-1))]); % monotonically decreasing
+prior_pivots = [fliplr(prior_pivots(2:end)), prior_pivots]; % the pivot at s=0 is always 1, to reduce 1 df. This works due to later normalization in s_hat_PM.
+
+sigma_fun_vis = @(s)  min([repmat(45,length(s),1) , interp1(s_pivot_full, exp(sigma_fun_vis_rel_high_pivots), s, 'pchip')], [], 2);       
+sigma_fun_aud = @(s)  min([repmat(45,length(s),1) , interp1(s_pivot_full, exp(sigma_fun_aud_pivots), s, 'pchip')], [], 2);    
+p_s = exp(interp1(s_pivot_full, (prior_pivots), s_grid_integrate, 'pchip'));
+log_prior = log(p_s);
+```
 - The NLL code for semiparametric inspired models are **NLLfun_UAV_semiparamInsp.m**, **NLLfun_BC_semiparamInsp.m**, and **NLLfun_BAV_semiparamInsp.m**. Its functions are similar to above.
 
 The data files they save follow the naming conventions below:
