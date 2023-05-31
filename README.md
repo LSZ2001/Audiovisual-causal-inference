@@ -78,7 +78,7 @@ NLLfun_UAV_parametric.m, NLLfun_BC_parametric.m, NLLfun_BAV_parametric.m
 This folder only saves the manuscript figures. For how these figures are generated (Note: the *.m* code are all in the *Analysis* folder instead), see descriptions below.
 - **Manuscript_AllPlots.m** creates all figures for the manuscript. It contains some functions itself, and additionally calls **Manuscript_UJoint_RespDistrVisualization.m**, **Manuscript_UJoint_RespDistrVisualization_semiparam.m**, **Manuscript_AllFits_RespDistrVisualization_resc.m**, **Manuscript_AllFits_RespDistrVisualization_semiparamInsp_resc.m** to create model fit response distribution plots. These secondary functions in turn call **Manuscript_UnimodalFits_Visualization.m**, **Manuscript_BimodalCFits_Visualization_resc.m**, **Manuscript_BimodalAVFits_Visualization_resc.m**, which can be universally used for parametric, nonparamIndv, and nonparamInsp model fits. 
 
-## Other code in the Analysis folder
+## Other code in the *Analysis* folder
 #### Helper functions
 - **UniformGaussianLapseComparison.m** does model comparison for the Exp-GaussianLaplace model fitted on UA+UV data, either assuming uniform lapse or truncated-Gaussian lapse. 
 - **heterotype_to_sigmafun.m** generates symbolic functions for the sensory noise function sigma(s) from the function family names "constant" or "exp".
