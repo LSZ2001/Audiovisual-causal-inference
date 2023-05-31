@@ -8,8 +8,9 @@ Before running any code, install BADS at Acerbi, L. & Ma, W. J. (2017). Practica
 
 All code assumes that the current directory of Matlab is the *analysis* folder.
 
+## Main folder
 - **parse_data** creates the datafiles needed *data_stratified_UA.mat*, *data_stratified_UV.mat*, *BC_data.mat*, *BAV_data.mat*, from the raw datafile *alldata.mat*.
-- **fit_models** contains sample model fits for one parametric model on UA+UV data, the semiparametric model on UA+UV data, one semiparamInspired model on all data, and one parametric model on all data. The number of iters per subject in the code is used to generate the saved *.mat* files (model fits) in the *modelfits* folder.
+- **fit_models** contains example model fits for one parametric model on UA+UV data, the semiparametric model on UA+UV data, one semiparamInspired model on all data, and one parametric model on all data. The number of iters per subject in the code is used to generate the saved *.mat* files (model fits) in the *modelfits* folder.
 - **manuscript_allplots** creates all figures for the manuscript, based on the datafiles and the saved model fits.
 
 ## *data* subfolder
