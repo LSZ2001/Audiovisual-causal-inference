@@ -85,3 +85,5 @@ This folder only saves the manuscript figures. For how these figures are generat
   - Stephen23 (2023). ColorBrewer: Attractive and Distinctive Colormaps (https://github.com/DrosteEffect/BrewerMap/releases/tag/3.2.3), GitHub. Retrieved May 31, 2023.
 - **trandn.m** generates posterior predictive samples out of the truncated Gaussian lapse distribution. Used for visualization for truncated-Gaussian lapse models. 
   - Zdravko Botev (2023). Truncated Normal Generator (https://www.mathworks.com/matlabcentral/fileexchange/53180-truncated-normal-generator), MATLAB Central File Exchange. Retrieved May 31, 2023.
+- **heterotype_to_sigmafun.m** generates symbolic functions for the sensory noise function sigma(s) from the function family names "constant" or "exp".
+- **complete_thetaUA_for_UJointFits.m** is for parametric model's NLL on UA data only. It completes the UA parameters by joining UA unique parameters and UA+UV shared parameters. 
