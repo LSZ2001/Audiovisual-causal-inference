@@ -19,15 +19,11 @@ function [out_struct] = fit_ujointmodel_semiparam(iter, lapse_type)
     s_a_range = -15:5:15;
     s_v_range = -20:1:20;
 
-    load(data_path+"data_stratified_uv.mat");
-    load(data_path+"data_stratified_ua.mat");
-
     model_type="PM"; % two gaussians components of the prior both centered at 0. 
     PMIntegrationParams = [-45,45,201]; % PM midpoint Rule bounds and numbins.
     consider_lapse=true; % fit a lapse parameter.
     randomize_trials=false;
     mu = 0; % prior distribution mean
-    [~, num_subjects] = size(data_stratified);
 
     % UV data model components
     ModelComponents.SPivot = [0,0.1,0.3,1,2,4,6,8,10,15,20,45];
@@ -39,10 +35,9 @@ function [out_struct] = fit_ujointmodel_semiparam(iter, lapse_type)
 
     num_pivots = length(ModelComponents.SPivot);
 
-    load(data_path+"data_stratified_UV.mat");
-    data_stratified_UV = data_stratified;
-    load(data_path+"data_stratified_UA.mat");
-    data_stratified_UA = data_stratified;
+    load(data_path+"data_stratified_uv.mat");
+    load(data_path+"data_stratified_ua.mat");
+    [~, num_subjects] = size(data_stratified_UA);
     % Unstratify data. 
     data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
     data_UA = data_stratified_to_data(data_stratified_UA, false, false);

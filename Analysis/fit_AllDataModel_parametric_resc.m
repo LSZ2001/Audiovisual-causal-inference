@@ -1,4 +1,4 @@
-function [out_struct] = fit_alldatamodel_parametric_newresc(iter,prior_type,hetero_type,causal_inf_strategy, lapse_type, rescale_aud)
+function [out_struct] = fit_alldatamodel_parametric_resc(iter,prior_type,hetero_type,causal_inf_strategy, lapse_type, rescale_aud)
     if(nargin==0)
         iter=1; prior_type = "SingleGaussian"; hetero_type="constant"; causal_inf_strategy="ModelAveraging"; lapse_type="Uniform"; rescale_aud = "free";
     elseif(nargin==1)
@@ -28,7 +28,9 @@ function [out_struct] = fit_alldatamodel_parametric_newresc(iter,prior_type,hete
     model_type="PM"; % two gaussians components of the prior both centered at 0. 
     PMIntegrationParams = [-45,45,201]; % PM midpoint Rule bounds and numbins.
     consider_lapse=true; % fit a lapse parameter.
+    
     num_subjects=15;
+    num_inits=10; 
 
     % Load the fake data for param recov. 
     load(data_path+"bav_data.mat")
@@ -90,7 +92,7 @@ function [out_struct] = fit_alldatamodel_parametric_newresc(iter,prior_type,hete
     options.UncertaintyHandling = false;  
 
     %% Fit params for 15 squarequad PM observers
-    num_inits=10; num_params = length(LB); % (sigma0, k, sigma_s, lapse, rescale).
+    num_params = length(LB); % (sigma0, k, sigma_s, lapse, rescale).
 
     %% Fit params
     dx_max = 0.5;
