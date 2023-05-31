@@ -1,11 +1,14 @@
 clear all; close all;
 %cd('C:\Users\liu_s\Audiovisual-causal-inference')
-model_path = "fast_modelfit_example\";
-model_path_temp = model_path+"temp\";
 data_path = "data\";
 num_subjects = 15;
 
-%% Fit a model on UV+UA data quickly, using one random init per subject.
+% Store the fits in a separate folder to avoid confusion and overwriting.
+model_path = "fast_modelfit_example\";
+model_path_temp = model_path+"temp\";
+
+
+%% Fit a model on UV+UA data quickly, using only one random init per subject.
 prior_type = "GaussianLaplaceBothFixedZero"; % Can also be "SingleGaussian", "TwoGaussiansBothFixedZero"
 hetero_type = "exp"; % Can also be "constant";
 lapse_type = "Uniform"; % Can also be "Gaussian";
