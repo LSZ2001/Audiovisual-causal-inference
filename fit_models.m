@@ -9,7 +9,7 @@ num_subjects = 15;
 prior_type = "SingleGaussian"; % Can also be "SingleGaussian", "TwoGaussiansBothFixedZero"
 hetero_type = "constant"; % Can also be "constant";
 lapse_type = "Uniform"; % Can also be "Gaussian";
-rescale_aud = "1"; % Can also be "4/3" or "free"l
+rescale_aud = "1"; % Can also be "4/3" or "free";
 num_inits_persubj = 10;
 for iter = 1:(num_inits_persubj * num_subjects)
     fit_ujointmodel_parametric(iter,prior_type,hetero_type, lapse_type, rescale_aud, num_inits_persubj, data_path, model_path_temp)
