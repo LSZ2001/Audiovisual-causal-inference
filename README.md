@@ -82,7 +82,7 @@ This folder only saves the manuscript figures created by **manuscript_allplots**
 
 ## *utils*
 #### Helper functions
-- **heterotype_to_sigmafun.m** generates symbolic functions for the sensory noise function sigma(s) from the function family names "constant" or "exp".
+- **heterotype_to_sigmafun.m** is for parametric models only. It generates symbolic functions for the sensory noise function sigma(s) from the function family names "constant" or "exp".
 - **complete_thetaua_for_ujointFits.m** is for parametric model's NLL on UA data only. It completes the UA parameters by joining UA unique parameters and UA+UV shared parameters. 
 - **merge_ujoint_badsbounds.m** and **sigmafun_badsbounds_comprehensive.m** output the parameter bounds for BADS model fitting, according to the parametric model specifications.
 - **qtrapz.m** is code for trapezoidal numerical integration, used for computing posterior means. 
