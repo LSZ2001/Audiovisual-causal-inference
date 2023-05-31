@@ -67,6 +67,7 @@ bads.m optimizer
 NLLfun_UAV_parametric.m, NLLfun_BC_parametric.m, NLLfun_BAV_parametric.m
 'fittedparams_All_UBresc_'+hetero_type+"-"+prior_type+"-"+causal_inf_strategy+"_rescalefree_lapseUniform" + iter;
 ```
+(Still need to upload code that combines files from different iterations but same model into one large file, which are the *.mat* files currently in the folder)
 
 ## Plots
 This folder only saves the manuscript figures. For how these figures are generated (Note: the *.m* code are all in the *Analysis* folder instead), see descriptions below.
