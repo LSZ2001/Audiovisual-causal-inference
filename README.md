@@ -7,9 +7,8 @@ Before running any code, go to *Analysis\bads_master* and run **install.m** to i
 - The NLL code for the semiparametric model is **NLLfun_UAV_semiparam.m**. Its functions are similar to above.
 - The NLL code for semiparametric inspired models are **NLLfun_UAV_semiparamInsp.m**, **NLLfun_BC_semiparamInsp.m**, and **NLLfun_BAV_semiparamInsp.m**. Its functions are similar to above.
 
-- The data files they save follow a new naming convention that is more organized:
+The data files they save follow the naming conventions below:
 ```
-
 semiparam on UV+UA data: 
 time reserve 10:00:00
 NLLfun_UAV_semiparam.m
@@ -17,7 +16,7 @@ NLLfun_UAV_semiparam.m
 
 semiparamInsp parametric on all data: 
 time reserve 10:00:00
-???, NLLfun_BC_parametric.m, NLLfun_BAV_parametric.m
+NLLfun_UAV_parametric.m, NLLfun_BC_parametric.m, NLLfun_BAV_parametric.m
 'fittedparams_All_UBresc_semiparamInspired_'+causal_inf_strategy+"_lapse"+lapse_type+"_Arescalefree_" + iter;
 
 parametric on all data: 
