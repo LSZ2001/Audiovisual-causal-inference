@@ -7,7 +7,9 @@ num_subjects = 15;
 model_path = "fast_modelfit_example\";
 model_path_temp = model_path+"temp\";
 
-
+fontsize=9;
+plot_lapse=true;
+figsize = get(0, 'ScreenSize');
 %% Fit a model on UV+UA data quickly, using only one random init per subject.
 prior_type = "GaussianLaplaceBothFixedZero"; % "SingleGaussian", "GaussianLaplaceBothFixedZero", or "TwoGaussiansBothFixedZero"
 hetero_type = "exp"; % "constant" or "exp"
@@ -17,6 +19,8 @@ num_inits_persubj = 1; % Number of random initializations per subject.
 parfor iter = 1:(num_inits_persubj * num_subjects)
     fit_ujointmodel_parametric(iter,prior_type,hetero_type, lapse_type, rescale_aud, num_inits_persubj, data_path, model_path_temp)
 end
+
+%% Combine the individual fitted parameters for each init into one file.
 merge_parametric_ujointfits_files_fast(prior_type,hetero_type,lapse_type,rescale_aud, num_inits_persubj, model_path, model_path_temp)
 
 %% Visualize the fit.
@@ -54,5 +58,5 @@ function [] = merge_parametric_ujointfits_files_fast(prior_type,hetero_type,laps
         NLL_fitted(i) = F_vals(i, min_idx(i));
     end
     
-    save(model_path+filename+"_fast", "Theta_fitted", "T_Ends","F_vals", "theta_fitted");
+    save(model_path+filename, "Theta_fitted", "T_Ends","F_vals", "theta_fitted");
 end

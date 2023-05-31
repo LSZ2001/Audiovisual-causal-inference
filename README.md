@@ -6,7 +6,7 @@ AudioVisual Perception Modeling with Dr. Luigi Acerbi and Dr. Wei Ji Ma.
 
 Before running any code, install BADS at Acerbi, L. & Ma, W. J. (2017). Practical Bayesian Optimization for Model Fitting with Bayesian Adaptive Direct Search. In Advances in Neural Information Processing Systems 30, pages 1834-1844. https://github.com/acerbilab/bads. It is used for model fitting.
 
-All code assumes that the current directory of Matlab is the *analysis* folder.
+All code assumes that the current directory of Matlab is the main folder.
 
 ## Main folder
 - **fit_models.m** contains example model fits for one parametric model on UA+UV data, the semiparametric model on UA+UV data, one semiparamInspired model on all data, and one parametric model on all data. The number of iters per subject in the code is used to generate the saved *.mat* files (model fits) in the *modelfits* folder.
