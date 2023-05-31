@@ -1,5 +1,5 @@
 clear all; close all;
-cd('C:\Users\liu_s\Audiovisual-causal-inference')
+%cd('C:\Users\liu_s\Audiovisual-causal-inference')
 model_path = "modelfits\";
 model_path_temp = model_path+"temp\";
 data_path = "data\";
