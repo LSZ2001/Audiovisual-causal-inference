@@ -1,5 +1,5 @@
 clear all; close all;
-% cd('C:\Users\liu_s\Audiovisual-causal-inference')
+cd('C:\Users\liu_s\Audiovisual-causal-inference')
 figsize = get(0, 'ScreenSize');
 figformat = "svg";
 figpath = "plots\";
