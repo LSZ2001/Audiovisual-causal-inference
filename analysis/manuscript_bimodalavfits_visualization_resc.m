@@ -59,6 +59,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
     %figure
         bincenters_stratrels = zeros(num_subjects,num_binedges-1);
         nexttile;
+        set(gca,'TickDir','out');
         
         for i=1:num_subjects % 4, Need changing back to 1:num_subjects
             
@@ -189,7 +190,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
 
     hold on
     % Plot human data
-    errorbar(bincenters_stratrels_avg, Mean_Biases_avg(l,:), Mean_Biases_sem(l,:), "k.")
+    errorbar(bincenters_stratrels_avg, Mean_Biases_avg(l,:), Mean_Biases_sem(l,:), "k.", 'CapSize', 3)
 
     % Plot model ribbons
     curve1 = Mean_Biases_modelfit_avg(l,:) + Mean_Biases_modelfit_sem(l,:);

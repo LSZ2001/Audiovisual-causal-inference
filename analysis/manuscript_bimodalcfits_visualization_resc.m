@@ -109,9 +109,10 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
         Probs_C1s_modelfit_sem = squeeze(std(Probs_C1s_modelfit, [], 2)) ./ sqrt(num_subjects);
   
         nexttile;
+        set(gca,'TickDir','out');
         hold on
         % Plot human data
-        errorbar(bincenters, Probs_C1s_avg(l,:), Probs_C1s_sem(l,:), "k.")
+        errorbar(bincenters, Probs_C1s_avg(l,:), Probs_C1s_sem(l,:), "k.", 'CapSize', 3)
 
         % Plot model ribbons
         curve1 = Probs_C1s_modelfit_avg(l,:) + Probs_C1s_modelfit_sem(l,:);

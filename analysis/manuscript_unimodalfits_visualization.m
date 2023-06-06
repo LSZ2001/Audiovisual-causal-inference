@@ -186,6 +186,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
         Curves2 = model_vals_meanoversubj - model_vals_SEMoversubj;
 
         nexttile([1,2]);
+        set(gca,'TickDir','out');
         for j=1:num_s_bins
             hold on
             model_mean_vals = model_vals_meanoversubj(j,:);
@@ -197,7 +198,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
 
             keep_x_idx = find(raw_data_histcounts_meanoversubj(j,:) ~=0);
 
-            errorbar(squeeze(hist_range(keep_x_idx)), raw_data_histcounts_meanoversubj(j,keep_x_idx), raw_data_histcounts_SEMoversubj(j,keep_x_idx), ".", 'Color', colors(j,:));
+            errorbar(squeeze(hist_range(keep_x_idx)), raw_data_histcounts_meanoversubj(j,keep_x_idx), raw_data_histcounts_SEMoversubj(j,keep_x_idx), ".", 'Color', colors(j,:), 'CapSize', 3);
 
         end
 %         if(is_visual) % visual data
@@ -248,6 +249,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
 
         % Means of histograms
         nexttile;
+        set(gca,'TickDir','out');
         hold on
         model_params_mu = model_params(:,:,1);
         model_params_mu_meanoversubj = squeeze(mean(model_params_mu,1));
@@ -263,7 +265,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
         h2 = plot([s_range(1),s_range(end)], [s_range(1),s_range(end)], "k--");
         h2.Annotation.LegendInformation.IconDisplayStyle = 'off';
         for j=1:num_s_bins
-            errorbar(squeeze(s_range), s_cond_s_hat_means_meanoversubj, s_cond_s_hat_means_SEMsoversubj, ".", 'Color', 'k');
+            errorbar(squeeze(s_range), s_cond_s_hat_means_meanoversubj, s_cond_s_hat_means_SEMsoversubj, ".", 'Color', 'k', 'CapSize', 3);
         end
         xlim([-20,20])
         ylabel("Mean loc estimate (\circ)", 'FontSize', fontsize)
@@ -281,6 +283,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
 
         % SDs of histograms
         nexttile;
+        set(gca,'TickDir','out');
         hold on
         model_params_sigma = model_params(:,:,2);
         model_params_sigma_meanoversubj = squeeze(mean(model_params_sigma,1));
@@ -294,7 +297,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
         p=fill(x2, inBetween,"k",'FaceAlpha',0.2, 'EdgeColor', 'none');
         p.Annotation.LegendInformation.IconDisplayStyle = 'off';
         for j=1:num_s_bins
-            errorbar(squeeze(s_range), s_cond_s_hat_stds_meanoversubj, s_cond_s_hat_stds_SEMsoversubj, ".", 'Color', 'k');
+            errorbar(squeeze(s_range), s_cond_s_hat_stds_meanoversubj, s_cond_s_hat_stds_SEMsoversubj, ".", 'Color', 'k', 'CapSize', 3);
         end
         xlim([-20,20])
         ylim([0,6])
