@@ -204,7 +204,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
 %             xlim([-35,35])
 %             ylim([0,0.7])
 %         end
-        xlim([-32,42])
+        xlim([-35,35]) %[-32,42]
         ylim([0,0.73])
         if(is_visual)
             xlabel("Estimated visual stimulus location (\circ)", 'FontSize', fontsize)
@@ -223,13 +223,17 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
         end
         
         if(is_visual)
-            lg = legend("$s \in "+{"[-20, -100/7]","[-100/7,-60/7]","[-60/7,-20/7]","[-20/7,+20/7]","[+20/7,+60/7]","[+60/7,+100/7]","[+100/7,+20]"}+"$",'interpreter', 'latex', 'Position', [0.8,0.05,0.15,0.8], 'color','none');
+            %lg = legend("$s \in "+{"[-20, -100/7]","[-100/7,-60/7]","[-60/7,-20/7]","[-20/7,+20/7]","[+20/7,+60/7]","[+60/7,+100/7]","[+100/7,+20]"}+"$",'interpreter', 'latex', 'Position', [0.8,0.05,0.15,0.8], 'color','none');
+            lg = legend("$s \in "+{"[-20, -14.3]","[-14.3,-8.6]","[-8.6,-2.9]","[-2.9,+2.9]","[+2.9,+8.6]","[+8.6,+14.3]","[+14.3,+20]"}+"$",'interpreter', 'latex', 'Position', [0.4053    0.8044    0.1307    0.1418], 'color','none');
+
         else
-            lg = legend("$s = "+{-15,-10,-5,0,+5,+10,+15}+"$",'interpreter', 'latex', 'Location', 'northeast', 'color','none');
+            lg = legend("$s = "+{"-15","-10","-5","0","+5","+10","+15"}+"$",'interpreter', 'latex', 'Location', 'northeast', 'color','none');
         end
-        lg.ItemTokenSize(1) = 10;
+        % set(lg, 'Position', [0.4053    0.8044    0.1307    0.1418])
+        %lg.Position = [0.4053    0.8044    0.1307    0.1418];
+        lg.ItemTokenSize(1) = 6;
         set(lg,'Box','off')
-        lg.FontSize = 6.5;
+        lg.FontSize = 6;
         
         if(l==1)
             ttl = title('(a)', "Fontsize", 10);
