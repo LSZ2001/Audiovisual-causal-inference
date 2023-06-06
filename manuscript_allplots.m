@@ -647,7 +647,7 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     end
     
     x_labels_pos = (3*num_pivots):num_params;
-    x_labels = "$"+{"\alpha_{med}", "\alpha_{low}", "\lambda","\sigma_{motor}","rescale_A"}+"$";
+    x_labels = "$"+{"\alpha_{med}", "\alpha_{low}", "\lambda","\sigma_{motor}","\rho"}+"$";
 
     nexttile([1,3])
     boxplot(theta_fitted_cmaes(:,x_labels_pos([1,2,5])))
