@@ -1,10 +1,14 @@
-function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, ModelComponents_V, ModelComponents_A, model_family, plot_lapse, causal_inf_strategy, fontsize, figspecs)
+function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, ModelComponents_V, ModelComponents_A, model_family, plot_lapse, causal_inf_strategy, fontsize, figspecs, plot_individual)
     % Note: if model_family=="semiparamInsp", then ModelComponents_A,
     % PMIntegrationParams, dx_max, causal_inf_strategy arguments are useless.
 
-    figure('Position', figspecs);
-    set(gcf, 'Color', 'w')
-    tcl=tiledlayout(3,2,'Padding', 'compact', 'TileSpacing', 'compact');
+    if(plot_individual)
+        
+    else
+        figure('Position', figspecs);
+        set(gcf, 'Color', 'w')
+        tcl=tiledlayout(3,2,'Padding', 'compact', 'TileSpacing', 'compact');
+    end
 
     return_predictive_samples = false;
     return_response_distr = true;
@@ -107,34 +111,39 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
 
         Probs_C1s_modelfit_avg = squeeze(mean(Probs_C1s_modelfit, 2));
         Probs_C1s_modelfit_sem = squeeze(std(Probs_C1s_modelfit, [], 2)) ./ sqrt(num_subjects);
-  
-        nexttile;
-        set(gca,'TickDir','out');
-        hold on
-        % Plot human data
-        errorbar(bincenters, Probs_C1s_avg(l,:), Probs_C1s_sem(l,:), "k.", 'CapSize', 3)
-
-        % Plot model ribbons
-        curve1 = Probs_C1s_modelfit_avg(l,:) + Probs_C1s_modelfit_sem(l,:);
-        curve2 = Probs_C1s_modelfit_avg(l,:) - Probs_C1s_modelfit_sem(l,:);
-        curve1(isnan(curve1))=0; curve2(isnan(curve2))=0;
-        x2 = [bincenters, fliplr(bincenters)];
-        inBetween = [curve1, fliplr(curve2)];
-        p=fill(x2, inBetween,"k",'FaceAlpha',0.2, 'EdgeColor', 'none');
-        p.Annotation.LegendInformation.IconDisplayStyle = 'off';
         
-        if(l==1)
-            title(stratify_labels(strats), 'FontSize',10)
-        elseif(l==3)
-            xlabel("Stimulus location disparity (A - V)", 'FontSize',fontsize)
-        end
-        if(strats==1)
-            ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
-        end
-        %ylabel("$Pr[\hat{C} = 1]$", 'interpreter','latex', 'FontSize',fontsize)
-        ylim([0,1])
+        if(plot_individual)
+            
+        else % Default plots -- mean+-SEM across subjects
+            nexttile;
+            set(gca,'TickDir','out');
+            hold on
+            % Plot human data
+            errorbar(bincenters, Probs_C1s_avg(l,:), Probs_C1s_sem(l,:), "k.", 'CapSize', 3)
 
-    end
+            % Plot model ribbons
+            curve1 = Probs_C1s_modelfit_avg(l,:) + Probs_C1s_modelfit_sem(l,:);
+            curve2 = Probs_C1s_modelfit_avg(l,:) - Probs_C1s_modelfit_sem(l,:);
+            curve1(isnan(curve1))=0; curve2(isnan(curve2))=0;
+            x2 = [bincenters, fliplr(bincenters)];
+            inBetween = [curve1, fliplr(curve2)];
+            p=fill(x2, inBetween,"k",'FaceAlpha',0.2, 'EdgeColor', 'none');
+            p.Annotation.LegendInformation.IconDisplayStyle = 'off';
+
+            if(l==1)
+                title(stratify_labels(strats), 'FontSize',10)
+            elseif(l==3)
+                xlabel("Stimulus location disparity (A - V)", 'FontSize',fontsize)
+            end
+            if(strats==1)
+                ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
+            end
+            %ylabel("$Pr[\hat{C} = 1]$", 'interpreter','latex', 'FontSize',fontsize)
+            ylim([0,1])
+
+            end
+        end
     
     %sgtitle("True subjects BC trials: Pr[C hat=1|s_A, s_V]")
+    end
 end
