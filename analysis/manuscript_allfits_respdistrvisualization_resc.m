@@ -166,20 +166,20 @@ function [] = manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_
     
     %% UV, UA
 %     UV_use_pred_samples = true;
-%     UA_use_pred_samples = true; % can be false
-%     manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM_UV, ModelComponents_UV, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize, figspecs, lapse_type, Gaussian_lapse_SDs, plot_individual)
-%     manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM_UA, ModelComponents_UA, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize, NaN, lapse_type, Gaussian_lapse_SDs, plot_individual)
-%     if(plot_individual)
-%         figure(1)
-%         exportgraphics(gcf,figpath+save_name+'-UAV_Individualmean.png','Resolution',png_dpi);
-%         exportgraphics(gcf,figpath+save_name+'-UAV_Individualmean.pdf',"ContentType","vector");
-%         figure(2)
-%         exportgraphics(gcf,figpath+save_name+'-UAV_IndividualSD.png','Resolution',png_dpi);
-%         exportgraphics(gcf,figpath+save_name+'-UAV_IndividualSD.pdf',"ContentType","vector");
-%     else
-%         exportgraphics(gcf,figpath+save_name+'-UAV.png','Resolution',png_dpi);
-%         exportgraphics(gcf,figpath+save_name+'-UAV.pdf',"ContentType","vector");
-%     end
+    UA_use_pred_samples = true; % can be false
+    manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM_UV, ModelComponents_UV, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize, figspecs, lapse_type, Gaussian_lapse_SDs, plot_individual)
+    manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM_UA, ModelComponents_UA, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize, NaN, lapse_type, Gaussian_lapse_SDs, plot_individual)
+    if(plot_individual)
+        figure(1)
+        exportgraphics(gcf,figpath+save_name+'-UAV_Individualmean.png','Resolution',png_dpi);
+        exportgraphics(gcf,figpath+save_name+'-UAV_Individualmean.pdf',"ContentType","vector");
+        figure(2)
+        exportgraphics(gcf,figpath+save_name+'-UAV_IndividualSD.png','Resolution',png_dpi);
+        exportgraphics(gcf,figpath+save_name+'-UAV_IndividualSD.pdf',"ContentType","vector");
+    else
+        exportgraphics(gcf,figpath+save_name+'-UAV.png','Resolution',png_dpi);
+        exportgraphics(gcf,figpath+save_name+'-UAV.pdf',"ContentType","vector");
+    end
 
     %% BC
     manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, ModelComponents_UV, ModelComponents_UA, model_family, plot_lapse, ModelComponents_UV.CausalInfStrategy, fontsize, figspecs, plot_individual)
