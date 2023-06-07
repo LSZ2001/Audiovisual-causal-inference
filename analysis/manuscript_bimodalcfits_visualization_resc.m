@@ -5,7 +5,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
     if(plot_individual)
         figure('Position', figspecs);
         set(gcf, 'Color', 'w')
-        tcl=tiledlayout(4,4,'Padding', 'compact', 'TileSpacing', 'compact');
+        T=tiledlayout(8,4,'Padding', 'compact', 'TileSpacing', 'compact');
     else
         figure('Position', figspecs);
         set(gcf, 'Color', 'w')
@@ -120,13 +120,16 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
             colors_AV = brewermap(10,"Set1");
             colors_AV = colors_AV(4:5,:);
             color_AV = colors_AV(strats,:);
-            
+            tileidx_subj_strats = [1:4, 9:12, 17:20, 25:28; 5:8, 13:16, 21:24, 29:32];
+            xlabel_tileidx = [24,29:31];
             for idx=1:(num_subjects+1)
                 i = min(idx, num_subjects);
-                nexttile(idx);
+                nexttile(tileidx_subj_strats(strats, idx));
                 set(gca,'TickDir','out');
                 hold on
-                title("Subject " + i)
+                if(strats==1)
+                    title("Subject " + i)
+                end
                 scatter(bincenters, squeeze(Probs_C1s(l,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
                 patchline(bincenters, squeeze(Probs_C1s_modelfit(l,i,:)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level, 'HandleVisibility','off');
                 if(idx==16)
@@ -139,6 +142,14 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
                 xlim([-30,30])
                 ylim([0,1])
             end
+%             if(sum(xlabel_tileidx==tileidx_subj_strats(strats, idx))>0)
+%                 xlabel("Stimulus location disparity (A - V)", 'FontSize',fontsize)
+%             end
+%             if(mod(tileidx_subj_strats(strats, idx),4)==1)
+%                 ylabel({"{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
+%             end
+            xlabel(T, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
+            ylabel(T, {"{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"});
             
         else % Default plots -- mean+-SEM across subjects
             nexttile;
