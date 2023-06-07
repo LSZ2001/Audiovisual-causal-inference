@@ -79,11 +79,18 @@ function [] = manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causa
     end
 
     %% BC
-    manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, ModelComponents, ModelComponents, model_family, plot_lapse, ModelComponents.CausalInfStrategy, fontsize, figspecs)
-
-    exportgraphics(gcf,figpath+save_name+'-BC.png','Resolution',png_dpi);
-    exportgraphics(gcf,figpath+save_name+'-BC.pdf',"ContentType","vector");
-
+    manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, ModelComponents, ModelComponents, model_family, plot_lapse, ModelComponents.CausalInfStrategy, fontsize, figspecs, plot_individual)
+    if(plot_individual)
+        figure(1)
+        exportgraphics(gcf,figpath+save_name+'-BC_Individualmean.png','Resolution',png_dpi);
+        exportgraphics(gcf,figpath+save_name+'-BC_Individualmean.pdf',"ContentType","vector");
+        figure(2)
+        exportgraphics(gcf,figpath+save_name+'-BC_IndividualSD.png','Resolution',png_dpi);
+        exportgraphics(gcf,figpath+save_name+'-BC_IndividualSD.pdf',"ContentType","vector");
+    else
+        exportgraphics(gcf,figpath+save_name+'-BC.png','Resolution',png_dpi);
+        exportgraphics(gcf,figpath+save_name+'-BC.pdf',"ContentType","vector");
+    end
     %% BA, BV
     manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM, ModelComponents, ModelComponents, PMIntegrationParams, NaN, model_family, plot_lapse, ModelComponents.CausalInfStrategy, unique_bins_subj, fontsize, figspecs, figpath, save_name, png_dpi, lapse_type, Gaussian_lapse_SDs);
 

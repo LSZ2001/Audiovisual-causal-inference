@@ -118,8 +118,8 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
             rel_level_alphas = [1, 0.5, 0.2];
             alpha_level = rel_level_alphas(l);
             colors_AV = brewermap(10,"Set1");
-            colors_AV = colors_AV(4:5,:);
-            color_AV = colors_AV(strats,:);
+            colors_AV = colors_AV
+            color_AV = colors_AV(strat,:);
             
             for idx=1:(num_subjects+1)
                 i = min(idx, num_subjects);
@@ -128,16 +128,8 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
                 hold on
                 title("Subject " + i)
                 scatter(bincenters, squeeze(Probs_C1s(l,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
-                patchline(bincenters, squeeze(Probs_C1s_modelfit(l,i,:)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level, 'HandleVisibility','off');
-                if(idx==16)
-                    title("")
-                    axis off
-                    fill([-40,-40,40,40],[-40,40,40,-40],"w", 'EdgeColor','none','HandleVisibility','off')
-                    lg = legend("Center, Visual (high reliability)","Periphery, Visual (high reliability)","Center, Visual (med reliability)", "Periphery, Visual (med reliability)", "Center, Visual (low reliability)", "Periphery, Visual (low reliability)");
-                    set(lg,'Box','off')
-                end
-                xlim([-30,30])
-                ylim([0,1])
+                patchline(squeeze(s_range), squeeze(Probs_C1s_modelfit(l,i,:)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level, 'HandleVisibility','off');
+                
             end
             
         else % Default plots -- mean+-SEM across subjects
