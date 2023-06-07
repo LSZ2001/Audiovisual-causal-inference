@@ -1,14 +1,16 @@
 % This code does model recovery. It is same as 3_withlapse, but it is now
 % compatible with a fake dataset with lapse rates.
-function [] = manuscript_ujoint_respdistrvisualization_semiparam(fontsize, figspecs, model_path, plot_lapse, lapse_type)
+function [] = manuscript_ujoint_respdistrvisualization_semiparam(fontsize, figspecs, model_path, plot_lapse, lapse_type, plot_individual)
     if(nargin==0)
         figsize = get(0, 'ScreenSize');fontsize = 9; figspecs = [0 0 figsize(4)*0.9*0.65 figsize(4)*0.9];
         model_path = "modelfits\"
-        plot_lapse = true; lapse_type = "Uniform";
+        plot_lapse = true; lapse_type = "Uniform"; plot_individual=false;
     elseif(nargin==3) % Default is plot the lapse component in fitted response distributions
-        plot_lapse = true; lapse_type = "Uniform";
+        plot_lapse = true; lapse_type = "Uniform"; plot_individual=false;
     elseif(nargin==4)
-        lapse_type = "Uniform";
+        lapse_type = "Uniform"; plot_individual=false;
+    elseif(nargin==5)
+        plot_individual=false;
     end
     
     %cd('C:\Users\liu_s\OneDrive\桌面\MATLAB\AudioVisual\Analysis')
@@ -82,7 +84,7 @@ function [] = manuscript_ujoint_respdistrvisualization_semiparam(fontsize, figsp
     UV_use_pred_samples = true;
     UA_use_pred_samples = true; % can be false;
     model_family="semiparam";
-    manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM, ModelComponents, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize, figspecs, lapse_type, Gaussian_lapse_SDs)
-    manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM, ModelComponents, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize, NaN, lapse_type, Gaussian_lapse_SDs)
+    manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM, ModelComponents, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize, figspecs, lapse_type, Gaussian_lapse_SDs, plot_individual)
+    manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM, ModelComponents, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize, NaN, lapse_type, Gaussian_lapse_SDs, plot_individual)
 
 end

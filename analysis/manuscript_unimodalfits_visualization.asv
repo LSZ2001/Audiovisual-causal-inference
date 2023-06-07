@@ -221,7 +221,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                     title("")
                     axis off
                     fill([-20,-20,20,20],[-20,20,20,-20],"w", 'EdgeColor','none','HandleVisibility','off')
-                    lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
+                    lg = legend("Visual reliability high","Visual reliability med", "Visual reliability low", "Auditory");
                     set(lg,'Box','off')
                 end
                 
@@ -232,7 +232,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 hold on;
                 title("Subject " + i)
                 scatter(squeeze(s_range), squeeze(s_cond_s_hat_stds(i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
-                patchline(squeeze(s_range), squeeze(model_params(i,:,2)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level, 'HandleVisibility','off');
+                patchline(squeeze(s_range), squeeze(model_params(i,:,2)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level);
                 if(i>=12)
                     xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
                 end
@@ -244,7 +244,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                     title("")
                     axis off
                     fill([-20,-20,20,20],[-20,20,20,-20],"w", 'EdgeColor','none','HandleVisibility','off')
-                    lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
+                    lg = legend("Visual reliability high","Visual reliability med", "Visual reliability low", "Auditory");
                     set(lg,'Box','off')
                 end
             end

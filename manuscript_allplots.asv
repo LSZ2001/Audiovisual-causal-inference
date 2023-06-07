@@ -34,7 +34,7 @@ noise = "exp";
 aud_rescale = "free";
 %manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)]);
 manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
-exportgraphics(gcf,figpath+'Exp-GaussianLaplace'+'.png','Resolution',png_dpi);
+r exportgraphics(gcf,figpath+'Exp-GaussianLaplace'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace'+'.pdf',"ContentType","vector");
 
 %% Individual-level
@@ -44,12 +44,8 @@ aud_rescale = "free";
 plot_individual = true;
 %manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)]);
 manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type, plot_individual);
-figure(1)
-exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Individualmean'+'.png','Resolution',png_dpi);
-exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Individualmean'+'.pdf',"ContentType","vector");
-figure(2)
-exportgraphics(gcf,figpath+'Exp-GaussianLaplace_IndividualSD'+'.png','Resolution',png_dpi);
-exportgraphics(gcf,figpath+'Exp-GaussianLaplace_IndividualSD'+'.pdf',"ContentType","vector");
+exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Individual'+'.png','Resolution',png_dpi);
+exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Individual'+'.pdf',"ContentType","vector");
 
 %% No Lapse 
 prior = "GaussianLaplaceBothFixedZero";
@@ -137,7 +133,7 @@ save(analysis_path+'unimodaldata_modelcomparison_finaltables','UnimodalData_Mode
 %% AllData semiparamInsp Response distribution visualization
 causal_inf_strategy = "ProbMatching";
 save_name = "PM";
-manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true);
+manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 
 %%
 causal_inf_strategy = "ModelSelection";
@@ -154,13 +150,6 @@ hetero_type = "exp";
 causal_inf_strategy = "ProbMatching";
 save_name = "exp-GaussianLaplace-PM";
 manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
-
-%% Individual-level plots for the above model
-prior_type = "GaussianLaplaceBothFixedZero";
-hetero_type = "exp";
-causal_inf_strategy = "ProbMatching";
-save_name = "exp-GaussianLaplace-PM";
-manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true)
 
 %% AllData ModelComparison
 causal_inf_strategies = ["ModelSelection","ModelAveraging","ProbMatching"];
