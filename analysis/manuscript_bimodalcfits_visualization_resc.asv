@@ -5,7 +5,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
     if(plot_individual)
         figure('Position', figspecs);
         set(gcf, 'Color', 'w')
-        T=tiledlayout(8,4,'Padding', 'compact', 'TileSpacing', 'compact');
+        T=tiledlayout(4,4,'Padding', 'compact', 'TileSpacing', 'compact');
     else
         figure('Position', figspecs);
         set(gcf, 'Color', 'w')
@@ -46,9 +46,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
     %binedges = [-35, -25, -20, -15, -10, -5,-3, -1, 1,3, 5, 10, 15, 20, 25, 35]; %linspace(-20-15, 20+15, 32); % binedges for grouping s_diffs.
     
     bincenters = binedges(1:(end-1)) + (binedges(2:end) - binedges(1:(end-1))) ./2;
-    PMR_vals = zeros(3, num_subjects, 2, length(binedges)-1); % Rels -> subjects -> C=1 or C=2 -> bins.
-    Probs_C1s = zeros(3, num_subjects, length(binedges)-1);
-    PMR_vals_modelfits = PMR_vals;
+    Probs_C1s = zeros(3, 2, num_subjects, length(binedges)-1);
     Probs_C1s_modelfit = Probs_C1s;
   
     stratify_labels = ["|s_A+s_V| in center", "|s_A+s_V| in periphery"];
@@ -100,82 +98,94 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
                     Prob_C1_modelfit(k) = mean(p_resp_modelfits_condsubjbin);
                 end
 
-                Probs_C1s(l,i,:) = Prob_C1;
-                Probs_C1s_modelfit(l,i,:) = Prob_C1_modelfit;
+                Probs_C1s(l,strats,i,:) = Prob_C1;
+                Probs_C1s_modelfit(l,strats,i,:) = Prob_C1_modelfit;
+            end
         end
+    end
 
 
         % Plot average plots
         rel_colors = brewermap(9,"Set1");
         rel_colors = rel_colors([1,2,3],:);
-        Probs_C1s_avg = squeeze(mean(Probs_C1s, 2));
-        Probs_C1s_sem = squeeze(std(Probs_C1s, [], 2)) ./ sqrt(num_subjects);
+        Probs_C1s_avg = squeeze(mean(Probs_C1s, 3));
+        Probs_C1s_sem = squeeze(std(Probs_C1s, [], 3)) ./ sqrt(num_subjects);
 
-        Probs_C1s_modelfit_avg = squeeze(mean(Probs_C1s_modelfit, 2));
-        Probs_C1s_modelfit_sem = squeeze(std(Probs_C1s_modelfit, [], 2)) ./ sqrt(num_subjects);
+        Probs_C1s_modelfit_avg = squeeze(mean(Probs_C1s_modelfit, 3));
+        Probs_C1s_modelfit_sem = squeeze(std(Probs_C1s_modelfit, [], 3)) ./ sqrt(num_subjects);
         
         if(plot_individual)
             rel_level_alphas = [1, 0.5, 0.2];
-            alpha_level = rel_level_alphas(l);
             colors_AV = brewermap(10,"Set1");
-            colors_AV = colors_AV(4:5,:);
-            color_AV = colors_AV(strats,:);
-            tileidx_subj_strats = [1:4, 9:12, 17:20, 25:28; 5:8, 13:16, 21:24, 29:32];
-            xlabel_tileidx = [24,29:31];
-            for idx=1:(num_subjects+1)
-                i = min(idx, num_subjects);
-                nexttile(tileidx_subj_strats(strats, idx));
-                set(gca,'TickDir','out');
-                hold on
-                if(strats==1)
-                    title("Subject " + i)
+            colors_AV = colors_AV(4:5,:);            
+            for i=1:(num_subjects)
+                t=tiledlayout(T,1,2);
+                t.Layout.Tile = i;
+                t.Layout.TileSpan = [1 1];
+                
+                for strats=1:2
+                    color_AV = colors_AV(strats,:);
+                    nexttile(t);
+                    set(gca,'TickDir','out');
+                    hold on
+                    title(t,"Subject " + i, 'FontSize',10)
+                    for l=1:3
+                        alpha_level = rel_level_alphas(l);
+                        scatter(bincenters, squeeze(Probs_C1s(l,strats,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
+                        patchline(bincenters, squeeze(Probs_C1s_modelfit(l,strats,i,:)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level, 'HandleVisibility','off');
+                    end
+                    if(idx==16)
+                        title("")
+                        axis off
+                        fill([-40,-40,40,40],[-40,40,40,-40],"w", 'EdgeColor','none','HandleVisibility','off')
+                        lg = legend("Center, Visual (high reliability)","Periphery, Visual (high reliability)","Center, Visual (med reliability)", "Periphery, Visual (med reliability)", "Center, Visual (low reliability)", "Periphery, Visual (low reliability)");
+                        set(lg,'Box','off')
+                    end
+                    xlim([-30,30])
+                    ylim([0,1])
                 end
-                scatter(bincenters, squeeze(Probs_C1s(l,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
-                patchline(bincenters, squeeze(Probs_C1s_modelfit(l,i,:)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level, 'HandleVisibility','off');
-                if(idx==16)
-                    title("")
-                    axis off
-                    fill([-40,-40,40,40],[-40,40,40,-40],"w", 'EdgeColor','none','HandleVisibility','off')
-                    lg = legend("Center, Visual (high reliability)","Periphery, Visual (high reliability)","Center, Visual (med reliability)", "Periphery, Visual (med reliability)", "Center, Visual (low reliability)", "Periphery, Visual (low reliability)");
-                    set(lg,'Box','off')
-                end
-                if(sum(xlabel_tileidx==tileidx_subj_strats(strats, idx))>0)
-                    xlabel("Stimulus location disparity (A - V)", 'FontSize',fontsize)
-                end
-                xlim([-30,30])
-                ylim([0,1])
             end
             
+            idx=16;
+            i = min(idx, num_subjects);
+            t=tiledlayout(T,1,1);
+            t.Layout.Tile = idx;
+            t.Layout.TileSpan = [1 1];
+            
+            
+            xlabel(T, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
+            ylabel(T, {"{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"});
+
         else % Default plots -- mean+-SEM across subjects
-            nexttile;
-            set(gca,'TickDir','out');
-            hold on
-            % Plot human data
-            errorbar(bincenters, Probs_C1s_avg(l,:), Probs_C1s_sem(l,:), "k.", 'CapSize', 3)
+            for l=1:3
+                for strats=1:2
+                    nexttile;
+                    set(gca,'TickDir','out');
+                    hold on
+                    % Plot human data
+                    errorbar(bincenters, squeeze(Probs_C1s_avg(l,strats,:)), squeeze(Probs_C1s_sem(l,strats,:)), "k.", 'CapSize', 3)
 
-            % Plot model ribbons
-            curve1 = Probs_C1s_modelfit_avg(l,:) + Probs_C1s_modelfit_sem(l,:);
-            curve2 = Probs_C1s_modelfit_avg(l,:) - Probs_C1s_modelfit_sem(l,:);
-            curve1(isnan(curve1))=0; curve2(isnan(curve2))=0;
-            x2 = [bincenters, fliplr(bincenters)];
-            inBetween = [curve1, fliplr(curve2)];
-            p=fill(x2, inBetween,"k",'FaceAlpha',0.2, 'EdgeColor', 'none');
-            p.Annotation.LegendInformation.IconDisplayStyle = 'off';
+                    % Plot model ribbons
+                    curve1 = Probs_C1s_modelfit_avg(l,strats,:) + Probs_C1s_modelfit_sem(l,strats,:);
+                    curve2 = Probs_C1s_modelfit_avg(l,strats,:) - Probs_C1s_modelfit_sem(l,strats,:);
+                    curve1(isnan(curve1))=0; curve2(isnan(curve2))=0;
+                    x2 = [bincenters, fliplr(bincenters)];
+                    inBetween = [squeeze(curve1)', fliplr(squeeze(curve2)')];
+                    p=fill(x2, inBetween,"k",'FaceAlpha',0.2, 'EdgeColor', 'none');
+                    p.Annotation.LegendInformation.IconDisplayStyle = 'off';
 
-            if(l==1)
-                title(stratify_labels(strats), 'FontSize',10)
-            elseif(l==3)
-                xlabel("Stimulus location disparity (A - V)", 'FontSize',fontsize)
+                    if(l==1)
+                        title(stratify_labels(strats), 'FontSize',10)
+                    elseif(l==3)
+                        xlabel("Stimulus location disparity (A - V)", 'FontSize',fontsize)
+                    end
+                    if(strats==1)
+                        ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
+                    end
+                    %ylabel("$Pr[\hat{C} = 1]$", 'interpreter','latex', 'FontSize',fontsize)
+                    ylim([0,1])
+                end
             end
-            if(strats==1)
-                ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
-            end
-            %ylabel("$Pr[\hat{C} = 1]$", 'interpreter','latex', 'FontSize',fontsize)
-            ylim([0,1])
 
-            end
         end
-    
-    %sgtitle("True subjects BC trials: Pr[C hat=1|s_A, s_V]")
-    end
 end
