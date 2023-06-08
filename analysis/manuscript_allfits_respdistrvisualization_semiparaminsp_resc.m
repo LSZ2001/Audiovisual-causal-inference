@@ -68,9 +68,11 @@ function [] = manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causa
 
     if(plot_individual)
         figure(1)
+        saveas(gca, figpath+save_name+'-UAV_Individualmean.fig')
         exportgraphics(gcf,figpath+save_name+'-UAV_mean.png','Resolution',png_dpi);
         exportgraphics(gcf,figpath+save_name+'-UAV_mean.pdf',"ContentType","vector");
         figure(2)
+        saveas(gca, figpath+save_name+'-UAV_IndividualSD.fig')
         exportgraphics(gcf,figpath+save_name+'-UAV_SD.png','Resolution',png_dpi);
         exportgraphics(gcf,figpath+save_name+'-UAV_SD.pdf',"ContentType","vector");
     else
@@ -81,6 +83,7 @@ function [] = manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causa
     %% BC
     manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, ModelComponents, ModelComponents, model_family, plot_lapse, ModelComponents.CausalInfStrategy, fontsize, figspecs, plot_individual)
     if(plot_individual)
+        saveas(gca, figpath+save_name+'-BC_Individual.fig')
         exportgraphics(gcf,figpath+save_name+'-BC_Individual.png','Resolution',png_dpi);
         exportgraphics(gcf,figpath+save_name+'-BC_Individual.pdf',"ContentType","vector");
     else

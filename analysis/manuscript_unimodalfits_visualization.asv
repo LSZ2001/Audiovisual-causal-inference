@@ -210,6 +210,8 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 title("Subject " + i)
                 scatter(squeeze(s_range), squeeze(s_cond_s_hat_means(i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
                 %patchline(squeeze(s_range), squeeze(model_params(i,:,1)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level, 'HandleVisibility','off');
+                p1=plot(squeeze(s_range), squeeze(model_params(i,:,1)), 'Color',color_AV, 'LineWidth', 1);
+                p1.Color(4) = alpha_level;
                 
                 if(i>=12)
                     xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
@@ -218,15 +220,12 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                     ylabel("Mean loc estimate (\circ)", 'FontSize', fontsize)
                 end
                 ylim([-20,20])
-                if(idx==(num_subjects+1))
+                if(idx==16)
                     title("")
                     axis off
                     fill([-20,-20,20,20],[-20,20,20,-20],"w", 'EdgeColor','none','HandleVisibility','off')
                     lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
                     set(lg,'Box','off')
-                else
-                    p1=plot(squeeze(s_range), squeeze(model_params(i,:,1)), 'Color',color_AV, 'LineWidth', 1);
-                    p1.Color(4) = alpha_level;
                 end
                 
                 figure(2)
@@ -237,6 +236,8 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 title("Subject " + i)
                 scatter(squeeze(s_range), squeeze(s_cond_s_hat_stds(i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
                 %patchline(squeeze(s_range), squeeze(model_params(i,:,2)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level, 'HandleVisibility','off');
+                p2 = plot(squeeze(s_range), squeeze(model_params(i,:,2)), 'Color',color_AV,'LineWidth',1,'HandleVisibility','off');
+                p2.Color(4) = alpha_level;
 
                 if(i>=12)
                     xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
@@ -245,15 +246,12 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                     ylabel("SD of loc estimate (\circ)", 'FontSize', fontsize)
                 end
                 ylim([0,9])
-                if(idx==(num_subjects+1))
+                if(idx==16)
                     title("")
                     axis off
                     fill([-20,-20,20,20],[-20,20,20,-20],"w", 'EdgeColor','none','HandleVisibility','off')
                     lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
                     set(lg,'Box','off')
-                else
-                    p2 = plot(squeeze(s_range), squeeze(model_params(i,:,2)), 'Color',color_AV,'LineWidth',1);
-                    p2.Color(4) = alpha_level;
                 end
                 
 %                 if(l==4 && i==7) % Exemplary subject

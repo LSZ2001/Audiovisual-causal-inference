@@ -197,7 +197,8 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
                     for l=1:3
                         alpha_level = rel_level_alphas(l);
                         scatter(squeeze(bincenters_stratrels(l,strats,i,:)), squeeze(Mean_Biases(l,strats,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
-                        patchline(squeeze(bincenters_stratrels(l,strats,i,:)), squeeze(Mean_Biases_modelfit(l,strats,i,:)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level, 'HandleVisibility','off');
+                        p = plot(squeeze(bincenters_stratrels(l,strats,i,:)), squeeze(Mean_Biases_modelfit(l,strats,i,:)), 'Color',color_AV,'LineWidth',1);
+                        p.Color(4) = alpha_level;
                     end
                     xlim([-35,35])
                     ylim([-15,15])
@@ -291,6 +292,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
     switch response_type
     case 1
         if(plot_individual)
+            saveas(gca, figpath+save_name+'-BV_Individual.fig')
             exportgraphics(gcf,figpath+save_name+'-BV_Individual.png','Resolution',png_dpi);
             exportgraphics(gcf,figpath+save_name+'-BV_Individual.pdf',"ContentType","vector");
         else
@@ -299,6 +301,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
         end
     case 2
         if(plot_individual)
+            saveas(gca, figpath+save_name+'-BA_Individual.fig')
             exportgraphics(gcf,figpath+save_name+'-BA_Individual.png','Resolution',png_dpi);
             exportgraphics(gcf,figpath+save_name+'-BA_Individual.pdf',"ContentType","vector");
         else

@@ -132,7 +132,8 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
                     for l=1:3
                         alpha_level = rel_level_alphas(l);
                         scatter(bincenters, squeeze(Probs_C1s(l,strats,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
-                        patchline(bincenters, squeeze(Probs_C1s_modelfit(l,strats,i,:)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level, 'HandleVisibility','off');
+                        p = plot(bincenters, squeeze(Probs_C1s_modelfit(l,strats,i,:)), 'Color',color_AV,'LineWidth',1);
+                        p.Color(4) = alpha_level;
                     end
                     xlim([-30,30])
                     ylim([0,1])
