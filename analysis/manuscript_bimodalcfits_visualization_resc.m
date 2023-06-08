@@ -118,7 +118,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
             rel_level_alphas = [1, 0.5, 0.2];
             colors_AV = brewermap(10,"Set1");
             colors_AV = colors_AV(4:5,:);            
-            for i=1:(num_subjects)
+            for i=1:num_subjects
                 t=tiledlayout(T,1,2);
                 t.Layout.Tile = i;
                 t.Layout.TileSpan = [1 1];
@@ -140,7 +140,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
             end
             
             % Create legend
-            idx=16;
+            idx=num_subjects+1;
             i = min(idx, num_subjects);
             nexttile(T);
             set(gca,'TickDir','out');

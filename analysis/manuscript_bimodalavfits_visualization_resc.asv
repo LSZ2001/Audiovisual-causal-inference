@@ -175,10 +175,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
         
     %%
         if(plot_individual)
-            %figure('Position', figspecs);
-            figsize = get(0, 'ScreenSize');
-            figure('Position', figsize);
-            
+            figure('Position', figspecs);
             set(gcf, 'Color', 'w')
             T=tiledlayout(4,4,'Padding', 'none', 'TileSpacing', 'compact');
             rel_level_alphas = [1, 0.5, 0.2];
@@ -196,8 +193,8 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
                     title(t,"Subject " + i, 'FontSize',fontsize, 'FontWeight', 'bold')
                     for l=1:3
                         alpha_level = rel_level_alphas(l);
-                        scatter(squeeze(bincenters_stratrels(l,strats,i,:)), squeeze(Mean_Biases(l,strats,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
-                        patchline(squeeze(bincenters_stratrels(l,strats,i,:)), squeeze(Mean_Biases_modelfit(l,strats,i,:)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level, 'HandleVisibility','off');
+                        scatter(squeezbincenters_stratrels(l,strats,i,:), squeeze(Probs_C1s(l,strats,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
+                        patchline(bincenters, squeeze(Probs_C1s_modelfit(l,strats,i,:)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level, 'HandleVisibility','off');
                     end
                     xlim([-35,35])
                     ylim([-15,15])
@@ -210,28 +207,24 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
             nexttile(T);
             set(gca,'TickDir','out');
             hold on
-            for strats=1:3
+            for strats=1:2
                 color_AV = colors_AV(strats,:);
                 for l=1:3
                     alpha_level = rel_level_alphas(l);
-                    scatter(squeeze(bincenters_stratrels(l,strats,i,:)), squeeze(Mean_Biases(l,strats,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
+                    scatter(bincenters, squeeze(Probs_C1s(l,strats,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
                 end
             end
             axis off
             fill([-40,-40,40,40],[-40,40,40,-40],"w", 'EdgeColor','none','HandleVisibility','off')
-            lg = legend("Left, Visual (high reliability)","Left, Visual (med reliability)","Left, Visual (low reliability)","Center, Visual (high reliability)","Center, Visual (med reliability)","Center, Visual (low reliability)", "Right, Visual (high reliability)", "Right, Visual (med reliability)", "Right, Visual (low reliability)");
+            lg = legend("Center, Visual (high reliability)","Center, Visual (med reliability)","Center, Visual (low reliability)", "Periphery, Visual (high reliability)", "Periphery, Visual (med reliability)", "Periphery, Visual (low reliability)");
             set(lg,'Box','off')
             xlim([-35,35])
             ylim([-15,15])
             
             
             xlabel(T, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
-            switch response_type
-                case 1
-                    ylabel(T, "{\rm \fontsize{9} {Mean visual bias (est - true)}}");
-                case 2
-                    ylabel(T, "{\rm \fontsize{9} {Mean auditory bias (est - true)}}");
-            end
+            ylabel(T, "{\rm \fontsize{9} {Mean auditory bias (est - true)}}");
+
                 
 
         else % Default plots -- mean+-SEM across subjects
@@ -290,21 +283,11 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
     
     switch response_type
     case 1
-        if(plot_individual)
-            exportgraphics(gcf,figpath+save_name+'-BV_Individual.png','Resolution',png_dpi);
-            exportgraphics(gcf,figpath+save_name+'-BV_Individual.pdf',"ContentType","vector");
-        else
-            exportgraphics(gcf,figpath+save_name+'-BV.png','Resolution',png_dpi);
-            exportgraphics(gcf,figpath+save_name+'-BV.pdf',"ContentType","vector");
-        end
+        exportgraphics(gcf,figpath+save_name+'-BV.png','Resolution',png_dpi);
+        exportgraphics(gcf,figpath+save_name+'-BV.pdf',"ContentType","vector");
     case 2
-        if(plot_individual)
-            exportgraphics(gcf,figpath+save_name+'-BA_Individual.png','Resolution',png_dpi);
-            exportgraphics(gcf,figpath+save_name+'-BA_Individual.pdf',"ContentType","vector");
-        else
-            exportgraphics(gcf,figpath+save_name+'-BA.png','Resolution',png_dpi);
-            exportgraphics(gcf,figpath+save_name+'-BA.pdf',"ContentType","vector");
-        end
+        exportgraphics(gcf,figpath+save_name+'-BA.png','Resolution',png_dpi);
+        exportgraphics(gcf,figpath+save_name+'-BA.pdf',"ContentType","vector");
     end
     
     end
