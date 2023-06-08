@@ -655,7 +655,8 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
                     sigma_fun_vis_rel_high_pivots = cumsum(theta(1:num_pivots));
                     sigma_fun_vis_rel_high_pivots = [fliplr(sigma_fun_vis_rel_high_pivots(2:end)), sigma_fun_vis_rel_high_pivots];
                     sigma_fun_vis = @(s)  min([repmat(45,length(s),1)' ; interp1(s_pivot_full, exp(sigma_fun_vis_rel_high_pivots), s, 'pchip')], [], 1);       
-                    patchline(s_fine, log(sigma_fun_vis(s_fine)),'linestyle','-','edgecolor','k','edgealpha',0.5);
+                    p=plot(s_fine, log(sigma_fun_vis(s_fine)),'k-');
+                    p.Color(4)=0.5;
                     scatter1 = scatter(s_pivot_full, sigma_fun_vis_rel_high_pivots,'o','MarkerFaceColor','k','MarkerEdgeColor','k'); 
                     %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
                     scatter1.SizeData = 1;
@@ -665,7 +666,8 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
                     sigma_fun_aud_pivots = cumsum(theta((num_pivots+1):(2*num_pivots)));
                     sigma_fun_aud_pivots = [fliplr(sigma_fun_aud_pivots(2:end)), sigma_fun_aud_pivots];
                     sigma_fun_aud = @(s)  min([repmat(45,length(s),1)' ; interp1(s_pivot_full, exp(sigma_fun_aud_pivots), s, 'pchip')], [], 1);       
-                    patchline(s_fine, log(sigma_fun_aud(s_fine)),'linestyle','-','edgecolor','k','edgealpha',0.5);
+                    p=plot(s_fine, log(sigma_fun_aud(s_fine)),'k-');
+                    p.Color(4)=0.5;
                     scatter1 = scatter(s_pivot_full, sigma_fun_aud_pivots,'o','MarkerFaceColor','k','MarkerEdgeColor','k'); 
                     %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
                     scatter1.SizeData = 1;
@@ -676,7 +678,8 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
                     prior_pivots = cumsum([1,theta((2*num_pivots+1):(3*num_pivots-1))]);
                     prior_pivots = [fliplr(prior_pivots(2:end)), prior_pivots];
                     prior = @(s) exp(interp1(s_pivot_full, prior_pivots, s, 'pchip'));
-                    patchline(s_fine, log(prior(s_fine)),'linestyle','-','edgecolor','k','edgealpha',0.5);
+                    p=plot(s_fine, log(prior(s_fine)),'k-');
+                    p.Color(4)=0.5;
                     %scatter(s_pivot_full, prior_pivots,"o", "MarkerFaceAlpha",0.1)
                     scatter1 = scatter(s_pivot_full, prior_pivots,'o','MarkerFaceColor','k','MarkerEdgeColor','k'); 
                     %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
