@@ -108,6 +108,7 @@ exportgraphics(gcf,figpath+'Semiparam_FittedRespDistr'+'.png','Resolution',png_d
 exportgraphics(gcf,figpath+'Semiparam_FittedRespDistr'+'.pdf',"ContentType","vector");
 
 %%
+% 
 % sigma(s), p(s) visualization
 semiparam_sigmafun_prior_visualization(fontsize+1, 1.*[0 0 figsize(4)*4/3 figsize(4)],model_path);
 ax = gca; 
