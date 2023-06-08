@@ -99,8 +99,7 @@ This folder only saves the manuscript figures created by **manuscript_allplots**
   - Acerbi, L. (2019). An Exploration of Acquisition and Mean Functions in Variational Bayesian Monte Carlo. In Proc. Machine Learning Research 96: 1-10. 1st Symposium on Advances in Approximate Bayesian Inference, Montréal, Canada. https://github.com/acerbilab/vbmc
 
 #### Visualization aesthetics
-- **patchline.m** and **colorbrewer.m** contribute to visualization aesthetics. 
-  - Brett Shoelson (2023). Patchline (https://www.mathworks.com/matlabcentral/fileexchange/36953-patchline), MATLAB Central File Exchange. Retrieved May 31, 2023.
+- **colorbrewer.m** contribute to visualization aesthetics. 
   - Stephen23 (2023). ColorBrewer: Attractive and Distinctive Colormaps (https://github.com/DrosteEffect/BrewerMap/releases/tag/3.2.3), GitHub. Retrieved May 31, 2023.
  
 #### Truncated-Gaussian sampling
