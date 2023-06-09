@@ -172,7 +172,7 @@ causal_inf_strategy = "ProbMatching";
 save_name = "exp-GaussianLaplace-PM";
 manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true)
 
-% Exemplary subject
+%% Exemplary subject
 subjidx=7;
 fitted_on_all_data = true;
 allindvsubjplots_to_onesubjplot(save_name,subjidx, fitted_on_all_data, fontsize, figsize, figpath)
@@ -842,8 +842,10 @@ end
 
 %%
 function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_data, fontsize, figsize, figpath)
-    % This function assumes that the individual-level plots have been saved
-    % as .fig files.
+    % This function assumes that we has just created the individual-level
+    % plots, and those plots are the only plots in their original sequence 
+    % (which is ensured, because the individual-level visualization always 
+    % does "close all" before running.)
     close all;
     
     if(~fitted_on_all_data)
@@ -983,7 +985,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             hold on;
             if(strats==1)
                 fig4 = get(ax4_left,'children');
-                copyobj(fig4, tt);
+                copyobj(fig41, tt);
                 ttl = title('(c)', "Fontsize", 10);
                 ttl.Units = 'Normalize'; 
                 ttl.Position(1) = -0.33; % use negative values (ie, -0.1) to move further left
