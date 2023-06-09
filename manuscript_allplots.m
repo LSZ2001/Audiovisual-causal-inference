@@ -841,6 +841,10 @@ end
 
 %%
 function [] = allindvsubjplots_to_onesubjplot(subjidx, fitted_on_all_data, fontsize, figsize)
+    % This function assumes that we has just created the individual-level
+    % plots, and those plots are the only plots in their original sequence 
+    % (which is ensured, because the individual-level visualization always 
+    % does "close all" before running.)
     F1 = figure(1);
     t1 = nexttile(subjidx);
     ax1=gca;
@@ -986,7 +990,7 @@ function [] = allindvsubjplots_to_onesubjplot(subjidx, fitted_on_all_data, fonts
         t5.Layout.Tile = 19;
         t5.Layout.TileSpan = [1 6];
         xlabel(t5, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
-        ylabel(t5,"{\rm \fontsize{10} {Mean visual bias (est - true)}}");
+        ylabel(t5,"{\rm \fontsize{10} {Mean auditory bias (est - true)}}");
         for strats=1:3
             tt = nexttile(t5);
             hold on;
