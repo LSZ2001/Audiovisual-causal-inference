@@ -196,7 +196,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 hax2 = axes;
                 
             end
-            rel_level_alphas = [1, 0.5, 0.2,1];
+            rel_level_alphas = [1, 0.5, 0.25,1];
             alpha_level = rel_level_alphas(l);
             colors_AV = [67,67,255;67,67,255;67,67,255;64,129,0]./255;
             color_AV = colors_AV(l,:);
@@ -208,7 +208,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 set(gca,'TickDir','out');
                 hold on;
                 title("Subject " + i)
-                scatter(squeeze(s_range), squeeze(s_cond_s_hat_means(i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
+                scatter(squeeze(s_range), squeeze(s_cond_s_hat_means(i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor','none','MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
                 if(i>=12)
                     xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
                 end
@@ -235,7 +235,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 set(gca,'TickDir','out');
                 hold on;
                 title("Subject " + i)
-                scatter(squeeze(s_range), squeeze(s_cond_s_hat_stds(i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
+                scatter(squeeze(s_range), squeeze(s_cond_s_hat_stds(i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor','none','MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
                 if(i>=12)
                     xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
                 end

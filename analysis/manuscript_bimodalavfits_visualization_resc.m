@@ -181,7 +181,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
             
             set(gcf, 'Color', 'w')
             T=tiledlayout(4,4,'Padding', 'none', 'TileSpacing', 'compact');
-            rel_level_alphas = [1, 0.5, 0.2];
+            rel_level_alphas = [1, 0.5, 0.25];
             colors_AV = brewermap(10,"Set1");
             colors_AV = colors_AV([5,4,7],:); 
             for i=1:num_subjects
@@ -196,7 +196,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
                     title(t,"Subject " + i, 'FontSize',fontsize, 'FontWeight', 'bold')
                     for l=1:3
                         alpha_level = rel_level_alphas(l);
-                        scatter(squeeze(bincenters_stratrels(l,strats,i,:)), squeeze(Mean_Biases(l,strats,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
+                        scatter(squeeze(bincenters_stratrels(l,strats,i,:)), squeeze(Mean_Biases(l,strats,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor','none','MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
                         patchline(squeeze(bincenters_stratrels(l,strats,i,:)), squeeze(Mean_Biases_modelfit(l,strats,i,:)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level);
 %                         p = plot(squeeze(bincenters_stratrels(l,strats,i,:)), squeeze(Mean_Biases_modelfit(l,strats,i,:)), 'LineStyle', '-', 'Color',color_AV,'LineWidth',1);
 %                         p.Color(4) = alpha_level;

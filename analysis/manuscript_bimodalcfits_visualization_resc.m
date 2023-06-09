@@ -115,7 +115,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
         Probs_C1s_modelfit_sem = squeeze(std(Probs_C1s_modelfit, [], 3)) ./ sqrt(num_subjects);
         
         if(plot_individual)
-            rel_level_alphas = [1, 0.5, 0.2];
+            rel_level_alphas = [1, 0.5, 0.25];
             colors_AV = brewermap(10,"Set1");
             colors_AV = colors_AV(4:5,:);            
             for i=1:num_subjects
@@ -131,7 +131,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
                     title(t,"Subject " + i, 'FontSize',fontsize, 'FontWeight', 'bold')
                     for l=1:3
                         alpha_level = rel_level_alphas(l);
-                        scatter(bincenters, squeeze(Probs_C1s(l,strats,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
+                        scatter(bincenters, squeeze(Probs_C1s(l,strats,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor','none','MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
                         patchline(bincenters, squeeze(Probs_C1s_modelfit(l,strats,i,:)),  'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level);
 %                         p = plot(bincenters, squeeze(Probs_C1s_modelfit(l,strats,i,:)), 'Color',color_AV,'LineWidth',1);
 %                         p.Color(4) = alpha_level;

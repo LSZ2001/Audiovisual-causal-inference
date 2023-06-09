@@ -53,7 +53,7 @@ saveas(gca, figpath+save_name+'_IndividualSD.fig')
 exportgraphics(gcf,figpath+save_name+'_IndividualSD'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+save_name + '_IndividualSD'+'.pdf',"ContentType","vector");
 
-%% Exemplary subject
+% Exemplary subject
 subjidx=7;
 fitted_on_all_data = false;
 allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_data, fontsize, figsize, figpath)
