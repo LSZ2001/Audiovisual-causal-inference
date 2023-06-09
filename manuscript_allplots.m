@@ -52,12 +52,12 @@ saveas(gca, figpath+'Exp-GaussianLaplace_IndividualSD.fig')
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_IndividualSD'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_IndividualSD'+'.pdf',"ContentType","vector");
 
-
-%%
-
+%% Exemplary subject
 subjidx=7;
 fitted_on_all_data = false;
-allindvsubjplots_to_onesubjplot(subjdx, fitted_on_all_data, fontsize)
+allindvsubjplots_to_onesubjplot(subjidx, fitted_on_all_data, fontsize, figsize)
+exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Individual_example'+'.png','Resolution',png_dpi);
+exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Individual_example'+'.pdf',"ContentType","vector");
 
 %% No Lapse 
 prior = "GaussianLaplaceBothFixedZero";
@@ -170,6 +170,13 @@ hetero_type = "exp";
 causal_inf_strategy = "ProbMatching";
 save_name = "exp-GaussianLaplace-PM";
 manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true)
+
+%% Exemplary subject
+subjidx=7;
+fitted_on_all_data = true;
+allindvsubjplots_to_onesubjplot(subjidx, fitted_on_all_data, fontsize, figsize)
+exportgraphics(gcf,figpath+'Exp-GaussianLaplace-PM_Individual_example'+'.png','Resolution',png_dpi);
+exportgraphics(gcf,figpath+'Exp-GaussianLaplace-PM_Individual_example'+'.pdf',"ContentType","vector");
 
 %%
 prior_type = "GaussianLaplaceBothFixedZero";
@@ -833,30 +840,176 @@ end
 
 
 %%
-function [] = allindvsubjplots_to_onesubjplot(subjidx, fitted_on_all_data, fontsize)
-    if(nargin<1)
-        subjidx=7; fitted_on_all_data=false;
-    elseif(nargin<2)
-        fitted_on_all_data=false;
-    end
+function [] = allindvsubjplots_to_onesubjplot(subjidx, fitted_on_all_data, fontsize, figsize)
+    F1 = figure(1);
+    t1 = nexttile(subjidx);
+    ax1=gca;
+    F2 = figure(2);
+    t2 = nexttile(subjidx);
+    ax2=gca;
     
     if(~fitted_on_all_data)
-        figure(1)
-        h1 = nexttile(subjidx);
-        ax1=findobj(h1,'Type','Axes');
-        
-        figure(2)
-        h2 = nexttile(subjidx);
-        ax2=findobj(h2,'Type','Axes');
-
-        figure;
+        figure('Position', [0 0 figsize(4)*4/3 figsize(4).*2/3]);
+        set(gcf, 'Color', 'w')
         T=tiledlayout(1,2,'Padding', 'compact', 'TileSpacing', 'compact');
-        nexttile(1);
+        t1 = nexttile(1);
+        hold on
         fig1 = get(ax1,'children');
-        copyobj(ax1, fig1);
+        copyobj(fig1, t1);
+        xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
+        ylabel("Mean loc estimate (\circ)", 'FontSize', fontsize)
+        ylim([-20,20])
         
-        
+        t2 = nexttile(2);
+        fig2 = get(ax2,'children');
+        copyobj(fig2, t2);
+        xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
+        ylabel("SD of loc estimate (\circ)", 'FontSize', fontsize)
+        h = findall(gca, 'LineStyle', '-');
+        for i=1:4
+            h(i).HandleVisibility="off";
+        end
+        lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
+        set(lg,'Box','off')
+        lg.FontSize = 6;
+        lg.Location="northeast";
+        lg.ItemTokenSize(1) = 10;
         
     else
+        
+        F3 = figure(3);
+        ax3_center = F3.Children.Children((end-subjidx+1)).Children(2);
+        ax3_periphery = F3.Children.Children((end-subjidx+1)).Children(1);
+        
+        F4 = figure(4);
+        ax4_left = F4.Children.Children((end-subjidx+1)).Children(1);
+        ax4_center = F4.Children.Children((end-subjidx+1)).Children(2);
+        ax4_right = F4.Children.Children((end-subjidx+1)).Children(3);
+        
+        F5 = figure(5);
+        ax5_left = F5.Children.Children((end-subjidx+1)).Children(1);
+        ax5_center = F5.Children.Children((end-subjidx+1)).Children(2);
+        ax5_right = F5.Children.Children((end-subjidx+1)).Children(3);
+        
+        %% Move to new plot
+        figure('Position', [0,0,figsize(4)*4/3, figsize(4)]);
+        set(gcf, 'Color', 'w')
+        T=tiledlayout(2,12,'Padding', 'compact', 'TileSpacing', 'compact');
+        
+        t1 = nexttile([1,3]);
+        hold on
+        fig1 = get(ax1,'children');
+        copyobj(fig1, t1);
+        xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
+        ylabel("Mean loc estimate (\circ)", 'FontSize', fontsize)
+        ylim([-20,20])
+        
+        t2 = nexttile([1,3]);
+        fig2 = get(ax2,'children');
+        copyobj(fig2, t2);
+        xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
+        ylabel("SD of loc estimate (\circ)", 'FontSize', fontsize)
+        ylim([0,9])
+        h = findall(gca, 'LineStyle', '-');
+        for i=1:4
+            h(i).HandleVisibility="off";
+        end
+        lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
+        set(lg,'Box','off')
+        lg.FontSize = 6;
+        lg.ItemTokenSize(1) = 10;
+        
+        % BC
+        %t3 = nexttile([1,2]);
+        t3=tiledlayout(T,1,2);
+        t3.Layout.Tile = 7;
+        t3.Layout.TileSpan = [1 6];
+        xlabel(t3,"Stimulus location disparity (A - V)", 'FontSize',fontsize)
+        ylabel(t3,{"{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"}, 'FontSize',fontsize);
+
+        BC_strat_names = ["Center", "Periphery"];
+        for strats=1:2
+            tt = nexttile(t3);
+            hold on;
+            if(strats==1)
+                fig31 = get(ax3_center,'children');
+                copyobj(fig31, tt);
+            else
+                fig32 = get(ax3_periphery,'children');
+                copyobj(fig32, tt);
+            end
+            h = findall(gca, 'LineStyle', '-');
+            for i=1:3
+                h(i).HandleVisibility="off";
+            end
+            xlim([-30,30])
+            ylim([0,1])
+            
+            lg = legend(BC_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
+            set(lg,'Box','off')
+            lg.FontSize = 6;
+            lg.Location="south";
+            lg.ItemTokenSize(1) = 10;
+        end
+        
+        BAV_strat_names = ["Left","Center","Right"];
+        t4=tiledlayout(T,1,3);
+        t4.Layout.Tile = 13;
+        t4.Layout.TileSpan = [1 6];
+        xlabel(t4, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
+        ylabel(t4,"{\rm \fontsize{10} {Mean visual bias (est - true)}}");
+        for strats=1:3
+            tt = nexttile(t4);
+            hold on;
+            if(strats==1)
+                fig4 = get(ax4_left,'children');
+            elseif(strats==2)
+                fig4 = get(ax4_center,'children');
+            else
+                fig4 = get(ax4_right,'children');
+            end
+            copyobj(fig4, tt);
+            h = findall(gca, 'LineStyle', '-');
+            for i=1:3
+                h(i).HandleVisibility="off";
+            end
+            xlim([-35,35])
+            ylim([-15,15])
+            lg = legend(BAV_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
+            set(lg,'Box','off')
+            lg.FontSize = 6;
+            lg.Location="northwest";
+            lg.ItemTokenSize(1) = 10;
+        end
+        
+        t5=tiledlayout(T,1,3);
+        t5.Layout.Tile = 19;
+        t5.Layout.TileSpan = [1 6];
+        xlabel(t5, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
+        ylabel(t5,"{\rm \fontsize{10} {Mean visual bias (est - true)}}");
+        for strats=1:3
+            tt = nexttile(t5);
+            hold on;
+            if(strats==1)
+                fig5 = get(ax5_left,'children');
+            elseif(strats==2)
+                fig5 = get(ax5_center,'children');
+            else
+                fig5 = get(ax5_right,'children');
+            end
+            copyobj(fig5, tt);
+            h = findall(gca, 'LineStyle', '-');
+            for i=1:3
+                h(i).HandleVisibility="off";
+            end
+            xlim([-35,35])
+            ylim([-15,15])
+            
+            lg = legend(BAV_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
+            set(lg,'Box','off')
+            lg.FontSize = 6;
+            lg.Location="northeast";
+            lg.ItemTokenSize(1) = 10;
+        end
     end
 end

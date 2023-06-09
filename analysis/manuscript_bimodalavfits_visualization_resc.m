@@ -197,7 +197,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
                     for l=1:3
                         alpha_level = rel_level_alphas(l);
                         scatter(squeeze(bincenters_stratrels(l,strats,i,:)), squeeze(Mean_Biases(l,strats,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor',color_AV,'MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
-                        p = plot(squeeze(bincenters_stratrels(l,strats,i,:)), squeeze(Mean_Biases_modelfit(l,strats,i,:)), 'Color',color_AV,'LineWidth',1);
+                        p = plot(squeeze(bincenters_stratrels(l,strats,i,:)), squeeze(Mean_Biases_modelfit(l,strats,i,:)), 'LineStyle', '-', 'Color',color_AV,'LineWidth',1);
                         p.Color(4) = alpha_level;
                     end
                     xlim([-35,35])
