@@ -125,25 +125,17 @@ num_params = [40,14,13,13,12,10,14,8,7,7];
 % Vanila 3 models on unimodal data only
 figure('Position', [0 0 figsize(4)*0.9*0.65 figsize(4)*0.9]);
 set(gcf, 'Color', 'w')
-UnimodalData_ModelComparison_FinalTables_Vanilla = unimodaldata_modelcomparison_visualize(priors((end-2):end), noises((end-2):end), rescales((end-2):end), model_types((end-2):end), num_params((end-2):end), true, fontsize+1, model_path, data_path, false);
+UnimodalData_ModelComparison_FinalTables_Vanilla = unimodaldata_modelcomparison_visualize(priors((end-2):end), noises((end-2):end), rescales((end-2):end), model_types((end-2):end), num_params((end-2):end), true, fontsize+1, model_path, data_path);
 ax = gca; 
 ax.FontSize = fontsize+1; 
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_vanilla'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_vanilla'+'.pdf',"ContentType","vector");
 save(analysis_path+'unimodaldata_modelcomparison_finaltables_vanilla','UnimodalData_ModelComparison_FinalTables_Vanilla');
-        
-% All models on unimodal data
-figure('Position', [0 0 figsize(4)*0.9*5/4 figsize(4)*0.9]);
-set(gcf, 'Color', 'w')
-UnimodalData_ModelComparison_FinalTables = unimodaldata_modelcomparison_visualize(priors, noises, rescales, model_types, num_params, true, fontsize+1, model_path, data_path, true);
-ax = gca; 
-ax.FontSize = fontsize+1; 
-exportgraphics(gcf,figpath+'UJoint_ModelSelection_BIC'+'.png','Resolution',png_dpi);
-exportgraphics(gcf,figpath+'UJoint_ModelSelection_BIC'+'.pdf',"ContentType","vector");
 
+% All models on unimodal data 
 figure('Position', [0 0 figsize(4)*0.9*5/4 figsize(4)*0.9]);
 set(gcf, 'Color', 'w')
-UnimodalData_ModelComparison_FinalTables = unimodaldata_modelcomparison_visualize(priors, noises, rescales, model_types, num_params, true, fontsize+1, model_path, data_path, false);
+UnimodalData_ModelComparison_FinalTables = unimodaldata_modelcomparison_visualize(priors, noises, rescales, model_types, num_params, true, fontsize+1, model_path, data_path);
 ax = gca; 
 ax.FontSize = fontsize+1; 
 exportgraphics(gcf,figpath+'UJoint_ModelSelection'+'.png','Resolution',png_dpi);
@@ -198,15 +190,7 @@ param_model_names = ["paramBest", "semiparamInsp","exp-GaussianLaplace","exp-Sin
 
 figure('Position', [0 0 figsize(4)*0.9*4/3 figsize(4)*0.9]);
 set(gcf, 'Color', 'w')
-alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path, true);
-ylim([-200,Inf])
-exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection_BIC'+'.png','Resolution',png_dpi);
-exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection_BIC'+'.pdf',"ContentType","vector");
-
-
-figure('Position', [0 0 figsize(4)*0.9*4/3 figsize(4)*0.9]);
-set(gcf, 'Color', 'w')
-AllData_ModelComparison_FinalTables = alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path, false);
+AllData_ModelComparison_FinalTables = alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection'+'.pdf',"ContentType","vector");
 save(analysis_path+'alldata_modelcomparison_finaltables','AllData_ModelComparison_FinalTables');
@@ -248,7 +232,7 @@ exportgraphics(gcf,figpath+'SensoryNoisePriorParamFamilies'+'.pdf',"ContentType"
 
 
 %% BELOW: Helper Functions 
-function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparison_visualize(priors, noises, rescales, model_types, num_params, is_plot, fontsize, model_path, data_path, plot_BIC_only)
+function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparison_visualize(priors, noises, rescales, model_types, num_params, is_plot, fontsize, model_path, data_path)
     num_models = length(priors);
     num_subjects = 15;
 
@@ -322,15 +306,10 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
     bootstraps_errorbars_allstats = {NLL_bootstraps_errorbars, AIC_bootstraps_errorbars, BIC_bootstraps_errorbars};
     allstats = {NLL_sumvalues_diff, AIC_sumvalues_diff, BIC_sumvalues_diff};
     stat_names = ["$\Delta NLL$", "$\Delta AIC$", "$\Delta BIC$"];
-    
+
     if(is_plot)
-        if(plot_BIC_only)
-            statistics = 3;
-        else
-            statistics = 1:length(stat_names)
-        end
-        tiledlayout(length(statistics),1, 'TileSpacing', 'compact','Padding', 'none')
-        for statistic=statistics
+        tiledlayout(length(stat_names),1, 'TileSpacing', 'compact','Padding', 'none')
+        for statistic=1:length(stat_names)
             nexttile
             set(gca,'TickDir','out');
             bootstraps_errorbars = bootstraps_errorbars_allstats{statistic};
@@ -365,6 +344,7 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
 end
 
 %%
+unimodaldata_modelcomparison_visualize_uniformgaussianlapse(model_path, data_path)
 function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparison_visualize_uniformgaussianlapse(model_path, data_path) 
     num_models = 2;
     num_subjects=15;
@@ -457,7 +437,7 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
 end
 
 %%
-function [AllData_ModelComparison_FinalTables] = alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, is_plot, fontsize, model_path, data_path, plot_BIC_only)
+function [AllData_ModelComparison_FinalTables] = alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, is_plot, fontsize, model_path, data_path)
     num_strategies = length(causal_inf_strategies);
     num_models = length(param_model_names);
     num_subjects = 15;
@@ -519,14 +499,10 @@ function [AllData_ModelComparison_FinalTables] = alldata_modelcomparison_visuali
     bootstraps_errorbars_allstats = {NLL_bootstraps_errorbars, AIC_bootstraps_errorbars, BIC_bootstraps_errorbars};
     allstats = {NLL_allmodels_sumdiff, AIC_allmodels_sumdiff, BIC_allmodels_sumdiff};
     stat_names = ["$\Delta NLL$", "$\Delta AIC$", "$\Delta BIC$"];
+    
     if(is_plot)
-        if(plot_BIC_only)
-            statistics = 3;
-        else
-            statistics = 1:length(stat_names)
-        end
-        tiledlayout(length(statistics),1, 'TileSpacing', 'compact','Padding', 'none')
-        for statistic=statistics
+        tiledlayout(length(stat_names),1, 'TileSpacing', 'compact','Padding', 'none')
+        for statistic=1:length(stat_names)
             nexttile
             set(gca,'TickDir','out');
             bootstraps_errorbars = bootstraps_errorbars_allstats{statistic};
