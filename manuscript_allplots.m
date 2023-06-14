@@ -112,8 +112,6 @@ exportgraphics(gcf,figpath+'Semiparam_FittedRespDistr'+'.pdf',"ContentType","vec
 % 
 % sigma(s), p(s) visualization
 semiparam_sigmafun_prior_visualization(fontsize+1, 1.*[0 0 figsize(4)*4/3 figsize(4)],model_path);
-ax = gca; 
-ax.FontSize = fontsize+1; 
 exportgraphics(gcf,figpath+'Semiparam_FittedParams'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Semiparam_FittedParams'+'.pdf',"ContentType","vector");
 
@@ -632,6 +630,12 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     num_params = 40;
     num_iters = 81*15;
     num_inits = 81;
+    
+    colors = brewermap(12,"Set3");
+    colors2 = brewermap(8,"Set2");
+    colors(2,:) = colors2(2,:);
+    colors = [colors; colors2([4,7,8],:)];
+    %colors = colors .* 0.9;
 
     filename_basis = "fittedparams_UJoint_Semiparam_rescalefree_lapseUniform.mat";
     load(model_path + filename_basis);
@@ -644,68 +648,115 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     s_pivot = ModelComponents.SPivot;
     s_pivot_full = [-fliplr(s_pivot(2:end)), s_pivot];
     s_fine = linspace(0,15,2^7);
+    s_fine_full = linspace(0,45,2^9);
     num_pivots = length(s_pivot);
     
     figure('Position', figspec);
     set(gcf, 'Color', 'w')
-    tiledlayout(2,10,'TileSpacing','compact', "Padding","none");
+    T = tiledlayout(2,10,'TileSpacing','compact', "Padding","none");
 
+    linewidth = 1;
     for fun_idx=1:3
-        nexttile([1,5])
-        set(gca,'TickDir','out');
-        hold on
+        t = nexttile(T,[1,5]);
+        set(t,'TickDir','out');
+        hold(t,'on')
+        pl = get(t, 'Position');
+        switch fun_idx
+            case 1
+                h = axes('Parent', gcf, 'Position', [pl(1)+pl(3)*.63 pl(2)+.06 pl(3)*0.35 pl(3)*0.35.*3/4]);
+            case 2
+                h = axes('Parent', gcf, 'Position', [pl(1)+pl(3)*.65 pl(2)+.06 pl(3)*0.35 pl(3)*0.35.*3/4]);
+            case 3
+                h = axes('Parent', gcf, 'Position', [pl(1)+pl(3)*.63 pl(2)+pl(4)*0.7 pl(3)*0.35 pl(3)*0.35.*3/4]);
+        end
+        %box(h,'on');
+        hold(h,'on')
+        set(h,'TickDir','out');
         for subj=1:num_subjects
             %[fun_idx, subj]
 
             theta=squeeze(theta_fitted_cmaes(subj,:));
-            col = "k-";
+            color = colors(subj,:);
             switch fun_idx
                 case 1
                     sigma_fun_vis_rel_high_pivots = cumsum(theta(1:num_pivots));
                     sigma_fun_vis_rel_high_pivots = [fliplr(sigma_fun_vis_rel_high_pivots(2:end)), sigma_fun_vis_rel_high_pivots];
                     sigma_fun_vis = @(s)  min([repmat(45,length(s),1)' ; interp1(s_pivot_full, exp(sigma_fun_vis_rel_high_pivots), s, 'pchip')], [], 1);       
-                    p=plot(s_fine, log(sigma_fun_vis(s_fine)),'k-');
-                    p.Color(4)=0.5;
-                    scatter1 = scatter(s_pivot_full, sigma_fun_vis_rel_high_pivots,'o','MarkerFaceColor','k','MarkerEdgeColor','k'); 
+                    p=plot(t,s_fine, sigma_fun_vis(s_fine),'-','Color', color, 'LineWidth',linewidth);
+                    p.Color(4)=0.9;
+                    scatter1 = scatter(t,s_pivot_full, exp(sigma_fun_vis_rel_high_pivots),'o','MarkerFaceColor',color,'MarkerEdgeColor',color); 
+                    %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
+                    scatter1.SizeData = linewidth.*5;
+                    ylabel(t,"$\sigma_{\mathrm{V}}(s)$", 'interpreter','latex', 'FontSize', fontsize)
+                    xlabel(t,"Visual stimulus location (\circ)", 'FontSize', fontsize)
+                    xlim(t,[0,15])
+                    ylim(t,[0,3])
+                    
+                    p=plot(h, s_fine_full, sigma_fun_vis(s_fine_full),'-', 'Color',color);
+                    p.Color(4)=0.9;
+                    scatter1 = scatter(h, s_pivot_full, min(45,exp(sigma_fun_vis_rel_high_pivots)),'o','MarkerFaceColor',color,'MarkerEdgeColor',color); 
                     %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
                     scatter1.SizeData = 1;
-                    ylabel("$\log \sigma_{vis}(s)$", 'interpreter','latex', 'FontSize', fontsize)
-                    xlabel("Visual stimulus location (\circ)", 'FontSize', fontsize)
+                    %ylabel(h,"$\sigma_{\mathrm{V}}(s)$", 'interpreter','latex', 'FontSize', fontsize)
+                    xlim(h,[0,45])
+                    ylim(h,[0,45])
+
                 case 2
                     sigma_fun_aud_pivots = cumsum(theta((num_pivots+1):(2*num_pivots)));
                     sigma_fun_aud_pivots = [fliplr(sigma_fun_aud_pivots(2:end)), sigma_fun_aud_pivots];
                     sigma_fun_aud = @(s)  min([repmat(45,length(s),1)' ; interp1(s_pivot_full, exp(sigma_fun_aud_pivots), s, 'pchip')], [], 1);       
-                    p=plot(s_fine, log(sigma_fun_aud(s_fine)),'k-');
-                    p.Color(4)=0.5;
-                    scatter1 = scatter(s_pivot_full, sigma_fun_aud_pivots,'o','MarkerFaceColor','k','MarkerEdgeColor','k'); 
+                    p=plot(t,s_fine, sigma_fun_aud(s_fine),'-', 'Color',color, 'LineWidth', linewidth);
+                    p.Color(4)=0.9;
+                    scatter1 = scatter(t,s_pivot_full, exp(sigma_fun_aud_pivots),'o','MarkerFaceColor',color,'MarkerEdgeColor',color); 
+                    %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
+                    scatter1.SizeData = linewidth.*5;
+                    ylabel(t,"$\sigma_{\mathrm{A}}(s)$", 'interpreter','latex', 'FontSize', fontsize) 
+                    xlabel(t,"Auditory stimulus location (\circ)", 'FontSize', fontsize)
+                    xlim(t,[0,15])
+                    ylim(t,[0,6.1])
+                    
+                    p=plot(h, s_fine_full, sigma_fun_aud(s_fine_full),'-', 'Color',color);
+                    p.Color(4)=0.9;
+                    scatter1 = scatter(h, s_pivot_full, min(45,exp(sigma_fun_aud_pivots)),'o','MarkerFaceColor',color,'MarkerEdgeColor',color); 
                     %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
                     scatter1.SizeData = 1;
-                    ylabel("$\log \sigma_{aud}(s)$", 'interpreter','latex', 'FontSize', fontsize) 
-                    xlabel("Auditory stimulus location (\circ)", 'FontSize', fontsize)
+                    %ylabel(h,"$\sigma_{\mathrm{A}}(s)$", 'interpreter','latex', 'FontSize', fontsize)
+                    xlim(h,[0,45])
+                    ylim(h,[0,45])
                 case 3    
 
                     prior_pivots = cumsum([1,theta((2*num_pivots+1):(3*num_pivots-1))]);
                     prior_pivots = [fliplr(prior_pivots(2:end)), prior_pivots];
                     prior = @(s) exp(interp1(s_pivot_full, prior_pivots, s, 'pchip'));
-                    p=plot(s_fine, log(prior(s_fine)),'k-');
-                    p.Color(4)=0.5;
+                    p=plot(t,s_fine, (prior(s_fine)),'-', 'Color',color, 'LineWidth', linewidth);
+                    p.Color(4)=0.9;
                     %scatter(s_pivot_full, prior_pivots,"o", "MarkerFaceAlpha",0.1)
-                    scatter1 = scatter(s_pivot_full, prior_pivots,'o','MarkerFaceColor','k','MarkerEdgeColor','k'); 
+                    scatter1 = scatter(t,s_pivot_full, exp(prior_pivots),'o','MarkerFaceColor',color,'MarkerEdgeColor',color); 
+                    %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
+                    scatter1.SizeData = linewidth.*5;
+                    ylabel(t,"$p(s)$", 'interpreter','latex', 'FontSize', fontsize) 
+                    xlabel(t,"Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
+                    xlim(t,[0,15])
+                    ylim(t,[0,exp(1)+0.2])
+                    
+                    p=plot(h, s_fine_full, prior(s_fine_full),'-', 'Color',color);
+                    p.Color(4)=0.9;
+                    scatter1 = scatter(h, s_pivot_full, exp(prior_pivots),'o','MarkerFaceColor',color,'MarkerEdgeColor',color); 
                     %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
                     scatter1.SizeData = 1;
-                    ylabel("$\log p(s)$", 'interpreter','latex', 'FontSize', fontsize) 
-                    xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
-            end
-            xlim([0,15])  
+                    xlim(h,[0,45])
+                    ylim(h,[0,exp(1)+0.2])
+                    %ylabel(h,"$p(s)$", 'interpreter','latex', 'FontSize', fontsize) 
+            end  
         end
         ax.XAxis.FontSize = fontsize;
         ax.YAxis.FontSize = fontsize;
     end
     
     x_labels_pos = (3*num_pivots):num_params;
-    x_labels = "$"+{"\alpha_{med}", "\alpha_{low}", "\lambda","\sigma_{motor}","\rho"}+"$";
+    x_labels = "$"+{"\alpha_\mathrm{med}", "\alpha_\mathrm{low}", "\lambda","\sigma_\mathrm{motor}","\rho_\mathrm{A}"}+"$";
 
-    nexttile([1,3])
+    nexttile(T,[1,3])
     boxplot(theta_fitted_cmaes(:,x_labels_pos([1,2,5])))
     hold on
     idx=0
@@ -723,10 +774,11 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     ax=gca;
     ax.XAxis.FontSize = fontsize;
     xlim([1-0.5,idx+0.5])
+    ylim([0, Inf])
     box off 
     set(gca,'TickDir','out');
         
-    nexttile
+    nexttile(T)
     boxplot(theta_fitted_cmaes(:,x_labels_pos(3)))
     hold on
     scatter1 = scatter(repmat(1,num_subjects,1), theta_fitted_cmaes(:,x_labels_pos(3)),'o','MarkerFaceColor','k','MarkerEdgeColor','k');
@@ -738,10 +790,11 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     ax=gca;
     ax.XAxis.FontSize = fontsize;
     xlim([0.5,1.5])
+    ylim([0, Inf])
     set(gca,'TickDir','out');
     box off 
     
-    nexttile
+    nexttile(T)
     boxplot(theta_fitted_cmaes(:,x_labels_pos(4)))
     hold on
     scatter1 = scatter(repmat(1,num_subjects,1), theta_fitted_cmaes(:,x_labels_pos(4)),'o','MarkerFaceColor','k','MarkerEdgeColor','k');
@@ -753,13 +806,12 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     ax=gca;
     ax.XAxis.FontSize = fontsize;
     xlim([0.5,1.5])
+    ylim([0, Inf])
     set(gca,'TickDir','out');
     box off 
     
     %set(gca,'fontsize', fontsize)
 end
-
-
 
 %%
 function [] = sigmafun_prior_examples(fontsize)
@@ -777,7 +829,8 @@ function [] = sigmafun_prior_examples(fontsize)
     for i=1:length(sigma0_vals)
         plot(s_grid, repmat(sigma0_vals(i), length(s_grid),1), "-", 'Color', colors(i,:));
     end
-    legend("$\sigma_0="+sigma0_vals+"$", 'Interpreter', 'latex')
+    lg = legend("$\sigma_0="+sigma0_vals+"$", 'Interpreter', 'latex');
+    set(lg,'Box','off')
     ylim([0,Inf])
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
     ylabel("$\sigma(s)$", 'Interpreter', 'latex', 'FontSize', fontsize)
@@ -792,7 +845,8 @@ function [] = sigmafun_prior_examples(fontsize)
     for i=1:length(sigma0_vals)
         plot(s_grid, sigma_fun_exp(s_grid,sigma0_vals(i), [k1_vals(i),k2_vals(i)]), "-", 'Color', colors(i,:));
     end
-    legend("$\sigma_0="+sigma0_vals+", k_1="+k1_vals+", k_2="+k2_vals+"$", 'Interpreter', 'latex')
+    lg = legend("$\sigma_0="+sigma0_vals+", k_1="+k1_vals+", k_2="+k2_vals+"$", 'Interpreter', 'latex');
+    set(lg,'Box','off')'
     ylim([0,Inf])
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
     title("Exponential sensory noise")
@@ -804,7 +858,8 @@ function [] = sigmafun_prior_examples(fontsize)
     for i=1:length(sigma_s_vals)
         plot(s_grid, normpdf(s_grid, 0, sigma_s_vals(i)), "-", 'Color', colors(i,:))
     end
-    legend("$\sigma_s="+sigma_s_vals+"$", 'Interpreter', 'latex')
+    lg = legend("$\sigma_s="+sigma_s_vals+"$", 'Interpreter', 'latex');
+    set(lg,'Box','off')
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
     ylabel("$p(s)$", 'Interpreter', 'latex', 'FontSize', fontsize)
     title("SingleGaussian prior")
@@ -819,7 +874,8 @@ function [] = sigmafun_prior_examples(fontsize)
         plot(s_grid, (1-w_vals(i)).*normpdf(s_grid, 0, sigma_s_vals(i)) + w_vals(i).*1./(2.*b_vals(i)).*exp(-abs(s_grid)./b_vals(i)), "-", 'Color', colors(i,:))
     end
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
-    legend("$\sigma_s="+sigma_s_vals+", b="+b_vals+", w="+w_vals+"$", 'Interpreter', 'latex')
+    lg = legend("$\sigma_s="+sigma_s_vals+", b="+b_vals+", w="+w_vals+"$", 'Interpreter', 'latex');
+    set(lg,'Box','off')
     title("GaussianLaplace prior")
 
     sigma_s_vals = [3,5,8,10];
@@ -833,7 +889,8 @@ function [] = sigmafun_prior_examples(fontsize)
     end
     ylim([0,0.15])
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
-    legend("$\sigma_s="+sigma_s_vals+", \sigma_{\Delta}="+sigma_s2_vals+", w="+w_vals+"$", 'Interpreter', 'latex')
+    lg = legend("$\sigma_s="+sigma_s_vals+", \sigma_{\Delta}="+sigma_s2_vals+", w="+w_vals+"$", 'Interpreter', 'latex');
+    set(lg,'Box','off')
     title("TwoGaussians prior")
     
     set(gca,'fontsize', fontsize)
