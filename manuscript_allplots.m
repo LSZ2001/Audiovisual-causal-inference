@@ -2,6 +2,8 @@ clear all; close all;
 cd('C:\Users\liu_s\Audiovisual-causal-inference')
 
 figsize = get(0, 'ScreenSize');
+figsize_4by3 = [0,0,figsize(4)*4/3, figsize(4)];
+
 figformat = "svg";
 figpath = "plots\";
 fontsize=9;
@@ -17,14 +19,14 @@ analysis_path = "analysis\";
 prior = "SingleGaussian";
 noise = "constant";
 aud_rescale = "1";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Const-SingleGaussian_rescaleaud1'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Const-SingleGaussian_rescaleaud1'+'.pdf',"ContentType","vector");
 %%
 prior = "SingleGaussian";
 noise = "constant";
 aud_rescale = "free";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Const-SingleGaussian'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Const-SingleGaussian'+'.pdf',"ContentType","vector");
 
@@ -32,8 +34,8 @@ exportgraphics(gcf,figpath+'Const-SingleGaussian'+'.pdf',"ContentType","vector")
 prior = "GaussianLaplaceBothFixedZero";
 noise = "exp";
 aud_rescale = "free";
-%manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)]);
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+%manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, four_by_three_figsize);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace'+'.pdf',"ContentType","vector");
 
@@ -43,7 +45,7 @@ noise = "exp";
 aud_rescale = "free";
 save_name = "Exp-GaussianLaplace";
 plot_individual = true;
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type, plot_individual);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, plot_lapse, lapse_type, plot_individual);
 figure(1)
 saveas(gca, figpath+save_name+'_Individualmean.fig')
 exportgraphics(gcf,figpath+save_name+'_Individualmean'+'.png','Resolution',png_dpi);
@@ -64,7 +66,7 @@ exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Individual_example'+'.pdf',"Cont
 prior = "GaussianLaplaceBothFixedZero";
 noise = "exp";
 aud_rescale = "free";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, false, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, false, lapse_type);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_nolapse'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_nolapse'+'.pdf',"ContentType","vector");
 
@@ -72,7 +74,7 @@ exportgraphics(gcf,figpath+'Exp-GaussianLaplace_nolapse'+'.pdf',"ContentType","v
 prior = "GaussianLaplaceBothFixedZero";
 noise = "exp";
 aud_rescale = "free";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, true, "Gaussian");
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, true, "Gaussian");
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Gaussianlapse'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Gaussianlapse'+'.pdf',"ContentType","vector");
 
@@ -83,35 +85,35 @@ UnimodalData_ModelComparison_FinalTables_uniformgaussianlapse = unimodaldata_mod
 prior = "SingleGaussian";
 noise = "exp";
 aud_rescale = "free";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Exp-SingleGaussian'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-SingleGaussian'+'.pdf',"ContentType","vector");
 
 prior = "GaussianLaplaceBothFixedZero";
 noise = "constant";
 aud_rescale = "free";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Const-GaussianLaplace'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Const-GaussianLaplace'+'.pdf',"ContentType","vector");
 
 prior = "TwoGaussiansBothFixedZero";
 noise = "exp";
 aud_rescale = "free";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Exp-TwoGaussians'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-TwoGaussians'+'.pdf',"ContentType","vector");
 
 %% Unimodal semiparam model 
 % Response distribution visualization
-% manuscript_ujoint_respdistrvisualization_semiparam(fontsize, [0 0 figsize(4)*4/3 figsize(4)]);
-manuscript_ujoint_respdistrvisualization_semiparam(fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+% manuscript_ujoint_respdistrvisualization_semiparam(fontsize, four_by_three_figsize);
+manuscript_ujoint_respdistrvisualization_semiparam(fontsize, figsize_4by3, model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Semiparam_FittedRespDistr'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Semiparam_FittedRespDistr'+'.pdf',"ContentType","vector");
 
 %%
 % 
 % sigma(s), p(s) visualization
-semiparam_sigmafun_prior_visualization(fontsize+1, 1.*[0 0 figsize(4)*4/3 figsize(4)],model_path);
+semiparam_sigmafun_prior_visualization(fontsize+1, figsize_4by3, model_path);
 exportgraphics(gcf,figpath+'Semiparam_FittedParams'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Semiparam_FittedParams'+'.pdf',"ContentType","vector");
 
@@ -153,30 +155,30 @@ save(analysis_path+'unimodaldata_modelcomparison_finaltables','UnimodalData_Mode
 %% AllData semiparamInsp Response distribution visualization
 causal_inf_strategy = "ProbMatching";
 save_name = "PM";
-manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true);
+manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_4by3, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true);
 
 %%
 causal_inf_strategy = "ModelSelection";
 save_name = "MS";
-manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
+manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_4by3, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 
 causal_inf_strategy = "ModelAveraging";
 save_name = "MA";
-manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
+manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_4by3, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 
 %% AllData parametric model response distributions
 prior_type = "GaussianLaplaceBothFixedZero";
 hetero_type = "exp";
 causal_inf_strategy = "ProbMatching";
 save_name = "exp-GaussianLaplace-PM";
-manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
+manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, figsize_4by3, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
 
 %% Individual-level plots for the above model
 prior_type = "GaussianLaplaceBothFixedZero";
 hetero_type = "exp";
 causal_inf_strategy = "ProbMatching";
 save_name = "exp-GaussianLaplace-PM";
-manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true)
+manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, figsize_4by3, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true)
 
 % Exemplary subject
 subjidx=7;
@@ -190,7 +192,7 @@ prior_type = "GaussianLaplaceBothFixedZero";
 hetero_type = "exp";
 causal_inf_strategy = "ModelAveraging";
 save_name = "exp-GaussianLaplace-MA";
-manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, [0 0 figsize(4)*4/3 figsize(4)], figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
+manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, figsize_4by3, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
 
 %% AllData ModelComparison
 causal_inf_strategies = ["ModelSelection","ModelAveraging","ProbMatching"];
@@ -689,7 +691,7 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
         pl = get(t, 'Position');
         switch fun_idx
             case 1
-                h = axes('Parent', gcf, 'Position', [pl(1)+pl(3)*.63 pl(2)+.06 pl(3)*0.35 pl(3)*0.35.*3/4]);
+                h = axes('Parent', gcf, 'Position', [pl(1)+pl(3)*.63 pl(2)+pl(4)*0.7 pl(3)*0.35 pl(3)*0.35.*3/4]);
             case 2
                 h = axes('Parent', gcf, 'Position', [pl(1)+pl(3)*.65 pl(2)+.06 pl(3)*0.35 pl(3)*0.35.*3/4]);
             case 3
@@ -713,19 +715,25 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
                     scatter1 = scatter(t,s_pivot_full, exp(sigma_fun_vis_rel_high_pivots),'o','MarkerFaceColor',color,'MarkerEdgeColor',color); 
                     %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
                     scatter1.SizeData = linewidth.*5;
+                    
                     ylabel(t,"$\sigma_{\mathrm{V}}(s)$", 'interpreter','latex', 'FontSize', fontsize)
                     xlabel(t,"Visual stimulus location (\circ)", 'FontSize', fontsize)
                     xlim(t,[0,15])
-                    ylim(t,[0,3])
+                    ylim(t,[0,6.1])
+                    xl = xlim(t); yl = ylim(t);
+                    yticks(t,0:6)
                     
                     p=plot(h, s_fine_full, sigma_fun_vis(s_fine_full),'-', 'Color',color);
                     p.Color(4)=0.9;
                     scatter1 = scatter(h, s_pivot_full, min(45,exp(sigma_fun_vis_rel_high_pivots)),'o','MarkerFaceColor',color,'MarkerEdgeColor',color); 
                     %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
                     scatter1.SizeData = 1;
+                    rectangle('Position',[xl(1) yl(1) xl(2)-xl(1) yl(2)-yl(1)])
                     %ylabel(h,"$\sigma_{\mathrm{V}}(s)$", 'interpreter','latex', 'FontSize', fontsize)
                     xlim(h,[0,45])
                     ylim(h,[0,45])
+                    xticks(h,0:15:45)
+                    yticks(h,0:15:45)
 
                 case 2
                     sigma_fun_aud_pivots = cumsum(theta((num_pivots+1):(2*num_pivots)));
@@ -740,39 +748,53 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
                     xlabel(t,"Auditory stimulus location (\circ)", 'FontSize', fontsize)
                     xlim(t,[0,15])
                     ylim(t,[0,6.1])
+                    xl = xlim(t); yl = ylim(t);
+                    yticks(t,0:6)
                     
                     p=plot(h, s_fine_full, sigma_fun_aud(s_fine_full),'-', 'Color',color);
                     p.Color(4)=0.9;
                     scatter1 = scatter(h, s_pivot_full, min(45,exp(sigma_fun_aud_pivots)),'o','MarkerFaceColor',color,'MarkerEdgeColor',color); 
                     %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
                     scatter1.SizeData = 1;
+                    rectangle('Position',[xl(1) yl(1) xl(2)-xl(1) yl(2)-yl(1)])
                     %ylabel(h,"$\sigma_{\mathrm{A}}(s)$", 'interpreter','latex', 'FontSize', fontsize)
                     xlim(h,[0,45])
                     ylim(h,[0,45])
+                    xticks(h,0:15:45)
+                    yticks(h,0:15:45)
                 case 3    
-
                     prior_pivots = cumsum([1,theta((2*num_pivots+1):(3*num_pivots-1))]);
                     prior_pivots = [fliplr(prior_pivots(2:end)), prior_pivots];
                     prior = @(s) exp(interp1(s_pivot_full, prior_pivots, s, 'pchip'));
-                    p=plot(t,s_fine, (prior(s_fine)),'-', 'Color',color, 'LineWidth', linewidth);
+                    
+                    s_fine_full_width = s_fine_full(2) - s_fine_full(1);
+                    normalization_constant = 1./(qtrapz(prior(s_fine_full).*s_fine_full_width));
+
+                    p=plot(t,s_fine_full, (prior(s_fine_full).*normalization_constant),'-', 'Color',color, 'LineWidth', linewidth);
                     p.Color(4)=0.9;
                     %scatter(s_pivot_full, prior_pivots,"o", "MarkerFaceAlpha",0.1)
-                    scatter1 = scatter(t,s_pivot_full, exp(prior_pivots),'o','MarkerFaceColor',color,'MarkerEdgeColor',color); 
+                    scatter1 = scatter(t,s_pivot_full, exp(prior_pivots).*normalization_constant,'o','MarkerFaceColor',color,'MarkerEdgeColor',color); 
                     %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
                     scatter1.SizeData = linewidth.*5;
                     ylabel(t,"$p(s)$", 'interpreter','latex', 'FontSize', fontsize) 
                     xlabel(t,"Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
-                    xlim(t,[0,15])
-                    ylim(t,[0,exp(1)+0.2])
+                    xlim(t,[0,3])
+                    ylim(t,[0,5])
+                    xl = xlim(t); yl = ylim(t);
+                    xticks(t,0:1:3);
+                    yticks(t, 0:1:5);
                     
-                    p=plot(h, s_fine_full, prior(s_fine_full),'-', 'Color',color);
+                    p=plot(h, s_fine_full, log(prior(s_fine_full).*normalization_constant),'-', 'Color',color);
                     p.Color(4)=0.9;
-                    scatter1 = scatter(h, s_pivot_full, exp(prior_pivots),'o','MarkerFaceColor',color,'MarkerEdgeColor',color); 
+                    scatter1 = scatter(h, s_pivot_full, log(exp(prior_pivots).*normalization_constant),'o','MarkerFaceColor',color,'MarkerEdgeColor',color); 
                     %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
                     scatter1.SizeData = 1;
+                    %rectangle('Position',[xl(1) yl(1) xl(2)-xl(1) yl(2)-yl(1)])
                     xlim(h,[0,45])
-                    ylim(h,[0,exp(1)+0.2])
-                    %ylabel(h,"$p(s)$", 'interpreter','latex', 'FontSize', fontsize) 
+                    ylim(h,[-20,3])
+                    xticks(h,0:15:45)
+                    yticks(h, -20:10:0);
+                    ylabel(h,"$\log p(s)$", 'interpreter','latex', 'FontSize', fontsize) 
             end  
         end
         ax.XAxis.FontSize = fontsize;
@@ -801,6 +823,7 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     ax.XAxis.FontSize = fontsize;
     xlim([1-0.5,idx+0.5])
     ylim([0, Inf])
+    yticks(0:1:5)
     box off 
     set(gca,'TickDir','out');
         
@@ -810,13 +833,14 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     scatter1 = scatter(repmat(1,num_subjects,1), theta_fitted_cmaes(:,x_labels_pos(3)),'o','MarkerFaceColor','k','MarkerEdgeColor','k');
     scatter1.SizeData = 5;
     xticks([1])
+    yticks(0:0.005:0.015)
     xaxisproperties=get(gca, 'XAxis');
     xaxisproperties.TickLabelInterpreter = 'latex';
     xticklabels(x_labels(3));
     ax=gca;
     ax.XAxis.FontSize = fontsize;
     xlim([0.5,1.5])
-    ylim([0, Inf])
+    ylim([0, 0.015])
     set(gca,'TickDir','out');
     box off 
     
@@ -826,13 +850,14 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     scatter1 = scatter(repmat(1,num_subjects,1), theta_fitted_cmaes(:,x_labels_pos(4)),'o','MarkerFaceColor','k','MarkerEdgeColor','k');
     scatter1.SizeData = 5;
     xticks([1])
+    yticks(0:0.1:0.5);
     xaxisproperties=get(gca, 'XAxis');
     xaxisproperties.TickLabelInterpreter = 'latex';
     xticklabels(x_labels(4));
     ax=gca;
     ax.XAxis.FontSize = fontsize;
     xlim([0.5,1.5])
-    ylim([0, Inf])
+    ylim([0, 0.5])
     set(gca,'TickDir','out');
     box off 
     
