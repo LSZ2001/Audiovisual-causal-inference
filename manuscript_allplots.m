@@ -749,8 +749,6 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
                     %ylabel(h,"$p(s)$", 'interpreter','latex', 'FontSize', fontsize) 
             end  
         end
-        ax.XAxis.FontSize = fontsize;
-        ax.YAxis.FontSize = fontsize;
     end
     
     x_labels_pos = (3*num_pivots):num_params;
