@@ -250,14 +250,18 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
     BICs = zeros(num_models, num_subjects);
     
     % load nonparam indv UJoint fits
-    load(model_path + "fittedparams_UJoint_Semiparam_rescalefree_lapseUniform.mat")
-    [min_val, min_idx] = min(F_vals,[],1);
-    [num_inits,num_params_nonparam]=size(theta_fitted);
-    NLLs(1,:) = min_val;
-    AICs(1,:) = 2.*min_val + 2.* num_params(1);
-    BICs(1,:) = 2.*min_val + num_params(1).*log(n_data);
+    model_start_idx = 1;
+    if(model_types(1)=="semi-parametric")
+        load(model_path + "fittedparams_UJoint_Semiparam_rescalefree_lapseUniform.mat")
+        [min_val, min_idx] = min(F_vals,[],1);
+        [num_inits,num_params_nonparam]=size(theta_fitted);
+        NLLs(1,:) = min_val;
+        AICs(1,:) = 2.*min_val + 2.* num_params(1);
+        BICs(1,:) = 2.*min_val + num_params(1).*log(n_data);
+        model_start_idx = model_start_idx+1;
+    end
 
-    for model=2:(num_models)
+    for model=model_start_idx:(num_models)
         load(model_path + "fittedparams_UJoint_"+noises(model)+"-"+priors(model)+"_rescale"+rescales(model)+"_lapseUniform.mat")
         [min_val, min_idx] = min(F_vals,[],2);
         NLLs(model,:) = min_val';
@@ -267,10 +271,6 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
     NLL_sum = sum(NLLs,2);
     AIC_sum = sum(AICs,2);
     BIC_sum = sum(BICs,2);
-
-    NLL_diff = NLLs - NLLs(2,:);
-    AIC_diff = AICs - AICs(2,:);
-    BIC_diff = BICs - BICs(2,:);
 
     NLL_sumvalues_diff = NLL_sum - min(NLL_sum);
     [~,min_NLL_model] = min(NLL_sum);
