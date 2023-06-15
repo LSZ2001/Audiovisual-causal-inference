@@ -231,9 +231,8 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                     lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
                     set(lg,'Box','off')
                 else
-                    if(~not_plot_model_preds)
-                        patchline(squeeze(s_range), squeeze(model_params(i,:,1)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level);
-                    end
+                    patchline(squeeze(s_range), squeeze(model_params(i,:,1)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level);
+                
 %                     p1=plot(squeeze(s_range), squeeze(model_params(i,:,1)), 'Color',color_AV, 'LineWidth', 1);
 %                     p1.Color(4) = alpha_level;
                 end
@@ -259,9 +258,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                     lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
                     set(lg,'Box','off')
                 else
-                    if(~not_plot_model_preds)
-                        patchline(squeeze(s_range), squeeze(model_params(i,:,2)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level);
-                    end
+                    patchline(squeeze(s_range), squeeze(model_params(i,:,2)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level);
 %                     p2 = plot(squeeze(s_range), squeeze(model_params(i,:,2)), 'Color',color_AV,'LineWidth',1);
 %                     p2.Color(4) = alpha_level;
                 end
@@ -406,6 +403,8 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 model_params_sigma = model_params(:,:,2);
                 model_params_sigma_meanoversubj = squeeze(mean(model_params_sigma,1));
                 model_params_sigma_SEMsoversubj = squeeze(std(model_params_sigma))./ sqrt(num_subjects);
+                s_cond_s_hat_stds_meanoversubj = squeeze(mean(s_cond_s_hat_stds,1));
+                s_cond_s_hat_stds_SEMsoversubj = squeeze(std(s_cond_s_hat_stds)) ./ sqrt(num_subjects);
                 curve1 = model_params_sigma_meanoversubj + model_params_sigma_SEMsoversubj;
                 curve2 = model_params_sigma_meanoversubj - model_params_sigma_SEMsoversubj;
                 x2 = [s_range, fliplr(s_range)];
@@ -413,9 +412,6 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 p=fill(x2, inBetween,"k",'FaceAlpha',0.2, 'EdgeColor', 'none');
                 p.Annotation.LegendInformation.IconDisplayStyle = 'off';
             end
-            
-            s_cond_s_hat_stds_meanoversubj = squeeze(mean(s_cond_s_hat_stds,1));
-            s_cond_s_hat_stds_SEMsoversubj = squeeze(std(s_cond_s_hat_stds)) ./ sqrt(num_subjects);
             for j=1:num_s_bins
                 errorbar(squeeze(s_range), s_cond_s_hat_stds_meanoversubj, s_cond_s_hat_stds_SEMsoversubj, ".", 'Color', 'k', 'CapSize', 3);
             end

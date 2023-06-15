@@ -1,12 +1,20 @@
 clear all; close all;
 cd('C:\Users\liu_s\Audiovisual-causal-inference')
 
+fig_maxwidth_inches = 7.5;
+fig_maxheight_inches = 8.75;
+set(0,'units','inches');
+Inch_SS = get(0,'screensize');
+set(0,'units','pixels');
 figsize = get(0, 'ScreenSize');
-figsize_4by3 = [0,0,figsize(4)*4/3, figsize(4)];
+Res = figsize(3)./Inch_SS(3);
+
+%figsize_RespDistr = [0,0,figsize(4)*4/3, figsize(4)];
+figsize_RespDistr = [0,0,fig_maxwidth_inches, fig_maxheight_inches] .* Res; 
 
 figformat = "svg";
 figpath = "plots\";
-fontsize=9;
+fontsize=8.5;
 png_dpi = 500;
 plot_lapse = true;
 lapse_type = "Uniform";
@@ -15,18 +23,27 @@ data_path = "data\";
 analysis_path = "analysis\";
 
 
+%% UAV data visualized, without model prediction ribbons.
+prior = "NaN";
+noise = "NaN";
+aud_rescale = "NaN";
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_RespDistr, model_path, plot_lapse, lapse_type);
+exportgraphics(gcf,figpath+'UAV_dataonly'+'.png','Resolution',png_dpi);
+exportgraphics(gcf,figpath+'UAV_dataonly'+'.pdf',"ContentType","vector");
+
+
 %% UJoint parametric model response distribution visualization
 prior = "SingleGaussian";
 noise = "constant";
 aud_rescale = "1";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_RespDistr, model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Const-SingleGaussian_rescaleaud1'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Const-SingleGaussian_rescaleaud1'+'.pdf',"ContentType","vector");
 %%
 prior = "SingleGaussian";
 noise = "constant";
 aud_rescale = "free";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_RespDistr, model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Const-SingleGaussian'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Const-SingleGaussian'+'.pdf',"ContentType","vector");
 
@@ -35,7 +52,7 @@ prior = "GaussianLaplaceBothFixedZero";
 noise = "exp";
 aud_rescale = "free";
 %manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, four_by_three_figsize);
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_RespDistr, model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace'+'.pdf',"ContentType","vector");
 
@@ -45,7 +62,7 @@ noise = "exp";
 aud_rescale = "free";
 save_name = "Exp-GaussianLaplace";
 plot_individual = true;
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, plot_lapse, lapse_type, plot_individual);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_RespDistr, model_path, plot_lapse, lapse_type, plot_individual);
 figure(1)
 saveas(gca, figpath+save_name+'_Individualmean.fig')
 exportgraphics(gcf,figpath+save_name+'_Individualmean'+'.png','Resolution',png_dpi);
@@ -66,7 +83,7 @@ exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Individual_example'+'.pdf',"Cont
 prior = "GaussianLaplaceBothFixedZero";
 noise = "exp";
 aud_rescale = "free";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, false, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_RespDistr, model_path, false, lapse_type);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_nolapse'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_nolapse'+'.pdf',"ContentType","vector");
 
@@ -74,7 +91,7 @@ exportgraphics(gcf,figpath+'Exp-GaussianLaplace_nolapse'+'.pdf',"ContentType","v
 prior = "GaussianLaplaceBothFixedZero";
 noise = "exp";
 aud_rescale = "free";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, true, "Gaussian");
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_RespDistr, model_path, true, "Gaussian");
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Gaussianlapse'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Gaussianlapse'+'.pdf',"ContentType","vector");
 
@@ -85,35 +102,35 @@ UnimodalData_ModelComparison_FinalTables_uniformgaussianlapse = unimodaldata_mod
 prior = "SingleGaussian";
 noise = "exp";
 aud_rescale = "free";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_RespDistr, model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Exp-SingleGaussian'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-SingleGaussian'+'.pdf',"ContentType","vector");
 
 prior = "GaussianLaplaceBothFixedZero";
 noise = "constant";
 aud_rescale = "free";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_RespDistr, model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Const-GaussianLaplace'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Const-GaussianLaplace'+'.pdf',"ContentType","vector");
 
 prior = "TwoGaussiansBothFixedZero";
 noise = "exp";
 aud_rescale = "free";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_4by3, model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_RespDistr, model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Exp-TwoGaussians'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-TwoGaussians'+'.pdf',"ContentType","vector");
 
 %% Unimodal semiparam model 
 % Response distribution visualization
 % manuscript_ujoint_respdistrvisualization_semiparam(fontsize, four_by_three_figsize);
-manuscript_ujoint_respdistrvisualization_semiparam(fontsize, figsize_4by3, model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization_semiparam(fontsize, figsize_RespDistr, model_path, plot_lapse, lapse_type);
 exportgraphics(gcf,figpath+'Semiparam_FittedRespDistr'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Semiparam_FittedRespDistr'+'.pdf',"ContentType","vector");
 
 %%
 % 
 % sigma(s), p(s) visualization
-semiparam_sigmafun_prior_visualization(fontsize+1, figsize_4by3, model_path);
+semiparam_sigmafun_prior_visualization(fontsize+1, figsize_RespDistr, model_path);
 exportgraphics(gcf,figpath+'Semiparam_FittedParams'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Semiparam_FittedParams'+'.pdf',"ContentType","vector");
 
@@ -155,30 +172,30 @@ save(analysis_path+'unimodaldata_modelcomparison_finaltables','UnimodalData_Mode
 %% AllData semiparamInsp Response distribution visualization
 causal_inf_strategy = "ProbMatching";
 save_name = "PM";
-manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_4by3, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true);
+manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true);
 
 %%
 causal_inf_strategy = "ModelSelection";
 save_name = "MS";
-manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_4by3, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
+manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 
 causal_inf_strategy = "ModelAveraging";
 save_name = "MA";
-manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_4by3, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
+manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 
 %% AllData parametric model response distributions
 prior_type = "GaussianLaplaceBothFixedZero";
 hetero_type = "exp";
 causal_inf_strategy = "ProbMatching";
 save_name = "exp-GaussianLaplace-PM";
-manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, figsize_4by3, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
+manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
 
 %% Individual-level plots for the above model
 prior_type = "GaussianLaplaceBothFixedZero";
 hetero_type = "exp";
 causal_inf_strategy = "ProbMatching";
 save_name = "exp-GaussianLaplace-PM";
-manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, figsize_4by3, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true)
+manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true)
 
 % Exemplary subject
 subjidx=7;
@@ -192,7 +209,7 @@ prior_type = "GaussianLaplaceBothFixedZero";
 hetero_type = "exp";
 causal_inf_strategy = "ModelAveraging";
 save_name = "exp-GaussianLaplace-MA";
-manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, figsize_4by3, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
+manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
 
 %% AllData ModelComparison
 causal_inf_strategies = ["ModelSelection","ModelAveraging","ProbMatching"];
