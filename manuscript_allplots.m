@@ -1071,7 +1071,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         
         % BC
         %t3 = nexttile([1,2]);
-        t3=tiledlayout(T,1,2);
+        t3=tiledlayout(T,1,2, 'Padding','none','TileSpacing','compact');
         t3.Layout.Tile = 7;
         t3.Layout.TileSpan = [1 6];
         xlabel(t3,"Stimulus location disparity (A - V)", 'FontSize',fontsize)
@@ -1098,6 +1098,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             end
             xlim([-30,30])
             ylim([0,1])
+            yticks(0:0.25:1)
             
             lg = legend(BC_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
             set(lg,'Box','off')
@@ -1107,7 +1108,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         end
         
         BAV_strat_names = ["Left","Center","Right"];
-        t4=tiledlayout(T,1,3);
+        t4=tiledlayout(T,1,3, 'Padding','none','TileSpacing','compact');
         t4.Layout.Tile = 13;
         t4.Layout.TileSpan = [1 6];
         xlabel(t4, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
@@ -1143,7 +1144,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             lg.ItemTokenSize(1) = 10;
         end
         
-        t5=tiledlayout(T,1,3);
+        t5=tiledlayout(T,1,3, 'Padding','none','TileSpacing','compact');
         t5.Layout.Tile = 19;
         t5.Layout.TileSpan = [1 6];
         xlabel(t5, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
@@ -1181,7 +1182,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
                 case 2
                     lg.Position(1) = 0.42;
                 case 3
-                    lg.Position(1) = 0.7;
+                    lg.Position(1) = 0.74;
             end
         end
     end
