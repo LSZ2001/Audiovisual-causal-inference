@@ -1,6 +1,5 @@
 clear all; close all;
 cd('C:\Users\liu_s\Audiovisual-causal-inference')
-
 fig_maxwidth_inches = 7.5;
 fig_maxheight_inches = 8.75;
 set(0,'units','inches');
@@ -8,6 +7,7 @@ Inch_SS = get(0,'screensize');
 set(0,'units','pixels');
 figsize = get(0, 'ScreenSize');
 Res = figsize(3)./Inch_SS(3);
+set(groot,'DefaultAxesFontName','Arial')
 
 %figsize_RespDistr = [0,0,figsize(4)*4/3, figsize(4)];
 figsize_RespDistr = [0,0,fig_maxwidth_inches, fig_maxheight_inches] .* Res; 
@@ -21,7 +21,7 @@ lapse_type = "Uniform";
 model_path = "modelfits\";
 data_path = "data\";
 analysis_path = "analysis\";
-
+addpath(analysis_path,data_path,model_path,"utils\");
 
 %% UAV data visualized, without model prediction ribbons.
 prior = "NaN";

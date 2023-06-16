@@ -119,8 +119,8 @@ function [] = manuscript_ujoint_respdistrvisualization(prior_type, hetero_type, 
 
 
         %% Plots
-        [LB_UA, UB_UA, PLB_UA, PUB_UA] = sigmafun_BADSbounds_comprehensive(ModelComponents_UA);
-        [LB_UV, UB_UV, PLB_UV, PUB_UV] = sigmafun_BADSbounds_comprehensive(ModelComponents_UV);
+        [LB_UA, UB_UA, PLB_UA, PUB_UA] = sigmafun_badsbounds_comprehensive(ModelComponents_UA);
+        [LB_UV, UB_UV, PLB_UV, PUB_UV] = sigmafun_badsbounds_comprehensive(ModelComponents_UV);
 
         [~,~,~,~,UA_param_keep_idx] = merge_ujoint_badsbounds(LB_UV,UB_UV,PLB_UV,PUB_UV,LB_UA,UB_UA,PLB_UA,PUB_UA, ModelComponents_UA);
 

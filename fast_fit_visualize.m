@@ -1,11 +1,14 @@
 clear all; close all;
 %cd('C:\Users\liu_s\Audiovisual-causal-inference')
-data_path = "data\";
 num_subjects = 15;
 
 % Store the fits in a separate folder to avoid confusion and overwriting.
 model_path = "fast_modelfit_example\";
 model_path_temp = model_path+"temp\";
+
+data_path = "data\";
+analysis_path = "analysis\";
+addpath(analysis_path,data_path,model_path,model_path_temp,"utils\");
 
 fontsize=9;
 plot_lapse=true;

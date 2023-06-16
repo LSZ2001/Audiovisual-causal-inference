@@ -3,7 +3,9 @@ clear all; close all;
 model_path = "modelfits\";
 model_path_temp = model_path+"temp\";
 data_path = "data\";
+analysis_path = "analysis\";
 num_subjects = 15;
+addpath(analysis_path,data_path,model_path,model_path_temp,"utils\");
 
 %% Parametric models on UA+UV data
 prior_type = "SingleGaussian"; % "SingleGaussian", "GaussianLaplaceBothFixedZero", or "TwoGaussiansBothFixedZero"
