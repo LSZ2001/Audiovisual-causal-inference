@@ -72,10 +72,10 @@ saveas(gca, figpath+save_name+'_IndividualSD.fig')
 exportgraphics(gcf,figpath+save_name+'_IndividualSD'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+save_name + '_IndividualSD'+'.pdf',"ContentType","vector");
 
-% Exemplary subject
+%% Exemplary subject
 subjidx=7;
 fitted_on_all_data = false;
-allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_data, fontsize, figsize, figpath)
+allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_data, 10, [0 0 figsize_RespDistr(3) figsize_RespDistr(3)*0.5], figpath)
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Individual_example'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Individual_example'+'.pdf',"ContentType","vector");
 
@@ -197,12 +197,12 @@ causal_inf_strategy = "ProbMatching";
 save_name = "exp-GaussianLaplace-PM";
 manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true)
 
-% Exemplary subject
+%% Exemplary subject
 subjidx=7;
 fitted_on_all_data = true;
-allindvsubjplots_to_onesubjplot(save_name,subjidx, fitted_on_all_data, fontsize, figsize, figpath)
-exportgraphics(gcf,figpath+'Exp-GaussianLaplace-PM_Individual_example'+'.png','Resolution',png_dpi);
+allindvsubjplots_to_onesubjplot(save_name,subjidx, fitted_on_all_data, fontsize, figsize_RespDistr, figpath)
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace-PM_Individual_example'+'.pdf',"ContentType","vector");
+exportgraphics(gcf,figpath+'Exp-GaussianLaplace-PM_Individual_example'+'.png','Resolution',png_dpi);
 
 %%
 prior_type = "GaussianLaplaceBothFixedZero";
@@ -233,7 +233,7 @@ save(analysis_path+'alldata_modelcomparison_finaltables','AllData_ModelCompariso
 %% sigma(s) and p(s) examples
 figure('Position', [0 0 figsize_RespDistr(3) figsize_RespDistr(3)]);
 set(gcf, 'Color', 'w')
-sigmafun_prior_examples(fontsize+1);
+sigmafun_prior_examples(fontsize);
 %% Need to adjust legend position, then save....
 exportgraphics(gcf,figpath+'SensoryNoisePriorParamFamilies'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'SensoryNoisePriorParamFamilies'+'.pdf',"ContentType","vector");
@@ -896,12 +896,14 @@ function [] = sigmafun_prior_examples(fontsize)
     for i=1:length(sigma0_vals)
         plot(s_grid, repmat(sigma0_vals(i), length(s_grid),1), "-", 'Color', colors(i,:));
     end
-    lg = legend("$\sigma_0="+sigma0_vals+"$", 'Interpreter', 'latex');
+    lg = legend("$\sigma_0="+sigma0_vals+"$", 'Interpreter', 'latex', 'FontSize', fontsize);
     set(lg,'Box','off')
-    ylim([0,Inf])
+    ylim([0,4])
+    yticks(0:1:4)
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
     ylabel("$\sigma(s)$", 'Interpreter', 'latex', 'FontSize', fontsize)
-    title("Constant sensory noise")
+    title("Constant sensory noise", 'FontSize', fontsize+1)
+    
 
     sigma0_vals = [0.5,1,1,1,3];
     k1_vals = [1,1,2,1,1];
@@ -914,9 +916,10 @@ function [] = sigmafun_prior_examples(fontsize)
     end
     lg = legend("$\sigma_0="+sigma0_vals+", k_1="+k1_vals+", k_2="+k2_vals+"$", 'Interpreter', 'latex', 'FontSize', fontsize);
     set(lg,'Box','off')'
-    ylim([0,Inf])
+    ylim([0,4])
+    yticks(0:1:4)
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
-    title("Exponential sensory noise", 'FontSize', fontsize)
+    title("Exponential sensory noise", 'FontSize', fontsize+1)
     
     % Priors
     sigma_s_vals = [3, 5, 8, 10];
@@ -926,11 +929,13 @@ function [] = sigmafun_prior_examples(fontsize)
     for i=1:length(sigma_s_vals)
         plot(s_grid, normpdf(s_grid, 0, sigma_s_vals(i)), "-", 'Color', colors(i,:))
     end
-    lg = legend("$\sigma_s="+sigma_s_vals+"$", 'Interpreter', 'latex');
+    lg = legend("$\sigma_s="+sigma_s_vals+"$", 'Interpreter', 'latex', 'FontSize', fontsize);
     set(lg,'Box','off')
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
     ylabel("$p(s)$", 'Interpreter', 'latex', 'FontSize', fontsize)
-    title("SingleGaussian prior")
+    title("SingleGaussian prior", 'FontSize', fontsize+1)
+    ylim([0,0.15])
+    yticks(0:0.05:0.15)
 
     sigma_s_vals = [8, 8, 8, 15].*2;
     b_vals = [1,2,1,2].*2;
@@ -942,14 +947,15 @@ function [] = sigmafun_prior_examples(fontsize)
         plot(s_grid, (1-w_vals(i)).*normpdf(s_grid, 0, sigma_s_vals(i)) + w_vals(i).*1./(2.*b_vals(i)).*exp(-abs(s_grid)./b_vals(i)), "-", 'Color', colors(i,:))
     end
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
-    lg = legend("$\sigma_s="+sigma_s_vals+", b="+b_vals+", w="+w_vals+"$", 'Interpreter', 'latex');
+    lg = legend("$\sigma_s="+sigma_s_vals+", b="+b_vals+", w="+w_vals+"$", 'Interpreter', 'latex', 'FontSize', fontsize);
     set(lg,'Box','off')
-    title("GaussianLaplace prior")
+    title("GaussianLaplace prior", 'FontSize', fontsize+1)
+    ylim([0,0.15])
+    yticks(0:0.05:0.15)
 
     sigma_s_vals = [3,5,8,10];
     sigma_s2_vals = [8, 8, 8, 15].*2 - sigma_s_vals;
     w_vals = [0.3, 0.3, 0.7, 0.7];
-    
     subplot(2,3,5)
     set(gca,'TickDir','out');
     hold on
@@ -958,16 +964,18 @@ function [] = sigmafun_prior_examples(fontsize)
     end
     ylim([0,0.15])
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
-    lg = legend("$\sigma_s="+sigma_s_vals+", \sigma_{\Delta}="+sigma_s2_vals+", w="+w_vals+"$", 'Interpreter', 'latex');
+    lg = legend("$\sigma_s="+sigma_s_vals+", \sigma_{\Delta}="+sigma_s2_vals+", w="+w_vals+"$", 'Interpreter', 'latex', 'FontSize', fontsize);
     set(lg,'Box','off')
-    title("TwoGaussians prior")
+    title("TwoGaussians prior", 'FontSize', fontsize+1)
+    ylim([0,0.15])
+    yticks(0:0.05:0.15)
     
-    set(gca,'fontsize', fontsize)
+    %set(gca,'fontsize', fontsize)
 end
 
 
 %%
-function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_data, fontsize, figsize, figpath)
+function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_data, fontsize, figspecs, figpath)
     % This function assumes that the individual-level plots have been saved
     % as .fig files.
     close all;
@@ -980,7 +988,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         t2 = nexttile(subjidx);
         ax2=gca;
         
-        figure('Position', [0 0 figsize(4)*4/3 figsize(4).*2/3]);
+        figure('Position', figspecs);
         set(gcf, 'Color', 'w')
         T=tiledlayout(1,2,'Padding', 'compact', 'TileSpacing', 'compact');
         t1 = nexttile(1);
@@ -1002,7 +1010,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         end
         lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
         set(lg,'Box','off')
-        lg.FontSize = 6;
+        lg.FontSize = max(8,fontsize-1);
         lg.Location="northeast";
         lg.ItemTokenSize(1) = 10;
         
@@ -1030,7 +1038,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         ax5_left = F5.Children.Children((end-subjidx+1)).Children(3);
         
         %% Move to new plot
-        figure('Position', [0,0,figsize(4)*4/3, figsize(4)]);
+        figure('Position', figspecs);
         set(gcf, 'Color', 'w')
         T=tiledlayout(2,12,'Padding', 'compact', 'TileSpacing', 'compact');
         
@@ -1056,14 +1064,14 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         for i=1:4
             h(i).HandleVisibility="off";
         end
-        lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
+        lg = legend("Visual (high rel)","Visual (med rel)", "Visual (low rel)", "Auditory");
         set(lg,'Box','off')
-        lg.FontSize = 6;
+        lg.FontSize = 8;
         lg.ItemTokenSize(1) = 10;
         
         % BC
         %t3 = nexttile([1,2]);
-        t3=tiledlayout(T,1,2);
+        t3=tiledlayout(T,1,2, 'Padding','none','TileSpacing','compact');
         t3.Layout.Tile = 7;
         t3.Layout.TileSpan = [1 6];
         xlabel(t3,"Stimulus location disparity (A - V)", 'FontSize',fontsize)
@@ -1081,6 +1089,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
                 ttl.Position(1) = -0.23; % use negative values (ie, -0.1) to move further left
                 ttl.HorizontalAlignment = 'left'; 
             else
+                yticks([])
                 fig32 = get(ax3_periphery,'children');
                 copyobj(fig32, tt);
             end
@@ -1090,16 +1099,17 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             end
             xlim([-30,30])
             ylim([0,1])
+            yticks(0:0.25:1)
             
-            lg = legend(BC_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
+            lg = legend({"High vis rel",", Med vis rel",", Low vis rel"});
             set(lg,'Box','off')
-            lg.FontSize = 6;
+            lg.FontSize = 8;
             lg.Location="south";
             lg.ItemTokenSize(1) = 10;
         end
         
         BAV_strat_names = ["Left","Center","Right"];
-        t4=tiledlayout(T,1,3);
+        t4=tiledlayout(T,1,3, 'Padding','none','TileSpacing','compact');
         t4.Layout.Tile = 13;
         t4.Layout.TileSpan = [1 6];
         xlabel(t4, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
@@ -1114,12 +1124,17 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
                 ttl.Units = 'Normalize'; 
                 ttl.Position(1) = -0.33; % use negative values (ie, -0.1) to move further left
                 ttl.HorizontalAlignment = 'left';
+                subtitle(tt,"Left",'Fontsize', fontsize)
             elseif(strats==2)
+                yticks([])
                 fig4 = get(ax4_center,'children');
                 copyobj(fig4, tt);
+                subtitle(tt,"Center",'Fontsize', fontsize)
             else
+                yticks([])
                 fig4 = get(ax4_right,'children');
                 copyobj(fig4, tt);
+                subtitle(tt,"Right",'Fontsize', fontsize)
             end
             
             h = findall(gca, 'LineStyle', '-');
@@ -1128,14 +1143,14 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             end
             xlim([-35,35])
             ylim([-15,15])
-            lg = legend(BAV_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
+            lg = legend({"High vis rel","Med vis rel","Low vis rel"});
             set(lg,'Box','off')
-            lg.FontSize = 6;
-            lg.Location="northwest";
+            lg.FontSize = 8;
+            lg.Location="north";
             lg.ItemTokenSize(1) = 10;
         end
         
-        t5=tiledlayout(T,1,3);
+        t5=tiledlayout(T,1,3, 'Padding','none','TileSpacing','compact');
         t5.Layout.Tile = 19;
         t5.Layout.TileSpan = [1 6];
         xlabel(t5, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
@@ -1151,9 +1166,11 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
                 ttl.Position(1) = -0.33; % use negative values (ie, -0.1) to move further left
                 ttl.HorizontalAlignment = 'left';
             elseif(strats==2)
+                yticks([])
                 fig5 = get(ax5_center,'children');
                 copyobj(fig5, tt);
             else
+                yticks([])
                 fig5 = get(ax5_right,'children');
                 copyobj(fig5, tt);
             end
@@ -1164,11 +1181,17 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             xlim([-35,35])
             ylim([-15,15])
             
-            lg = legend(BAV_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
+            lg = legend({"High vis rel","Med vis rel","Low vis rel"});
             set(lg,'Box','off')
-            lg.FontSize = 6;
-            lg.Location="northeast";
+            lg.FontSize = 8;
+            lg.Location="north";
             lg.ItemTokenSize(1) = 10;
+            switch strats
+                case 2
+                    lg.Position(1) = 0.42;
+                case 3
+                    lg.Position(1) = 0.74;
+            end
         end
     end
 end

@@ -1042,7 +1042,12 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         set(gcf, 'Color', 'w')
         T=tiledlayout(2,12,'Padding', 'compact', 'TileSpacing', 'compact');
         
-        t1 = nexttile([1,3]);
+        
+        t12=tiledlayout(T,1,2, 'Padding','none','TileSpacing','compact');
+        t12.Layout.Tile = 1;
+        t12.Layout.TileSpan = [1 6];
+
+        t1 = nexttile(t12);
         hold on
         fig1 = get(ax1,'children');
         copyobj(fig1, t1);
@@ -1051,10 +1056,10 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         ylim([-20,20])
         ttl = title('(a)', "Fontsize", 10);
         ttl.Units = 'Normalize'; 
-        ttl.Position(1) = -0.23; % use negative values (ie, -0.1) to move further left
+        ttl.Position(1) = -0.26; % use negative values (ie, -0.1) to move further left
         ttl.HorizontalAlignment = 'left'; 
         
-        t2 = nexttile([1,3]);
+        t2 = nexttile(t12);
         fig2 = get(ax2,'children');
         copyobj(fig2, t2);
         xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
@@ -1086,12 +1091,14 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
                 copyobj(fig31, tt);
                 ttl = title('(b)', "Fontsize", 10);
                 ttl.Units = 'Normalize'; 
-                ttl.Position(1) = -0.23; % use negative values (ie, -0.1) to move further left
+                ttl.Position(1) = -0.26; % use negative values (ie, -0.1) to move further left
                 ttl.HorizontalAlignment = 'left'; 
+                subtitle(tt,"Center",'Fontsize', fontsize, 'FontWeight','bold')
             else
                 yticks([])
                 fig32 = get(ax3_periphery,'children');
                 copyobj(fig32, tt);
+                subtitle(tt,"Periphery",'Fontsize', fontsize, 'FontWeight','bold')
             end
             h = findall(gca, 'LineStyle', '-');
             for i=1:3
@@ -1101,7 +1108,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             ylim([0,1])
             yticks(0:0.25:1)
             
-            lg = legend(BC_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
+            lg = legend({"High vis rel","Med vis rel","Low vis rel"});
             set(lg,'Box','off')
             lg.FontSize = 8;
             lg.Location="south";
@@ -1122,16 +1129,19 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
                 copyobj(fig4, tt);
                 ttl = title('(c)', "Fontsize", 10);
                 ttl.Units = 'Normalize'; 
-                ttl.Position(1) = -0.33; % use negative values (ie, -0.1) to move further left
+                ttl.Position(1) = -0.36; % use negative values (ie, -0.1) to move further left
                 ttl.HorizontalAlignment = 'left';
+                subtitle(tt,"Left",'Fontsize', fontsize, 'FontWeight','bold')
             elseif(strats==2)
                 yticks([])
                 fig4 = get(ax4_center,'children');
                 copyobj(fig4, tt);
+                subtitle(tt,"Center",'Fontsize', fontsize, 'FontWeight','bold')
             else
                 yticks([])
                 fig4 = get(ax4_right,'children');
                 copyobj(fig4, tt);
+                subtitle(tt,"Right",'Fontsize', fontsize, 'FontWeight','bold')
             end
             
             h = findall(gca, 'LineStyle', '-');
@@ -1140,7 +1150,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             end
             xlim([-35,35])
             ylim([-15,15])
-            lg = legend(BAV_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
+            lg = legend({"High vis rel","Med vis rel","Low vis rel"});
             set(lg,'Box','off')
             lg.FontSize = 8;
             lg.Location="north";
@@ -1160,16 +1170,19 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
                 copyobj(fig5, tt);
                 ttl = title('(d)', "Fontsize", 10);
                 ttl.Units = 'Normalize'; 
-                ttl.Position(1) = -0.33; % use negative values (ie, -0.1) to move further left
+                ttl.Position(1) = -0.36; % use negative values (ie, -0.1) to move further left
                 ttl.HorizontalAlignment = 'left';
+                subtitle(tt,"Left",'Fontsize', fontsize, 'FontWeight','bold')
             elseif(strats==2)
                 yticks([])
                 fig5 = get(ax5_center,'children');
                 copyobj(fig5, tt);
+                subtitle(tt,"Center",'Fontsize', fontsize, 'FontWeight','bold')
             else
                 yticks([])
                 fig5 = get(ax5_right,'children');
                 copyobj(fig5, tt);
+                subtitle(tt,"Right",'Fontsize', fontsize, 'FontWeight','bold')
             end
             h = findall(gca, 'LineStyle', '-');
             for i=1:3
@@ -1178,7 +1191,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             xlim([-35,35])
             ylim([-15,15])
             
-            lg = legend(BAV_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
+            lg = legend({"High vis rel","Med vis rel","Low vis rel"});
             set(lg,'Box','off')
             lg.FontSize = 8;
             lg.Location="north";

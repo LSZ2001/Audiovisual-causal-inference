@@ -193,13 +193,13 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 close all;
                 fig1 = figure(1);
                 set(gcf, 'Color', 'w')
-                tcl=tiledlayout(4,4,'Padding', 'compact', 'TileSpacing', 'compact'); 
+                tcl=tiledlayout(4,4,'Padding', 'none', 'TileSpacing', 'compact'); 
                 fig1.Position = figspecs;
                 hax1 = axes;
                 
                 fig2 = figure(2);
                 set(gcf, 'Color', 'w')
-                tcl=tiledlayout(4,4,'Padding', 'compact', 'TileSpacing', 'compact');
+                tcl=tiledlayout(4,4,'Padding', 'none', 'TileSpacing', 'compact');
                 fig2.Position = figspecs;
                 hax2 = axes;
                 
