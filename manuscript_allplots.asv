@@ -10,7 +10,7 @@ Res = figsize(3)./Inch_SS(3);
 set(groot,'DefaultAxesFontName','Arial')
 
 %figsize_RespDistr = [0,0,figsize(4)*4/3, figsize(4)];
-figsize_RespDistr = [0,0,fig_maxwidth_inches, fig_maxheight_inches] .* Res; 
+figsize_RespDistr = [0,0,fig_maxwidth_inches, fig_maxheight_inches*1.5] .* Res; 
 
 figformat = "svg";
 figpath = "plots\"; %"newplots\"

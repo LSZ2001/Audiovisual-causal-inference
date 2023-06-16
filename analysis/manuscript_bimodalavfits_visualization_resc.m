@@ -207,8 +207,8 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
                     if(strats~=1 || (mod(i,4)~=1))
                         set(tt,'YTickMode', 'manual', 'YTick',-10:0:10,'Yticklabel',[]);
                     end
-                    tt.XAxis.FontSize = 8;
-                    tt.YAxis.FontSize = 8;
+                    tt.XAxis.FontSize = 9;
+                    tt.YAxis.FontSize = 9;
                 end
             end
             
@@ -229,7 +229,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
             fill([-40,-40,40,40],[-40,40,40,-40],"w", 'EdgeColor','none','HandleVisibility','off')
             lg = legend("Left, Visual (high rel)","Left, Visual (med rel)","Left, Visual (low rel)","Center, Visual (high rel)","Center, Visual (med rel)","Center, Visual (low rel)", "Right, Visual (high rel)", "Right, Visual (med rel)", "Right, Visual (low rel)");
             set(lg,'Box','off')
-            lg.FontSize = 8;
+            lg.FontSize = 9;
             lg.ItemTokenSize(1) = 10;
             lg.Position(2) = 0.05;
             xlim([-35,35])

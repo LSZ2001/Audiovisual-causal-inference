@@ -158,7 +158,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
             fill([-40,-40,40,40],[-40,40,40,-40],"w", 'EdgeColor','none','HandleVisibility','off')
             lg = legend("Center, Visual (high rel)","Center, Visual (med rel)","Center, Visual (low rel)", "Periphery, Visual (high rel)", "Periphery, Visual (med rel)", "Periphery, Visual (low rel)");
             set(lg,'Box','off')
-            lg.FontSize = max(8,fontsize-1);
+            lg.FontSize = max(9,fontsize-1);
             lg.Position(1) = 0.75;
             lg.Position(2) = 0.083;
             lg.ItemTokenSize(1) = 10;

@@ -356,17 +356,17 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
             if(is_visual)
                 xlabel("Estimated visual stimulus location (\circ)", 'FontSize', fontsize)
                 ylabel({"{\fontsize{"+(fontsize+1)+"} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{"+fontsize+"} {Proportion}}"})
-                lg = legend(t,"$"+{"[-20, -14.3]","[-14.3,-8.6]","[-8.6,-2.9]","[-2.9,+2.9]","[+2.9,+8.6]","[+8.6,+14.3]","[+14.3,+20]"}+"^\circ $",'interpreter', 'latex', 'color','none');
+                lg = legend(t,"$"+{"[-20, -14.3]","[-14.3,-8.6]","[-8.6,-2.9]","[-2.9,+2.9]","[+2.9,+8.6]","[+8.6,+14.3]","[+14.3,+20]"}+"$",'interpreter', 'latex', 'color','none');
                 lg.ItemTokenSize(1) = 6;
                 set(lg,'Box','off')
-                lg.FontSize = 6; %6
+                lg.FontSize = 8 %6
                 lg.Position(1) = 0.4; %0.4
                 lg.Position(2) = lg.Position(2) - 0.03; %-0.08
                 lg.Title.String = 'Stimulus loc.';
             else
                 xlabel("Estimated auditory stimulus location (\circ)", 'FontSize', fontsize)
                 ylabel({"{\fontsize{"+(fontsize+1)+"} \bf{Auditory}}","{\rm \fontsize{"+fontsize+"} {Proportion}}"})
-                lg = legend(t,"$"+{"-15","-10","-5","0","+5","+10","+15"}+"^\circ $",'interpreter', 'latex', 'Location', 'northeast', 'color','none');
+                lg = legend(t,"$"+{"-15","-10","-5","0","+5","+10","+15"}+"$",'interpreter', 'latex', 'Location', 'northeast', 'color','none');
                 lg.ItemTokenSize(1) = 6;
                 set(lg,'Box','off')
                 lg.FontSize = 6;
