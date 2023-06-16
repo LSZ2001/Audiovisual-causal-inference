@@ -75,7 +75,7 @@ exportgraphics(gcf,figpath+save_name + '_IndividualSD'+'.pdf',"ContentType","vec
 %% Exemplary subject
 subjidx=7;
 fitted_on_all_data = false;
-allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_data, 10, figsize, figpath)
+allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_data, 10, [0 0 figsize_RespDistr(3) figsize_RespDistr(3)*0.5], figpath)
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Individual_example'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Individual_example'+'.pdf',"ContentType","vector");
 
@@ -200,7 +200,7 @@ manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_i
 %% Exemplary subject
 subjidx=7;
 fitted_on_all_data = true;
-allindvsubjplots_to_onesubjplot(save_name,subjidx, fitted_on_all_data, fontsize, figsize, figpath)
+allindvsubjplots_to_onesubjplot(save_name,subjidx, fitted_on_all_data, fontsize, figsize_RespDistr, figpath)
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace-PM_Individual_example'+'.pdf',"ContentType","vector");
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace-PM_Individual_example'+'.png','Resolution',png_dpi);
 
@@ -975,7 +975,7 @@ end
 
 
 %%
-function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_data, fontsize, figsize, figpath)
+function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_data, fontsize, figspecs, figpath)
     % This function assumes that the individual-level plots have been saved
     % as .fig files.
     close all;
@@ -988,7 +988,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         t2 = nexttile(subjidx);
         ax2=gca;
         
-        figure('Position', [0 0 figsize(4)*4/3 figsize(4).*2/3]);
+        figure('Position', figspecs);
         set(gcf, 'Color', 'w')
         T=tiledlayout(1,2,'Padding', 'compact', 'TileSpacing', 'compact');
         t1 = nexttile(1);
@@ -1038,7 +1038,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         ax5_left = F5.Children.Children((end-subjidx+1)).Children(3);
         
         %% Move to new plot
-        figure('Position', [0,0,figsize(4)*4/3, figsize(4)]);
+        figure('Position', figspecs);
         set(gcf, 'Color', 'w')
         T=tiledlayout(2,12,'Padding', 'compact', 'TileSpacing', 'compact');
         
@@ -1066,7 +1066,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         end
         lg = legend("Visual (high rel)","Visual (med rel)", "Visual (low rel)", "Auditory");
         set(lg,'Box','off')
-        lg.FontSize = max(8,fontsize-1);
+        lg.FontSize = 8;
         lg.ItemTokenSize(1) = 10;
         
         % BC
@@ -1089,6 +1089,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
                 ttl.Position(1) = -0.23; % use negative values (ie, -0.1) to move further left
                 ttl.HorizontalAlignment = 'left'; 
             else
+                yticks([])
                 fig32 = get(ax3_periphery,'children');
                 copyobj(fig32, tt);
             end
@@ -1102,7 +1103,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             
             lg = legend(BC_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
             set(lg,'Box','off')
-            lg.FontSize = max(8,fontsize-1);
+            lg.FontSize = 8;
             lg.Location="south";
             lg.ItemTokenSize(1) = 10;
         end
@@ -1124,9 +1125,11 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
                 ttl.Position(1) = -0.33; % use negative values (ie, -0.1) to move further left
                 ttl.HorizontalAlignment = 'left';
             elseif(strats==2)
+                yticks([])
                 fig4 = get(ax4_center,'children');
                 copyobj(fig4, tt);
             else
+                yticks([])
                 fig4 = get(ax4_right,'children');
                 copyobj(fig4, tt);
             end
@@ -1139,8 +1142,8 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             ylim([-15,15])
             lg = legend(BAV_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
             set(lg,'Box','off')
-            lg.FontSize = max(8,fontsize-1);
-            lg.Location="northwest";
+            lg.FontSize = 8;
+            lg.Location="north";
             lg.ItemTokenSize(1) = 10;
         end
         
@@ -1160,9 +1163,11 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
                 ttl.Position(1) = -0.33; % use negative values (ie, -0.1) to move further left
                 ttl.HorizontalAlignment = 'left';
             elseif(strats==2)
+                yticks([])
                 fig5 = get(ax5_center,'children');
                 copyobj(fig5, tt);
             else
+                yticks([])
                 fig5 = get(ax5_right,'children');
                 copyobj(fig5, tt);
             end
@@ -1175,8 +1180,8 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             
             lg = legend(BAV_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
             set(lg,'Box','off')
-            lg.FontSize = max(8,fontsize-1);
-            lg.Location="northeast";
+            lg.FontSize = 8;
+            lg.Location="north";
             lg.ItemTokenSize(1) = 10;
             switch strats
                 case 2
