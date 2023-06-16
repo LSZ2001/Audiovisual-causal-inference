@@ -15,6 +15,7 @@ function [] = manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causa
     elseif(nargin==9)
         plot_individual=false;
     end
+    data_path = "data\";
     
     %%
     s_a_range = -15:5:15;
@@ -24,11 +25,11 @@ function [] = manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causa
     colors = colors([1,2,3,4,5,7,8],:);
 
     %% Load data files.
-    load("bav_data.mat")
-    load("bc_data.mat")
-    load("data_stratified_uv.mat");
+    load(data_path+"bav_data.mat")
+    load(data_path+"bc_data.mat")
+    load(data_path+"data_stratified_uv.mat");
     num_subjects = length(BAV_data);
-    load("data_stratified_ua.mat");
+    load(data_path+"data_stratified_ua.mat");
     data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
     data_UA = data_stratified_to_data(data_stratified_UA, false, false);
     num_subjects = length(data_UA);

@@ -4,7 +4,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
     return_response_distribution=false;
     
     % Plot errorbars only (data), or also ribbons (model preds)?
-    not_plot_model_preds = (ModelComponents.PriorType=="NaN") || (ModelComponents.SensoryNoise=="NaN");
+    not_plot_model_preds = isnan(fitted_params_PM(1,1));
     
     if(nargin<12)
         lapse_type = "Uniform"; Gaussian_lapse_SDs = NaN(1,15); plot_individual=false;
@@ -228,7 +228,9 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                     title("")
                     axis off
                     fill([-20,-20,20,20],[-20,20,20,-20],"w", 'EdgeColor','none','HandleVisibility','off')
-                    lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
+                    lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory", 'Fontsize',fontsize);
+                    lg.Position(1) = 0.75;
+                    lg.ItemTokenSize(1) = 6;
                     set(lg,'Box','off')
                 else
                     if(~not_plot_model_preds)
@@ -256,7 +258,9 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                     title("")
                     axis off
                     fill([-20,-20,20,20],[-20,20,20,-20],"w", 'EdgeColor','none','HandleVisibility','off')
-                    lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
+                    lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory", 'Fontsize',fontsize);
+                    lg.Position(1) = 0.75;
+                    lg.ItemTokenSize(1) = 6;
                     set(lg,'Box','off')
                 else
                     if(~not_plot_model_preds)
@@ -319,7 +323,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 Curves2 = model_vals_meanoversubj - model_vals_SEMoversubj;
             end
 
-            nexttile([1,2]);
+            t=nexttile([1,2]);
             set(gca,'TickDir','out');
             for j=1:num_s_bins
                 hold on
@@ -339,16 +343,20 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
             if(is_visual)
                 xlabel("Estimated visual stimulus location (\circ)", 'FontSize', fontsize)
                 ylabel({"{\fontsize{"+(fontsize+1)+"} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{"+fontsize+"} {Proportion}}"})
-                lg = legend("$s \in "+{"[-20, -14.3]","[-14.3,-8.6]","[-8.6,-2.9]","[-2.9,+2.9]","[+2.9,+8.6]","[+8.6,+14.3]","[+14.3,+20]"}+"$",'interpreter', 'latex', 'Position', [0.4053    0.8044    0.1307    0.1418], 'color','none');
+                lg = legend(t,"$s \in "+{"[-20, -14.3]","[-14.3,-8.6]","[-8.6,-2.9]","[-2.9,+2.9]","[+2.9,+8.6]","[+8.6,+14.3]","[+14.3,+20]"}+"$",'interpreter', 'latex', 'color','none');
+                lg.ItemTokenSize(1) = 6;
+                set(lg,'Box','off')
+                lg.FontSize = 6;
+                lg.Position(1) = 0.4;
+                lg.Position(2) = lg.Position(2) - 0.02;
             else
                 xlabel("Estimated auditory stimulus location (\circ)", 'FontSize', fontsize)
                 ylabel({"{\fontsize{"+(fontsize+1)+"} \bf{Auditory}}","{\rm \fontsize{"+fontsize+"} {Proportion}}"})
-                lg = legend("$s = "+{"-15","-10","-5","0","+5","+10","+15"}+"$",'interpreter', 'latex', 'Location', 'northeast', 'color','none');
+                lg = legend(t,"$s = "+{"-15","-10","-5","0","+5","+10","+15"}+"$",'interpreter', 'latex', 'Location', 'northeast', 'color','none');
+                lg.ItemTokenSize(1) = 6;
+                set(lg,'Box','off')
+                lg.FontSize = 6;
             end
-
-            lg.ItemTokenSize(1) = 6;
-            set(lg,'Box','off')
-            lg.FontSize = 6;
 
             if(l==1)
                 ttl = title('(a)', "Fontsize", fontsize+1);

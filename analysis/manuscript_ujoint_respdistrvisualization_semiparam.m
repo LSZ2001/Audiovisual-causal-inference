@@ -12,16 +12,17 @@ function [] = manuscript_ujoint_respdistrvisualization_semiparam(fontsize, figsp
     elseif(nargin==5)
         plot_individual=false;
     end
-    
+    data_path = "data\";
+
     %cd('C:\Users\liu_s\OneDrive\桌面\MATLAB\AudioVisual\Analysis')
     s_a_range = -15:5:15;
     s_v_range = linspace(-20,20,8);
     s_v_range = (s_v_range(2:end) - s_v_range(1:(end-1)))./2 + s_v_range(1:(end-1));
 
-    load("bav_data.mat")
-    load("bc_data.mat")
-    load("data_stratified_uv.mat");
-    load("data_stratified_ua.mat");
+    load(data_path+"bav_data.mat")
+    load(data_path+"bc_data.mat")
+    load(data_path+"data_stratified_uv.mat");
+    load(data_path+"data_stratified_ua.mat");
     % Unstratify data. 
     data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
     data_UA = data_stratified_to_data(data_stratified_UA, false, false);

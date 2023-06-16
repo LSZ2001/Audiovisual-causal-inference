@@ -175,22 +175,22 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
         
     %%
         if(plot_individual)
-            %figure('Position', figspecs);
-            figsize = get(0, 'ScreenSize');
-            figure('Position', figsize);
+            figure('Position', figspecs);
+            % figsize = get(0, 'ScreenSize');
+            % figure('Position', figsize);
             
             set(gcf, 'Color', 'w')
-            T=tiledlayout(4,4,'Padding', 'none', 'TileSpacing', 'compact');
+            T=tiledlayout(4,4,'Padding', 'none', 'TileSpacing', 'tight');
             rel_level_alphas = [1, 0.5, 0.25];
             colors_AV = brewermap(10,"Set1");
             colors_AV = colors_AV([5,4,7],:); 
             for i=1:num_subjects
-                t=tiledlayout(T,1,3);
+                t=tiledlayout(T,1,3, 'Padding', 'none', 'TileSpacing', 'tight');
                 t.Layout.Tile = i;
                 t.Layout.TileSpan = [1 1];
                 for strats=1:3
                     color_AV = colors_AV(strats,:);
-                    nexttile(t);
+                    tt=nexttile(t);
                     set(gca,'TickDir','out');
                     hold on
                     title(t,"Subject " + i, 'FontSize',fontsize, 'FontWeight', 'bold')
@@ -203,6 +203,12 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
                     end
                     xlim([-35,35])
                     ylim([-15,15])
+                    xticks([-30,0,30]);
+                    if(strats~=1 || (mod(i,4)~=1))
+                        set(tt,'YTickMode', 'manual', 'YTick',-10:0:10,'Yticklabel',[]);
+                    end
+                    tt.XAxis.FontSize = 8;
+                    tt.YAxis.FontSize = 8;
                 end
             end
             
@@ -221,8 +227,11 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
             end
             axis off
             fill([-40,-40,40,40],[-40,40,40,-40],"w", 'EdgeColor','none','HandleVisibility','off')
-            lg = legend("Left, Visual (high reliability)","Left, Visual (med reliability)","Left, Visual (low reliability)","Center, Visual (high reliability)","Center, Visual (med reliability)","Center, Visual (low reliability)", "Right, Visual (high reliability)", "Right, Visual (med reliability)", "Right, Visual (low reliability)");
+            lg = legend("Left, Visual (high rel)","Left, Visual (med rel)","Left, Visual (low rel)","Center, Visual (high rel)","Center, Visual (med rel)","Center, Visual (low rel)", "Right, Visual (high rel)", "Right, Visual (med rel)", "Right, Visual (low rel)");
             set(lg,'Box','off')
+            lg.FontSize = 8;
+            lg.ItemTokenSize(1) = 10;
+            lg.Position(2) = 0.05;
             xlim([-35,35])
             ylim([-15,15])
             

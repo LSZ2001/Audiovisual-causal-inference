@@ -13,8 +13,8 @@ Res = figsize(3)./Inch_SS(3);
 figsize_RespDistr = [0,0,fig_maxwidth_inches, fig_maxheight_inches] .* Res; 
 
 figformat = "svg";
-figpath = "plots\";
-fontsize=8.5;
+figpath = "plots\"; %"newplots\"
+fontsize=8.5; %9
 png_dpi = 500;
 plot_lapse = true;
 lapse_type = "Uniform";
@@ -72,10 +72,10 @@ saveas(gca, figpath+save_name+'_IndividualSD.fig')
 exportgraphics(gcf,figpath+save_name+'_IndividualSD'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+save_name + '_IndividualSD'+'.pdf',"ContentType","vector");
 
-% Exemplary subject
+%% Exemplary subject
 subjidx=7;
 fitted_on_all_data = false;
-allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_data, fontsize, figsize, figpath)
+allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_data, 10, figsize, figpath)
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Individual_example'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace_Individual_example'+'.pdf',"ContentType","vector");
 
@@ -142,7 +142,7 @@ model_types = ["semi-parametric","exp-GaussianLaplace", "exp-GaussianLaplace\_4/
 num_params = [40,14,13,13,12,10,14,8,7,7];
 
 % Vanila 3 models on unimodal data only
-figure('Position', [0 0 figsize(4)*0.9*0.65 figsize(4)*0.9]);
+figure('Position', [0 0 figsize_RespDistr(3)*0.5 figsize_RespDistr(4)*0.9]);
 set(gcf, 'Color', 'w')
 UnimodalData_ModelComparison_FinalTables_Vanilla = unimodaldata_modelcomparison_visualize(priors((end-2):end), noises((end-2):end), rescales((end-2):end), model_types((end-2):end), num_params((end-2):end), true, fontsize+1, model_path, data_path, false);
 ax = gca; 
@@ -152,7 +152,7 @@ exportgraphics(gcf,figpath+'UJoint_ModelSelection_vanilla'+'.pdf',"ContentType",
 save(analysis_path+'unimodaldata_modelcomparison_finaltables_vanilla','UnimodalData_ModelComparison_FinalTables_Vanilla');
         
 % All models on unimodal data
-figure('Position', [0 0 figsize(4)*0.9*5/4 figsize(4)*0.9]);
+figure('Position', [0 0 figsize_RespDistr(3) figsize_RespDistr(3)*0.6]);
 set(gcf, 'Color', 'w')
 UnimodalData_ModelComparison_FinalTables = unimodaldata_modelcomparison_visualize(priors, noises, rescales, model_types, num_params, true, fontsize+1, model_path, data_path, true);
 ax = gca; 
@@ -160,7 +160,7 @@ ax.FontSize = fontsize+1;
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_BIC'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_BIC'+'.pdf',"ContentType","vector");
 
-figure('Position', [0 0 figsize(4)*0.9*5/4 figsize(4)*0.9]);
+figure('Position', [0 0 figsize_RespDistr(3) figsize_RespDistr(3)]);
 set(gcf, 'Color', 'w')
 UnimodalData_ModelComparison_FinalTables = unimodaldata_modelcomparison_visualize(priors, noises, rescales, model_types, num_params, true, fontsize+1, model_path, data_path, false);
 ax = gca; 
@@ -172,7 +172,7 @@ save(analysis_path+'unimodaldata_modelcomparison_finaltables','UnimodalData_Mode
 %% AllData semiparamInsp Response distribution visualization
 causal_inf_strategy = "ProbMatching";
 save_name = "PM";
-manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true);
+manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 
 %%
 causal_inf_strategy = "ModelSelection";
@@ -197,12 +197,12 @@ causal_inf_strategy = "ProbMatching";
 save_name = "exp-GaussianLaplace-PM";
 manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true)
 
-% Exemplary subject
+%% Exemplary subject
 subjidx=7;
 fitted_on_all_data = true;
 allindvsubjplots_to_onesubjplot(save_name,subjidx, fitted_on_all_data, fontsize, figsize, figpath)
-exportgraphics(gcf,figpath+'Exp-GaussianLaplace-PM_Individual_example'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Exp-GaussianLaplace-PM_Individual_example'+'.pdf',"ContentType","vector");
+exportgraphics(gcf,figpath+'Exp-GaussianLaplace-PM_Individual_example'+'.png','Resolution',png_dpi);
 
 %%
 prior_type = "GaussianLaplaceBothFixedZero";
@@ -215,15 +215,14 @@ manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_i
 causal_inf_strategies = ["ModelSelection","ModelAveraging","ProbMatching"];
 param_model_names = ["paramBest", "semiparamInsp","exp-GaussianLaplace","exp-SingleGaussian","const-GaussianLaplace","exp-TwoGaussians","const-SingleGaussian"];
 
-figure('Position', [0 0 figsize(4)*0.9*4/3 figsize(4)*0.9]);
+figure('Position', [0 0 figsize_RespDistr(3) figsize_RespDistr(3)*0.6]);
 set(gcf, 'Color', 'w')
 alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path, true);
-ylim([-200,Inf])
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection_BIC'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection_BIC'+'.pdf',"ContentType","vector");
 
 
-figure('Position', [0 0 figsize(4)*0.9*4/3 figsize(4)*0.9]);
+figure('Position', [0 0 figsize_RespDistr(3) figsize_RespDistr(3)]);
 set(gcf, 'Color', 'w')
 AllData_ModelComparison_FinalTables = alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path, false);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection'+'.png','Resolution',png_dpi);
@@ -232,9 +231,9 @@ save(analysis_path+'alldata_modelcomparison_finaltables','AllData_ModelCompariso
 
 
 %% sigma(s) and p(s) examples
-figure('Position', [0 0 figsize(3)*0.9 figsize(4)*0.9]);
+figure('Position', [0 0 figsize_RespDistr(3) figsize_RespDistr(3)]);
 set(gcf, 'Color', 'w')
-sigmafun_prior_examples(fontsize+1);
+sigmafun_prior_examples(fontsize);
 %% Need to adjust legend position, then save....
 exportgraphics(gcf,figpath+'SensoryNoisePriorParamFamilies'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'SensoryNoisePriorParamFamilies'+'.pdf',"ContentType","vector");
@@ -708,11 +707,11 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
         pl = get(t, 'Position');
         switch fun_idx
             case 1
-                h = axes('Parent', gcf, 'Position', [pl(1)+pl(3)*.63 pl(2)+pl(4)*0.7 pl(3)*0.35 pl(3)*0.35.*3/4]);
+                h = axes('Parent', gcf, 'Position', [pl(1)+pl(3)*.61 pl(2)+pl(4)*0.72 pl(3)*0.35 pl(3)*0.35.*3/4]);
             case 2
-                h = axes('Parent', gcf, 'Position', [pl(1)+pl(3)*.65 pl(2)+.06 pl(3)*0.35 pl(3)*0.35.*3/4]);
+                h = axes('Parent', gcf, 'Position', [pl(1)+pl(3)*.65 pl(2)+.07 pl(3)*0.33 pl(3)*0.35.*3/4]);
             case 3
-                h = axes('Parent', gcf, 'Position', [pl(1)+pl(3)*.63 pl(2)+pl(4)*0.7 pl(3)*0.35 pl(3)*0.35.*3/4]);
+                h = axes('Parent', gcf, 'Position', [pl(1)+pl(3)*.61 pl(2)+pl(4)*0.75 pl(3)*0.35 pl(3)*0.35.*3/4]);
         end
         %box(h,'on');
         hold(h,'on')
@@ -897,12 +896,14 @@ function [] = sigmafun_prior_examples(fontsize)
     for i=1:length(sigma0_vals)
         plot(s_grid, repmat(sigma0_vals(i), length(s_grid),1), "-", 'Color', colors(i,:));
     end
-    lg = legend("$\sigma_0="+sigma0_vals+"$", 'Interpreter', 'latex');
+    lg = legend("$\sigma_0="+sigma0_vals+"$", 'Interpreter', 'latex', 'FontSize', fontsize);
     set(lg,'Box','off')
-    ylim([0,Inf])
+    ylim([0,4])
+    yticks(0:1:4)
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
     ylabel("$\sigma(s)$", 'Interpreter', 'latex', 'FontSize', fontsize)
-    title("Constant sensory noise")
+    title("Constant sensory noise", 'FontSize', fontsize+1)
+    
 
     sigma0_vals = [0.5,1,1,1,3];
     k1_vals = [1,1,2,1,1];
@@ -913,11 +914,13 @@ function [] = sigmafun_prior_examples(fontsize)
     for i=1:length(sigma0_vals)
         plot(s_grid, sigma_fun_exp(s_grid,sigma0_vals(i), [k1_vals(i),k2_vals(i)]), "-", 'Color', colors(i,:));
     end
-    lg = legend("$\sigma_0="+sigma0_vals+", k_1="+k1_vals+", k_2="+k2_vals+"$", 'Interpreter', 'latex');
+    lg = legend("$\sigma_0="+sigma0_vals+", k_1="+k1_vals+", k_2="+k2_vals+"$", 'Interpreter', 'latex', 'FontSize', fontsize);
     set(lg,'Box','off')'
-    ylim([0,Inf])
+    ylim([0,4])
+    yticks(0:1:4)
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
-    title("Exponential sensory noise")
+    title("Exponential sensory noise", 'FontSize', fontsize+1)
+    
     % Priors
     sigma_s_vals = [3, 5, 8, 10];
     subplot(2,3,4)
@@ -926,30 +929,34 @@ function [] = sigmafun_prior_examples(fontsize)
     for i=1:length(sigma_s_vals)
         plot(s_grid, normpdf(s_grid, 0, sigma_s_vals(i)), "-", 'Color', colors(i,:))
     end
-    lg = legend("$\sigma_s="+sigma_s_vals+"$", 'Interpreter', 'latex');
+    lg = legend("$\sigma_s="+sigma_s_vals+"$", 'Interpreter', 'latex', 'FontSize', fontsize);
     set(lg,'Box','off')
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
     ylabel("$p(s)$", 'Interpreter', 'latex', 'FontSize', fontsize)
-    title("SingleGaussian prior")
+    title("SingleGaussian prior", 'FontSize', fontsize+1)
+    ylim([0,0.15])
+    yticks(0:0.05:0.15)
 
     sigma_s_vals = [8, 8, 8, 15].*2;
     b_vals = [1,2,1,2].*2;
     w_vals = [0.3, 0.3, 0.5, 0.5];
-    subplot(2,3,5)
+    subplot(2,3,6)
     set(gca,'TickDir','out');
     hold on
     for i=1:length(sigma_s_vals)
         plot(s_grid, (1-w_vals(i)).*normpdf(s_grid, 0, sigma_s_vals(i)) + w_vals(i).*1./(2.*b_vals(i)).*exp(-abs(s_grid)./b_vals(i)), "-", 'Color', colors(i,:))
     end
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
-    lg = legend("$\sigma_s="+sigma_s_vals+", b="+b_vals+", w="+w_vals+"$", 'Interpreter', 'latex');
+    lg = legend("$\sigma_s="+sigma_s_vals+", b="+b_vals+", w="+w_vals+"$", 'Interpreter', 'latex', 'FontSize', fontsize);
     set(lg,'Box','off')
-    title("GaussianLaplace prior")
+    title("GaussianLaplace prior", 'FontSize', fontsize+1)
+    ylim([0,0.15])
+    yticks(0:0.05:0.15)
 
     sigma_s_vals = [3,5,8,10];
     sigma_s2_vals = [8, 8, 8, 15].*2 - sigma_s_vals;
     w_vals = [0.3, 0.3, 0.7, 0.7];
-    subplot(2,3,6)
+    subplot(2,3,5)
     set(gca,'TickDir','out');
     hold on
     for i=1:length(sigma_s_vals)
@@ -957,11 +964,13 @@ function [] = sigmafun_prior_examples(fontsize)
     end
     ylim([0,0.15])
     xlabel("Auditory/Visual stimulus location (\circ)", 'FontSize', fontsize)
-    lg = legend("$\sigma_s="+sigma_s_vals+", \sigma_{\Delta}="+sigma_s2_vals+", w="+w_vals+"$", 'Interpreter', 'latex');
+    lg = legend("$\sigma_s="+sigma_s_vals+", \sigma_{\Delta}="+sigma_s2_vals+", w="+w_vals+"$", 'Interpreter', 'latex', 'FontSize', fontsize);
     set(lg,'Box','off')
-    title("TwoGaussians prior")
+    title("TwoGaussians prior", 'FontSize', fontsize+1)
+    ylim([0,0.15])
+    yticks(0:0.05:0.15)
     
-    set(gca,'fontsize', fontsize)
+    %set(gca,'fontsize', fontsize)
 end
 
 
@@ -1001,7 +1010,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         end
         lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
         set(lg,'Box','off')
-        lg.FontSize = 6;
+        lg.FontSize = max(8,fontsize-1);
         lg.Location="northeast";
         lg.ItemTokenSize(1) = 10;
         
@@ -1055,9 +1064,9 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         for i=1:4
             h(i).HandleVisibility="off";
         end
-        lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
+        lg = legend("Visual (high rel)","Visual (med rel)", "Visual (low rel)", "Auditory");
         set(lg,'Box','off')
-        lg.FontSize = 6;
+        lg.FontSize = max(8,fontsize-1);
         lg.ItemTokenSize(1) = 10;
         
         % BC
@@ -1092,7 +1101,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             
             lg = legend(BC_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
             set(lg,'Box','off')
-            lg.FontSize = 6;
+            lg.FontSize = max(8,fontsize-1);
             lg.Location="south";
             lg.ItemTokenSize(1) = 10;
         end
@@ -1129,7 +1138,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             ylim([-15,15])
             lg = legend(BAV_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
             set(lg,'Box','off')
-            lg.FontSize = 6;
+            lg.FontSize = max(8,fontsize-1);
             lg.Location="northwest";
             lg.ItemTokenSize(1) = 10;
         end
@@ -1165,9 +1174,15 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             
             lg = legend(BAV_strat_names(strats)+{", high vis rel",", med vis rel",", low vis rel"});
             set(lg,'Box','off')
-            lg.FontSize = 6;
+            lg.FontSize = max(8,fontsize-1);
             lg.Location="northeast";
             lg.ItemTokenSize(1) = 10;
+            switch strats
+                case 2
+                    lg.Position(1) = 0.42;
+                case 3
+                    lg.Position(1) = 0.7;
+            end
         end
     end
 end

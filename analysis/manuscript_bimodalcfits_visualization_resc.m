@@ -156,14 +156,18 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
             end
             axis off
             fill([-40,-40,40,40],[-40,40,40,-40],"w", 'EdgeColor','none','HandleVisibility','off')
-            lg = legend("Center, Visual (high reliability)","Center, Visual (med reliability)","Center, Visual (low reliability)", "Periphery, Visual (high reliability)", "Periphery, Visual (med reliability)", "Periphery, Visual (low reliability)");
+            lg = legend("Center, Visual (high rel)","Center, Visual (med rel)","Center, Visual (low rel)", "Periphery, Visual (high rel)", "Periphery, Visual (med rel)", "Periphery, Visual (low rel)");
             set(lg,'Box','off')
+            lg.FontSize = max(8,fontsize-1);
+            lg.Position(1) = 0.75;
+            lg.Position(2) = 0.083;
+            lg.ItemTokenSize(1) = 10;
             xlim([-30,30])
             ylim([0,1])
             
             
             xlabel(T, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
-            ylabel(T, {"{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"});
+            ylabel(T, {"{\rm \fontsize{"+fontsize+"} {Proportion responding "+ '"'+'same'+ '"'+"}}"});
 
         else % Default plots -- mean+-SEM across subjects
             for l=1:3
