@@ -12,7 +12,19 @@ addpath(analysis_path,data_path,model_path,model_path_temp,"utils\");
 
 fontsize=9;
 plot_lapse=true;
+
+fig_maxwidth_inches = 7.5;
+fig_maxheight_inches = 8.75;
+set(0,'units','inches');
+Inch_SS = get(0,'screensize');
+set(0,'units','pixels');
 figsize = get(0, 'ScreenSize');
+Res = figsize(3)./Inch_SS(3);
+set(groot,'DefaultAxesFontName','Arial')
+
+%figsize_RespDistr = [0,0,figsize(4)*4/3, figsize(4)];
+figsize_RespDistr = [0,0,fig_maxwidth_inches, fig_maxheight_inches] .* Res; 
+
 %% Fit a model on UV+UA data quickly, using only one random init per subject.
 prior_type = "GaussianLaplaceBothFixedZero"; % "SingleGaussian", "GaussianLaplaceBothFixedZero", or "TwoGaussiansBothFixedZero"
 hetero_type = "exp"; % "constant" or "exp"
@@ -27,7 +39,7 @@ end
 merge_parametric_ujointfits_files_fast(prior_type,hetero_type,lapse_type,rescale_aud, num_inits_persubj, model_path, model_path_temp)
 
 %% Visualize the fit.
-manuscript_ujoint_respdistrvisualization(prior_type, hetero_type, rescale_aud, fontsize, [0 0 figsize(4)*4/3 figsize(4)], model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior_type, hetero_type, rescale_aud, fontsize, figsize_RespDistr, model_path, plot_lapse, lapse_type);
 
 
 %% Helper function to merge different subjects/inits for the same model.
