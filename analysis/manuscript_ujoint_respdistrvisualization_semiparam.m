@@ -14,6 +14,11 @@ function [] = manuscript_ujoint_respdistrvisualization_semiparam(fontsize, figsp
     end
     data_path = "data\";
 
+    % For UAV plots, in case screen too small, need to shrink size. 
+    set(0,'units','pixels');
+    screensize = get(0, 'ScreenSize');
+    screen_max_height_ratio = screensize(4)/figspecs(4);
+
     %cd('C:\Users\liu_s\OneDrive\桌面\MATLAB\AudioVisual\Analysis')
     s_a_range = -15:5:15;
     s_v_range = linspace(-20,20,8);
@@ -85,7 +90,7 @@ function [] = manuscript_ujoint_respdistrvisualization_semiparam(fontsize, figsp
     UV_use_pred_samples = true;
     UA_use_pred_samples = true; % can be false;
     model_family="semiparam";
-    manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM, ModelComponents, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize, figspecs, lapse_type, Gaussian_lapse_SDs, plot_individual)
-    manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM, ModelComponents, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize, NaN, lapse_type, Gaussian_lapse_SDs, plot_individual)
+    manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM, ModelComponents, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize*screen_max_height_ratio, figspecs.*screen_max_height_ratio, lapse_type, Gaussian_lapse_SDs, plot_individual)
+    manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM, ModelComponents, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize*screen_max_height_ratio, NaN, lapse_type, Gaussian_lapse_SDs, plot_individual)
 
 end

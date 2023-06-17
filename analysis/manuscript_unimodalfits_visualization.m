@@ -18,7 +18,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
         if(~plot_individual) % Default plots -- errorbars are mean+-SEM across subjects
             figure('Position', figspecs);
             set(gcf, 'Color', 'w')
-            tcl=tiledlayout(4,4,'Padding', 'compact', 'TileSpacing', 'tight');
+            tcl=tiledlayout(4,24,'Padding', 'compact', 'TileSpacing', 'tight');
         end
     end
 
@@ -216,12 +216,13 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 set(gca,'TickDir','out');
                 hold on;
                 title("Subject " + i)
+                plot([-20,20],[-20,20], "k--",'HandleVisibility','off')
                 scatter(squeeze(s_range), squeeze(s_cond_s_hat_means(i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor','none','MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
                 % if(i>=12)
                 %     xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
                 % end
                 % if(mod(i,4)==1)
-                %     ylabel("Mean loc. estimate (\circ)", 'FontSize', fontsize)
+                %     ylabel("Mean loc. response (\circ)", 'FontSize', fontsize)
                 % end
                 ylim([-20,20])
                 if(idx==(num_subjects+1))
@@ -241,6 +242,11 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 end
                 axis equal
                 pbaspect([1 1 1])
+                xticks(-20:10:20)
+                yticks(-20:10:20)
+                xtickangle(0)
+                tt1.XAxis.FontSize = 9;
+                tt1.YAxis.FontSize = 9;
                 
                 figure(2)
                 tt2 = nexttile(idx);
@@ -253,7 +259,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 %     xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
                 % end
                 % if(mod(i,4)==1)
-                %     ylabel("SD of loc. estimate (\circ)", 'FontSize', fontsize)
+                %     ylabel("SD of loc. response (\circ)", 'FontSize', fontsize)
                 % end
                 ylim([0,9])
                 if(idx==(num_subjects+1))
@@ -271,6 +277,10 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
 %                     p2 = plot(squeeze(s_range), squeeze(model_params(i,:,2)), 'Color',color_AV,'LineWidth',1);
 %                     p2.Color(4) = alpha_level;
                 end
+                xticks(-20:10:20)
+                xtickangle(0)
+                tt2.XAxis.FontSize = 9;
+                tt2.YAxis.FontSize = 9;
                 
 %                 if(l==4 && i==7) % Exemplary subject
 %                     myAxes=findobj(tt1,'Type','Axes');
@@ -282,11 +292,11 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
             figure(1)
             T1 = gca().Parent;
             xlabel(T1,"Stimulus location (\circ)", 'FontSize', fontsize)
-            ylabel(T1,"Mean loc. estimate (\circ)", 'FontSize', fontsize)
+            ylabel(T1,"Mean loc. response (\circ)", 'FontSize', fontsize)
             figure(2)
             T2 = gca().Parent;
             xlabel(T2,"Stimulus location (\circ)", 'FontSize', fontsize)
-            ylabel(T2,"SD of loc. estimate (\circ)", 'FontSize', fontsize)
+            ylabel(T2,"SD of loc. response (\circ)", 'FontSize', fontsize)
 
 
             
@@ -334,7 +344,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 Curves2 = model_vals_meanoversubj - model_vals_SEMoversubj;
             end
 
-            t=nexttile([1,2]);
+            t=nexttile([1,13]);
             set(gca,'TickDir','out');
             for j=1:num_s_bins
                 hold on
@@ -354,23 +364,29 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
             xlim([-35,35]) %[-32,42]
             ylim([0,0.73])
             if(is_visual)
-                xlabel("Estimated visual stimulus location (\circ)", 'FontSize', fontsize)
-                ylabel({"{\fontsize{"+(fontsize+1)+"} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{"+fontsize+"} {Proportion}}"})
-                lg = legend(t,"$"+{"[-20, -14.3]","[-14.3,-8.6]","[-8.6,-2.9]","[-2.9,+2.9]","[+2.9,+8.6]","[+8.6,+14.3]","[+14.3,+20]"}+"^\circ $",'interpreter', 'latex', 'color','none');
+                xlabel("Reported stimulus location (\circ)", 'FontSize', fontsize)
+                ylabel({"{\fontsize{"+(fontsize+1)+"}\bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\fontsize{"+(fontsize+0.71)+"}Proportion}"})
+                %ylabel({"\bf{Visual ("+reliability_titles(l)+" Reliability)}","\rm Proportion"}, 'FontSize', fontsize)
+                lg = legend(t,""+{"[-20, -14.3]","[-14.3,-8.6]","[-8.6,-2.9]","[-2.9,2.9]","[2.9,8.6]","[8.6,14.3]","[14.3,20]"}+"\circ",'color','none');
                 lg.ItemTokenSize(1) = 6;
                 set(lg,'Box','off')
-                lg.FontSize = 6; %6
-                lg.Position(1) = 0.4; %0.4
-                lg.Position(2) = lg.Position(2) - 0.03; %-0.08
+                lg.FontSize = fontsize; %6
+                lg.Position(1) = 0.455; %0.455
+                lg.Position(2) = lg.Position(2) - 0.02; %-0.08
                 lg.Title.String = 'Stimulus loc.';
+                lg.Title.FontWeight = 'normal';
             else
-                xlabel("Estimated auditory stimulus location (\circ)", 'FontSize', fontsize)
-                ylabel({"{\fontsize{"+(fontsize+1)+"} \bf{Auditory}}","{\rm \fontsize{"+fontsize+"} {Proportion}}"})
-                lg = legend(t,"$"+{"-15","-10","-5","0","+5","+10","+15"}+"^\circ $",'interpreter', 'latex', 'Location', 'northeast', 'color','none');
+                xlabel("Reported stimulus location (\circ)", 'FontSize', fontsize)
+                ylabel({"{\fontsize{"+(fontsize+1)+"} \bf{Auditory}}","{\rm \fontsize{"+(fontsize+0.71)+"} {Proportion}}"})
+                %ylabel({"\bf{Auditory}","{\rm Proportion}"}, 'FontSize', fontsize)
+                lg = legend(t,""+{"-15","-10","-5","0","5","10","15"}+"\circ",'Location', 'northeast', 'color','none');
                 lg.ItemTokenSize(1) = 6;
                 set(lg,'Box','off')
-                lg.FontSize = 6;
+                lg.FontSize = fontsize;
+                lg.Position(1) = 0.46; %0.47
+                lg.Position(2) = lg.Position(2) - 0.02; %-0.08
                 lg.Title.String = 'Stimulus loc.';
+                lg.Title.FontWeight = 'normal';
             end
 
             if(l==1)
@@ -379,11 +395,16 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 ttl.Position(1) = -0.07; % -0.05
                 ttl.HorizontalAlignment = 'left';  
             end
+            
+            % Room for placing the legend
+            nexttile([1,1]);
+            axis off;
 
             % Means of histograms
-            nexttile;
+            t=nexttile([1,5]);
             set(gca,'TickDir','out');
             hold on
+            plot([-20,20],[-20,20], "k--")
             s_cond_s_hat_means_meanoversubj = squeeze(mean(s_cond_s_hat_means,1));
             s_cond_s_hat_means_SEMsoversubj = squeeze(std(s_cond_s_hat_means)) ./ sqrt(num_subjects);
             if(~not_plot_model_preds)
@@ -406,27 +427,31 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                     errorbar(squeeze(s_range), s_cond_s_hat_means_meanoversubj, s_cond_s_hat_means_SEMsoversubj, ".-", 'Color', 'k', 'CapSize', 3);
                 end
             end
-           
-            xlim([-20,20])
-            ylabel("Mean loc. estimate (\circ)", 'FontSize', fontsize)
+          
+            ylabel("Mean loc. response (\circ)", 'FontSize', fontsize)
             if(is_visual)
-                xlabel("Visual stimulus location (\circ)", 'FontSize', fontsize)
+                xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
             else
-                xlabel("Auditory stimulus location (\circ)", 'FontSize', fontsize)
+                xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
             end
             if(l==1)
                 ttl = title('(b)', "Fontsize", fontsize+1);
                 ttl.Units = 'Normalize'; 
-                ttl.Position(1) = -0.46; % -0.29
+                ttl.Position(1) = -0.43; % -0.29
+                ttl.Position(2) = 1.275; 
                 ttl.HorizontalAlignment = 'left';  
             end
             xlim([-20,20])
             ylim([-20,20])
-            axis equal
-            pbaspect([1 1 1])
+            t.TickLength(1) = 0.035;
+            xtickangle(t,0)
+            xticks(t,-20:10:20)  
+            yticks(t,-20:10:20)
+            pbaspect(t,[1 1 1])
+            
 
             % SDs of histograms
-            nexttile;
+            t=nexttile([1,5]);
             set(gca,'TickDir','out');
             hold on
             s_cond_s_hat_stds_meanoversubj = squeeze(mean(s_cond_s_hat_stds,1));
@@ -451,17 +476,23 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
             end
             
             xlim([-20,20])
+            xticks(-20:10:20)
+            xtickangle(0)
             ylim([0,6])
-            ylabel("SD of loc. estimate (\circ)", 'FontSize', fontsize)
+            pbaspect([1 1 1])
+            t.TickLength(1) = 0.035;
+            
+            ylabel("SD of loc. response (\circ)", 'FontSize', fontsize)
             if(is_visual)
-                xlabel("Visual stimulus location (\circ)", 'FontSize', fontsize)
+                xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
             else
-                xlabel("Auditory stimulus location (\circ)", 'FontSize', fontsize)
+                xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
             end    
             if(l==1)
                 ttl = title('(c)', "Fontsize", fontsize+1);
                 ttl.Units = 'Normalize'; 
                 ttl.Position(1) = -0.36; % -0.23
+                ttl.Position(2) = 1.275; 
                 ttl.HorizontalAlignment = 'left';  
             end
 
@@ -485,7 +516,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
     %         end
     %         xlim([-20,20])
     %         ylim([0,8])
-    %         ylabel("IQR of loc. Estimate (\circ)", 'FontSize', fontsize)
+    %         ylabel("IQR of loc. response (\circ)", 'FontSize', fontsize)
     %         if(is_visual)
     %             xlabel("Visual Stimulus Location (\circ)", 'FontSize', fontsize)
     %         else

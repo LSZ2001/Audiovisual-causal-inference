@@ -23,6 +23,7 @@ data_path = "data\";
 analysis_path = "analysis\";
 addpath(analysis_path,data_path,model_path,"utils\");
 
+
 %% UAV data visualized, without model prediction ribbons.
 prior = "NaN";
 noise = "NaN";
@@ -72,7 +73,7 @@ saveas(gca, figpath+save_name+'_IndividualSD.fig')
 exportgraphics(gcf,figpath+save_name+'_IndividualSD'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+save_name + '_IndividualSD'+'.pdf',"ContentType","vector");
 
-% Exemplary subject
+%% Exemplary subject
 subjidx=7;
 fitted_on_all_data = false;
 allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_data, 10, [0 0 figsize_RespDistr(3) figsize_RespDistr(3)*0.5], figpath)
@@ -696,7 +697,7 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     
     figure('Position', figspec);
     set(gcf, 'Color', 'w')
-    T = tiledlayout(2,10,'TileSpacing','tight', "Padding","none");
+    T = tiledlayout(2,10,'TileSpacing','compact', "Padding","none");
 
     linewidth = 1;
     for fun_idx=1:3
@@ -737,6 +738,8 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
                     ylim(t,[0,6.1])
                     xl = xlim(t); yl = ylim(t);
                     yticks(t,0:6)
+                    t.XAxis.FontSize = 9;
+                    t.YAxis.FontSize = 9;
                     
                     p=plot(h, s_fine_full, sigma_fun_vis(s_fine_full),'-', 'Color',color);
                     p.Color(4)=0.9;
@@ -749,6 +752,8 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
                     ylim(h,[0,45])
                     xticks(h,0:15:45)
                     yticks(h,0:15:45)
+                    h.XAxis.FontSize = 9;
+                    h.YAxis.FontSize = 9;
 
                 case 2
                     sigma_fun_aud_pivots = cumsum(theta((num_pivots+1):(2*num_pivots)));
@@ -765,6 +770,8 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
                     ylim(t,[0,6.1])
                     xl = xlim(t); yl = ylim(t);
                     yticks(t,0:6)
+                    t.XAxis.FontSize = 9;
+                    t.YAxis.FontSize = 9;
                     
                     p=plot(h, s_fine_full, sigma_fun_aud(s_fine_full),'-', 'Color',color);
                     p.Color(4)=0.9;
@@ -777,6 +784,8 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
                     ylim(h,[0,45])
                     xticks(h,0:15:45)
                     yticks(h,0:15:45)
+                    h.XAxis.FontSize = 9;
+                    h.YAxis.FontSize = 9;
                 case 3    
                     prior_pivots = cumsum([1,theta((2*num_pivots+1):(3*num_pivots-1))]);
                     prior_pivots = [fliplr(prior_pivots(2:end)), prior_pivots];
@@ -798,6 +807,8 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
                     xl = xlim(t); yl = ylim(t);
                     xticks(t,0:1:3);
                     yticks(t, 0:1:5);
+                    t.XAxis.FontSize = 9;
+                    t.YAxis.FontSize = 9;
                     
                     p=plot(h, s_fine_full, log(prior(s_fine_full).*normalization_constant),'-', 'Color',color);
                     p.Color(4)=0.9;
@@ -809,6 +820,8 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
                     ylim(h,[-20,3])
                     xticks(h,0:15:45)
                     yticks(h, -20:10:0);
+                    h.XAxis.FontSize = 9;
+                    h.YAxis.FontSize = 9;
                     ylabel(h,"$\log p(s)$", 'interpreter','latex', 'FontSize', fontsize) 
             end  
         end
@@ -819,7 +832,7 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     x_labels_pos = (3*num_pivots):num_params;
     x_labels = "$"+{"\alpha_\mathrm{med}", "\alpha_\mathrm{low}", "\lambda","\sigma_\mathrm{motor}","\rho_\mathrm{A}"}+"$";
 
-    nexttile(T,[1,3])
+    t=nexttile(T,[1,3])
     boxplot(theta_fitted_cmaes(:,x_labels_pos([1,2,5])))
     hold on
     idx=0
@@ -839,10 +852,12 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     xlim([1-0.5,idx+0.5])
     ylim([0, Inf])
     yticks(0:1:5)
+    t.XAxis.FontSize = 9;
+    t.YAxis.FontSize = 9;
     box off 
     set(gca,'TickDir','out');
         
-    nexttile(T)
+    t=nexttile(T)
     boxplot(theta_fitted_cmaes(:,x_labels_pos(3)))
     hold on
     scatter1 = scatter(repmat(1,num_subjects,1), theta_fitted_cmaes(:,x_labels_pos(3)),'o','MarkerFaceColor','k','MarkerEdgeColor','k');
@@ -856,10 +871,12 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     ax.XAxis.FontSize = fontsize;
     xlim([0.5,1.5])
     ylim([0, 0.015])
+    t.XAxis.FontSize = 9;
+    t.YAxis.FontSize = 9;
     set(gca,'TickDir','out');
     box off 
     
-    nexttile(T)
+    t=nexttile(T)
     boxplot(theta_fitted_cmaes(:,x_labels_pos(4)))
     hold on
     scatter1 = scatter(repmat(1,num_subjects,1), theta_fitted_cmaes(:,x_labels_pos(4)),'o','MarkerFaceColor','k','MarkerEdgeColor','k');
@@ -873,6 +890,8 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     ax.XAxis.FontSize = fontsize;
     xlim([0.5,1.5])
     ylim([0, 0.5])
+    t.XAxis.FontSize = 9;
+    t.YAxis.FontSize = 9;
     set(gca,'TickDir','out');
     box off 
     
@@ -992,17 +1011,19 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         T=tiledlayout(1,2,'Padding', 'tight', 'TileSpacing', 'tight');
         t1 = nexttile(1);
         hold on
+        plot([-20,20],[-20,20],"k--",'HandleVisibility','off');
         fig1 = get(ax1,'children');
         copyobj(fig1, t1);
         xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
-        ylabel("Mean loc. estimate (\circ)", 'FontSize', fontsize)
+        ylabel("Mean loc. response (\circ)", 'FontSize', fontsize)
         ylim([-20,20])
+        xticks(-20:10:20)
         
         t2 = nexttile(2);
         fig2 = get(ax2,'children');
         copyobj(fig2, t2);
         xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
-        ylabel("SD of loc. estimate (\circ)", 'FontSize', fontsize)
+        ylabel("SD of loc. response (\circ)", 'FontSize', fontsize)
         h = findall(gca, 'LineStyle', '-');
         for i=1:4
             h(i).HandleVisibility="off";
@@ -1012,6 +1033,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         lg.FontSize = max(9,fontsize-1);
         lg.Location="northeast";
         lg.ItemTokenSize(1) = 10;
+        xticks(-20:10:20)
         
     else
         
@@ -1048,21 +1070,23 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
 
         t1 = nexttile(t12);
         hold on
+        plot([-20,20],[-20,20],"k--",'HandleVisibility','off');
         fig1 = get(ax1,'children');
         copyobj(fig1, t1);
         xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
-        ylabel("Mean loc. estimate (\circ)", 'FontSize', fontsize)
+        ylabel("Mean loc. response (\circ)", 'FontSize', fontsize)
         ylim([-20,20])
         ttl = title('(a)', "Fontsize", 10);
         ttl.Units = 'Normalize'; 
         ttl.Position(1) = -0.26; % use negative values (ie, -0.1) to move further left
         ttl.HorizontalAlignment = 'left'; 
+        xticks(-20:10:20)
         
         t2 = nexttile(t12);
         fig2 = get(ax2,'children');
         copyobj(fig2, t2);
         xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
-        ylabel("SD of loc. estimate (\circ)", 'FontSize', fontsize)
+        ylabel("SD of loc. response (\circ)", 'FontSize', fontsize)
         ylim([0,9])
         h = findall(gca, 'LineStyle', '-');
         for i=1:4
@@ -1072,6 +1096,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         set(lg,'Box','off')
         lg.FontSize = 9;
         lg.ItemTokenSize(1) = 10;
+        xticks(-20:10:20)
         
         % BC
         %t3 = nexttile([1,2]);
@@ -1106,6 +1131,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             xlim([-30,30])
             ylim([0,1])
             yticks(0:0.25:1)
+            xticks(-30:10:30)
             
             lg = legend({"High vis rel","Med vis rel","Low vis rel"});
             set(lg,'Box','off')
@@ -1119,7 +1145,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         t4.Layout.Tile = 13;
         t4.Layout.TileSpan = [1 6];
         xlabel(t4, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
-        ylabel(t4,"{\rm \fontsize{10} {Mean visual bias (est - true)}}");
+        ylabel(t4,"{\rm \fontsize{10} {Mean visual bias (resp - true)}}");
         for strats=1:3
             tt = nexttile(t4);
             hold on;
@@ -1149,6 +1175,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             end
             xlim([-35,35])
             ylim([-15,15])
+            xticks(-30:10:30)
             lg = legend({"High vis rel","Med vis rel","Low vis rel"});
             set(lg,'Box','off')
             lg.FontSize = 9;
@@ -1160,7 +1187,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         t5.Layout.Tile = 19;
         t5.Layout.TileSpan = [1 6];
         xlabel(t5, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
-        ylabel(t5,"{\rm \fontsize{10} {Mean auditory bias (est - true)}}");
+        ylabel(t5,"{\rm \fontsize{10} {Mean auditory bias (resp - true)}}");
         for strats=1:3
             tt = nexttile(t5);
             hold on;
@@ -1189,6 +1216,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             end
             xlim([-35,35])
             ylim([-15,15])
+            xticks(-30:10:30)
             
             lg = legend({"High vis rel","Med vis rel","Low vis rel"});
             set(lg,'Box','off')

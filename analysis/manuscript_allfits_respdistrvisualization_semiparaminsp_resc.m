@@ -16,6 +16,11 @@ function [] = manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causa
         plot_individual=false;
     end
     data_path = "data\";
+
+    % For UAV plots, in case screen too small, need to shrink size. 
+    set(0,'units','pixels');
+    screensize = get(0, 'ScreenSize');
+    screen_max_height_ratio = screensize(4)/figspecs(4);
     
     %%
     s_a_range = -15:5:15;
@@ -63,9 +68,9 @@ function [] = manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causa
     UV_use_pred_samples = true;
     UA_use_pred_samples = true; % can be false;
     ModelComponents.NumReliabilityLevels=3;
-    manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM, ModelComponents, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize, figspecs, lapse_type, Gaussian_lapse_SDs, plot_individual)
+    manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM, ModelComponents, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize*screen_max_height_ratio, figspecs.*screen_max_height_ratio, lapse_type, Gaussian_lapse_SDs, plot_individual)
     ModelComponents.NumReliabilityLevels=1;
-    manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM, ModelComponents, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize, NaN, lapse_type, Gaussian_lapse_SDs, plot_individual)
+    manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM, ModelComponents, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize*screen_max_height_ratio, NaN, lapse_type, Gaussian_lapse_SDs, plot_individual)
 
     if(plot_individual)
         figure(1)

@@ -119,13 +119,13 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
             colors_AV = brewermap(10,"Set1");
             colors_AV = colors_AV(4:5,:);            
             for i=1:num_subjects
-                t=tiledlayout(T,1,2);
+                t=tiledlayout(T,1,2, 'Padding','none', 'TileSpacing','tight');
                 t.Layout.Tile = i;
                 t.Layout.TileSpan = [1 1];
                 
                 for strats=1:2
                     color_AV = colors_AV(strats,:);
-                    nexttile(t);
+                    tt=nexttile(t);
                     set(gca,'TickDir','out');
                     hold on
                     title(t,"Subject " + i, 'FontSize',fontsize, 'FontWeight', 'bold')
@@ -135,9 +135,15 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
                         patchline(bincenters, squeeze(Probs_C1s_modelfit(l,strats,i,:)),  'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level);
 %                         p = plot(bincenters, squeeze(Probs_C1s_modelfit(l,strats,i,:)), 'Color',color_AV,'LineWidth',1);
 %                         p.Color(4) = alpha_level;
+                        if(strats~=1 || (mod(i,4)~=1))
+                            set(tt,'YTickMode', 'manual', 'YTick',-10:0:10,'Yticklabel',[]);
+                        end
                     end
                     xlim([-30,30])
                     ylim([0,1])
+                    yticks(0:0.25:1)
+                    tt.XAxis.FontSize = 9;
+                    tt.YAxis.FontSize = 9;
                 end
             end
             

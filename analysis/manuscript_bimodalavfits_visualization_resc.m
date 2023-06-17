@@ -234,14 +234,15 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
             lg.Position(2) = 0.05;
             xlim([-35,35])
             ylim([-15,15])
+            yticks(-15:5:15)
             
             
             xlabel(T, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
             switch response_type
                 case 1
-                    ylabel(T, "{\rm \fontsize{9} {Mean visual bias (est - true)}}");
+                    ylabel(T, "{\rm \fontsize{9} {Mean visual bias (resp - true)}}");
                 case 2
-                    ylabel(T, "{\rm \fontsize{9} {Mean auditory bias (est - true)}}");
+                    ylabel(T, "{\rm \fontsize{9} {Mean auditory bias (resp - true)}}");
             end
                 
 
@@ -283,15 +284,16 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
                     end
                     if(strats==1)
                         if(response_type==1)
-                            ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Mean visual bias (est - true)}}"})
+                            ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Mean visual bias (resp - true)}}"})
 
                         else
-                            ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Mean auditory bias (est - true)}}"})
+                            ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Mean auditory bias (resp - true)}}"})
 
                         end
                     end
                     xlim([-35,35])
                     ylim([-15,15])
+                    xticks(-30:10:30)
                 end
             end
 
