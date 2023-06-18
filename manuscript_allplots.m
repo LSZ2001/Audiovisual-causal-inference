@@ -197,7 +197,7 @@ causal_inf_strategy = "ProbMatching";
 save_name = "exp-GaussianLaplace-PM";
 manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type, true)
 
-%% Exemplary subject
+% Exemplary subject
 subjidx=7;
 fitted_on_all_data = true;
 allindvsubjplots_to_onesubjplot(save_name,subjidx, fitted_on_all_data, fontsize, figsize_RespDistr, figpath)

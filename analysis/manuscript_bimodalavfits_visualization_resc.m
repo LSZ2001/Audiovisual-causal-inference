@@ -43,7 +43,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
 %     bincenters = binedges(1:(end-1)) + (binedges(2:end) - binedges(1:(end-1))) ./2;    
     num_binedges = 8;
   
-    stratify_labels = ["(s_A+s_V) on left", "(s_A+s_V) in center", "(s_A+s_V) on right"];
+    stratify_labels = ["({\its}_A+{\its}_V) on left", "({\its}_A+{\its}_V) in center", "({\its}_A+{\its}_V) on right"];
     stratify_thres = quantile(s_sum_alltrials, [0.25, 0.75]);
     for response_type=1:2
     bincenters_stratrels = zeros(3,3,num_subjects,num_binedges-1);
@@ -227,7 +227,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
             end
             axis off
             fill([-40,-40,40,40],[-40,40,40,-40],"w", 'EdgeColor','none','HandleVisibility','off')
-            lg = legend("Left, Visual (high rel)","Left, Visual (med rel)","Left, Visual (low rel)","Center, Visual (high rel)","Center, Visual (med rel)","Center, Visual (low rel)", "Right, Visual (high rel)", "Right, Visual (med rel)", "Right, Visual (low rel)");
+            lg = legend("Left, High visual rel","Left, Med visual rel","Left, Low visual rel","Center, High visual rel","Center, Med visual rel","Center, Low visual rel", "Right, High visual rel", "Right, Med visual rel", "Right, Low visual rel");
             set(lg,'Box','off')
             lg.FontSize = 9;
             lg.ItemTokenSize(1) = 10;
@@ -237,7 +237,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
             yticks(-15:5:15)
             
             
-            xlabel(T, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
+            xlabel(T, "Stimulus location disparity ({\its}_A - {\its}_V)", 'FontSize',fontsize)
             switch response_type
                 case 1
                     ylabel(T, "{\rm \fontsize{9} {Mean visual bias (resp - true)}}");
@@ -249,14 +249,13 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
         else % Default plots -- mean+-SEM across subjects
             figure('Position', figspecs);
             set(gcf, 'Color', 'w')
-            bottom_tick = 0.02;
-            top_tick = 0.98;
-            bracket_y_coord = 0.023;
-            annotation("line",[bracket_y_coord,bracket_y_coord],[bottom_tick,top_tick], 'LineWidth',1)
-            annotation("line",[bracket_y_coord,0.047],[bottom_tick,bottom_tick], 'LineWidth',1)
-            annotation("line",[bracket_y_coord,0.047],[top_tick,top_tick], 'LineWidth',1)
+            % bottom_tick = 0.02;
+            % top_tick = 0.98;
+            % bracket_y_coord = 0.023;
+            % annotation("line",[bracket_y_coord,bracket_y_coord],[bottom_tick,top_tick], 'LineWidth',1)
+            % annotation("line",[bracket_y_coord,0.047],[bottom_tick,bottom_tick], 'LineWidth',1)
+            % annotation("line",[bracket_y_coord,0.047],[top_tick,top_tick], 'LineWidth',1)
 
-            %tcl=tiledlayout(ModelComponents_UV.NumReliabilityLevels+1,4,'Padding', 'none', 'TileSpacing', 'compact', 'InnerPosition',[0.0300 0.0700 0.90 0.90] );
             tcl=tiledlayout(3,3,'Padding', 'none', 'TileSpacing', 'compact');
             for l=1:3
                 for strats=1:3
@@ -287,16 +286,16 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
                     if(l==1)
                         title(stratify_labels(strats), 'FontSize', 10)
                     elseif(l==3)
-                        xlabel("Stimulus location disparity (A - V)", 'FontSize',fontsize)
+                        xlabel("Stimulus location disparity ({\its}_A - {\its}_V)", 'FontSize',fontsize)
                     end
                     sensory_bias_type = ["visual","auditory"];
                     if(strats==1)
-                        %ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Mean "+sensory_bias_type(response_type)+" bias (resp - true)}}"})
-                        if(l==2)
-                            ylabel({"{\fontsize{10} \bf{Visual}}", "{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Mean "+sensory_bias_type(response_type)+" bias (resp - true)}}"})
-                        else
-                            ylabel({"","{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Mean "+sensory_bias_type(response_type)+" bias (resp - true)}}"})
-                        end
+                        ylabel({"{\fontsize{10} \bf{"+reliability_titles(l)+" Visual Reliability}}","{\rm \fontsize{9} {Mean "+sensory_bias_type(response_type)+" bias (resp - true)}}"})
+                        % if(l==2)
+                        %     ylabel({"{\fontsize{10} \bf{Visual}}", "{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Mean "+sensory_bias_type(response_type)+" bias (resp - true)}}"})
+                        % else
+                        %     ylabel({"","{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Mean "+sensory_bias_type(response_type)+" bias (resp - true)}}"})
+                        % end
                     end
                     xlim([-35,35])
                     ylim([-15,15])

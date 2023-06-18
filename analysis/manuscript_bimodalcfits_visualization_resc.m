@@ -10,12 +10,12 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
         figure('Position', figspecs);
         set(gcf, 'Color', 'w')
         tcl=tiledlayout(3,2,'Padding', 'compact', 'TileSpacing', 'compact');
-        bottom_tick = 0.02;
-        top_tick = 0.98;
-        bracket_y_coord = 0.031;
-        annotation("line",[bracket_y_coord,bracket_y_coord],[bottom_tick,top_tick], 'LineWidth',1)
-        annotation("line",[bracket_y_coord,0.047],[bottom_tick,bottom_tick], 'LineWidth',1)
-        annotation("line",[bracket_y_coord,0.047],[top_tick,top_tick], 'LineWidth',1)
+        % bottom_tick = 0.02;
+        % top_tick = 0.98;
+        % bracket_y_coord = 0.031;
+        % annotation("line",[bracket_y_coord,bracket_y_coord],[bottom_tick,top_tick], 'LineWidth',1)
+        % annotation("line",[bracket_y_coord,0.047],[bottom_tick,bottom_tick], 'LineWidth',1)
+        % annotation("line",[bracket_y_coord,0.047],[top_tick,top_tick], 'LineWidth',1)
 
     end
 
@@ -56,7 +56,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
     Probs_C1s = zeros(3, 2, num_subjects, length(binedges)-1);
     Probs_C1s_modelfit = Probs_C1s;
   
-    stratify_labels = ["|s_A+s_V| in center", "|s_A+s_V| in periphery"];
+    stratify_labels = ["|{\its}_A+{\its}_V| in center", "|{\its}_A+{\its}_V| in periphery"];
     stratify_thres = quantile(abs(s_sum_alltrials), 0.5);
     for l=1:3
         for strats=1:2
@@ -169,7 +169,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
             end
             axis off
             fill([-40,-40,40,40],[-40,40,40,-40],"w", 'EdgeColor','none','HandleVisibility','off')
-            lg = legend("Center, Visual (high rel)","Center, Visual (med rel)","Center, Visual (low rel)", "Periphery, Visual (high rel)", "Periphery, Visual (med rel)", "Periphery, Visual (low rel)");
+            lg = legend("Center, High visual rel","Center, Med visual rel","Center, Low visual rel", "Periphery, High visual rel", "Periphery, Med visual rel", "Periphery, Low visual rel");
             set(lg,'Box','off')
             lg.FontSize = max(9,fontsize-1);
             lg.Position(1) = 0.75;
@@ -179,7 +179,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
             ylim([0,1])
             
             
-            xlabel(T, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
+            xlabel(T, "Stimulus location disparity ({\its}_A - {\its}_V)", 'FontSize',fontsize)
             ylabel(T, {"{\rm \fontsize{"+fontsize+"} {Proportion responding "+ '"'+'same'+ '"'+"}}"});
 
         else % Default plots -- mean+-SEM across subjects
@@ -203,16 +203,16 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
                     if(l==1)
                         title(stratify_labels(strats), 'FontSize',10)
                     elseif(l==3)
-                        xlabel("Stimulus location disparity (A - V)", 'FontSize',fontsize)
+                        xlabel("Stimulus location disparity ({\its}_A - {\its}_V)", 'FontSize',fontsize)
                     end
                     if(strats==1)
-                        %ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
+                        ylabel({"{\fontsize{10} \bf{"+reliability_titles(l)+" Visual Reliability}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
 
-                        if(l==2)
-                            ylabel({"{\fontsize{10} \bf{Visual}}","{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
-                        else
-                            ylabel({"","{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
-                        end
+                        % if(l==2)
+                        %     ylabel({"{\fontsize{10} \bf{Visual}}","{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
+                        % else
+                        %     ylabel({"","{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
+                        % end
                     end
                     %ylabel("$Pr[\hat{C} = 1]$", 'interpreter','latex', 'FontSize',fontsize)
                     ylim([0,1])
