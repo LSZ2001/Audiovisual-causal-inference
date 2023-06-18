@@ -10,6 +10,13 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
         figure('Position', figspecs);
         set(gcf, 'Color', 'w')
         tcl=tiledlayout(3,2,'Padding', 'compact', 'TileSpacing', 'compact');
+        bottom_tick = 0.02;
+        top_tick = 0.98;
+        bracket_y_coord = 0.031;
+        annotation("line",[bracket_y_coord,bracket_y_coord],[bottom_tick,top_tick], 'LineWidth',1)
+        annotation("line",[bracket_y_coord,0.047],[bottom_tick,bottom_tick], 'LineWidth',1)
+        annotation("line",[bracket_y_coord,0.047],[top_tick,top_tick], 'LineWidth',1)
+
     end
 
     return_predictive_samples = false;
@@ -199,7 +206,13 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
                         xlabel("Stimulus location disparity (A - V)", 'FontSize',fontsize)
                     end
                     if(strats==1)
-                        ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
+                        %ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
+
+                        if(l==2)
+                            ylabel({"{\fontsize{10} \bf{Visual}}","{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
+                        else
+                            ylabel({"","{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
+                        end
                     end
                     %ylabel("$Pr[\hat{C} = 1]$", 'interpreter','latex', 'FontSize',fontsize)
                     ylim([0,1])

@@ -249,6 +249,13 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
         else % Default plots -- mean+-SEM across subjects
             figure('Position', figspecs);
             set(gcf, 'Color', 'w')
+            bottom_tick = 0.02;
+            top_tick = 0.98;
+            bracket_y_coord = 0.023;
+            annotation("line",[bracket_y_coord,bracket_y_coord],[bottom_tick,top_tick], 'LineWidth',1)
+            annotation("line",[bracket_y_coord,0.047],[bottom_tick,bottom_tick], 'LineWidth',1)
+            annotation("line",[bracket_y_coord,0.047],[top_tick,top_tick], 'LineWidth',1)
+
             %tcl=tiledlayout(ModelComponents_UV.NumReliabilityLevels+1,4,'Padding', 'none', 'TileSpacing', 'compact', 'InnerPosition',[0.0300 0.0700 0.90 0.90] );
             tcl=tiledlayout(3,3,'Padding', 'none', 'TileSpacing', 'compact');
             for l=1:3
@@ -282,13 +289,13 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
                     elseif(l==3)
                         xlabel("Stimulus location disparity (A - V)", 'FontSize',fontsize)
                     end
+                    sensory_bias_type = ["visual","auditory"];
                     if(strats==1)
-                        if(response_type==1)
-                            ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Mean visual bias (resp - true)}}"})
-
+                        %ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Mean "+sensory_bias_type(response_type)+" bias (resp - true)}}"})
+                        if(l==2)
+                            ylabel({"{\fontsize{10} \bf{Visual}}", "{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Mean "+sensory_bias_type(response_type)+" bias (resp - true)}}"})
                         else
-                            ylabel({"{\fontsize{10} \bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\rm \fontsize{9} {Mean auditory bias (resp - true)}}"})
-
+                            ylabel({"","{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Mean "+sensory_bias_type(response_type)+" bias (resp - true)}}"})
                         end
                     end
                     xlim([-35,35])

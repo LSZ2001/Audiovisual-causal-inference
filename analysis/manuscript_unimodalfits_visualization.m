@@ -343,6 +343,11 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 Curves1 = model_vals_meanoversubj + model_vals_SEMoversubj;
                 Curves2 = model_vals_meanoversubj - model_vals_SEMoversubj;
             end
+            bottom_tick = 0.26;
+            top_tick = 0.98;
+            annotation("line",[0.033,0.033],[bottom_tick,top_tick], 'LineWidth',1)
+            annotation("line",[0.033,0.047],[bottom_tick,bottom_tick], 'LineWidth',1)
+            annotation("line",[0.033,0.047],[top_tick,top_tick], 'LineWidth',1)
 
             t=nexttile([1,13]);
             set(gca,'TickDir','out');
@@ -358,26 +363,34 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                     p.Annotation.LegendInformation.IconDisplayStyle = 'off';
                     errorbar(squeeze(hist_range(keep_x_idx)), raw_data_histcounts_meanoversubj(j,keep_x_idx), raw_data_histcounts_SEMoversubj(j,keep_x_idx), ".", 'Color', colors(j,:), 'CapSize', 3);
                 else
-                    errorbar(squeeze(hist_range(keep_x_idx)), raw_data_histcounts_meanoversubj(j,keep_x_idx), raw_data_histcounts_SEMoversubj(j,keep_x_idx), ".-", 'Color', colors(j,:), 'CapSize', 3);
+                    errorbar(squeeze(hist_range(keep_x_idx)), raw_data_histcounts_meanoversubj(j,keep_x_idx), raw_data_histcounts_SEMoversubj(j,keep_x_idx), ".", 'Color', colors(j,:), 'CapSize', 3);
+                    plot(squeeze(hist_range(keep_x_idx)), raw_data_histcounts_meanoversubj(j,keep_x_idx), "-", 'Color', colors(j,:), 'HandleVisibility', 'off');
                 end
             end
             xlim([-35,35]) %[-32,42]
             ylim([0,0.73])
             if(is_visual)
                 xlabel("Reported stimulus location (\circ)", 'FontSize', fontsize)
-                ylabel({"{\fontsize{"+(fontsize+1)+"}\bf{Visual ("+reliability_titles(l)+" Reliability)}}","{\fontsize{"+(fontsize+0.71)+"}Proportion}"})
+                if(l~=2)
+                    ylabel({"{\fontsize{"+(fontsize+1)+"}\bf{"+reliability_titles(l)+" Reliability}}","{\fontsize{"+(fontsize+0.71)+"}Proportion}"})
+                else
+                    ylabel({"{\fontsize{"+(fontsize+1)+"}\bf{Visual}}","{\fontsize{"+(fontsize+1)+"}\bf{"+reliability_titles(l)+" Reliability}}","{\fontsize{"+(fontsize+0.71)+"}Proportion}"})
+
+                end
                 %ylabel({"\bf{Visual ("+reliability_titles(l)+" Reliability)}","\rm Proportion"}, 'FontSize', fontsize)
-                lg = legend(t,""+{"[-20, -14.3]","[-14.3,-8.6]","[-8.6,-2.9]","[-2.9,2.9]","[2.9,8.6]","[8.6,14.3]","[14.3,20]"}+"\circ",'color','none');
-                lg.ItemTokenSize(1) = 6;
-                set(lg,'Box','off')
-                lg.FontSize = fontsize; %6
-                lg.Position(1) = 0.455; %0.455
-                lg.Position(2) = lg.Position(2) - 0.02; %-0.08
-                lg.Title.String = 'Stimulus loc.';
-                lg.Title.FontWeight = 'normal';
+                if(l==1)
+                    lg = legend(t,""+{"[-20, -14.3]","[-14.3,-8.6]","[-8.6,-2.9]","[-2.9,2.9]","[2.9,8.6]","[8.6,14.3]","[14.3,20]"}+"\circ",'color','none');
+                    lg.ItemTokenSize(1) = 6;
+                    set(lg,'Box','off')
+                    lg.FontSize = fontsize; %6
+                    lg.Position(1) = 0.465; %0.455
+                    lg.Position(2) = lg.Position(2) - 0.02; %-0.08
+                    lg.Title.String = 'Stimulus loc.';
+                    lg.Title.FontWeight = 'normal';
+                end
             else
                 xlabel("Reported stimulus location (\circ)", 'FontSize', fontsize)
-                ylabel({"{\fontsize{"+(fontsize+1)+"} \bf{Auditory}}","{\rm \fontsize{"+(fontsize+0.71)+"} {Proportion}}"})
+                ylabel({"{\fontsize{"+(fontsize+1)+"} \bf{Auditory}}","","{\rm \fontsize{"+(fontsize+0.71)+"} {Proportion}}"})
                 %ylabel({"\bf{Auditory}","{\rm Proportion}"}, 'FontSize', fontsize)
                 lg = legend(t,""+{"-15","-10","-5","0","5","10","15"}+"\circ",'Location', 'northeast', 'color','none');
                 lg.ItemTokenSize(1) = 6;
@@ -438,7 +451,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 ttl = title('(b)', "Fontsize", fontsize+1);
                 ttl.Units = 'Normalize'; 
                 ttl.Position(1) = -0.43; % -0.29
-                ttl.Position(2) = 1.275; 
+                ttl.Position(2) = 1.315; %1.295
                 ttl.HorizontalAlignment = 'left';  
             end
             xlim([-20,20])
@@ -492,7 +505,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 ttl = title('(c)', "Fontsize", fontsize+1);
                 ttl.Units = 'Normalize'; 
                 ttl.Position(1) = -0.36; % -0.23
-                ttl.Position(2) = 1.275; 
+                ttl.Position(2) = 1.324; %1.295
                 ttl.HorizontalAlignment = 'left';  
             end
 

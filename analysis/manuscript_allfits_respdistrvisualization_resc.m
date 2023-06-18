@@ -172,31 +172,31 @@ function [] = manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_
     model_family = "parametric";
     
     %% UV, UA
-    UV_use_pred_samples = true;
-    UA_use_pred_samples = true; % can be false
-    if(plot_individual)
-        fontsize_UAV = fontsize;
-        figspecs_UAV = figspecs;
-        manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM_UV, ModelComponents_UV, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize_UAV, figspecs_UAV, lapse_type, Gaussian_lapse_SDs, plot_individual)
-        manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM_UA, ModelComponents_UA, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize_UAV, figspecs_UAV, lapse_type, Gaussian_lapse_SDs, plot_individual)
-
-        figure(1)
-        saveas(gca, figpath+save_name+'-UAV_Individualmean.fig')
-        exportgraphics(gcf,figpath+save_name+'-UAV_Individualmean.png','Resolution',png_dpi);
-        exportgraphics(gcf,figpath+save_name+'-UAV_Individualmean.pdf',"ContentType","vector");
-        figure(2)
-        saveas(gca, figpath+save_name+'-UAV_IndividualSD.fig')
-        exportgraphics(gcf,figpath+save_name+'-UAV_IndividualSD.png','Resolution',png_dpi);
-        exportgraphics(gcf,figpath+save_name+'-UAV_IndividualSD.pdf',"ContentType","vector");
-    else
-        fontsize_UAV = fontsize*screen_max_height_ratio;
-        figspecs_UAV = figspecs.*screen_max_height_ratio;
-        manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM_UV, ModelComponents_UV, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize_UAV, figspecs_UAV, lapse_type, Gaussian_lapse_SDs, plot_individual)
-        manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM_UA, ModelComponents_UA, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize_UAV, figspecs_UAV, lapse_type, Gaussian_lapse_SDs, plot_individual)
-
-        exportgraphics(gcf,figpath+save_name+'-UAV.png','Resolution',png_dpi);
-        exportgraphics(gcf,figpath+save_name+'-UAV.pdf',"ContentType","vector");
-    end
+    % UV_use_pred_samples = true;
+    % UA_use_pred_samples = true; % can be false
+    % if(plot_individual)
+    %     fontsize_UAV = fontsize;
+    %     figspecs_UAV = figspecs;
+    %     manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM_UV, ModelComponents_UV, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize_UAV, figspecs_UAV, lapse_type, Gaussian_lapse_SDs, plot_individual)
+    %     manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM_UA, ModelComponents_UA, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize_UAV, figspecs_UAV, lapse_type, Gaussian_lapse_SDs, plot_individual)
+    % 
+    %     figure(1)
+    %     saveas(gca, figpath+save_name+'-UAV_Individualmean.fig')
+    %     exportgraphics(gcf,figpath+save_name+'-UAV_Individualmean.png','Resolution',png_dpi);
+    %     exportgraphics(gcf,figpath+save_name+'-UAV_Individualmean.pdf',"ContentType","vector");
+    %     figure(2)
+    %     saveas(gca, figpath+save_name+'-UAV_IndividualSD.fig')
+    %     exportgraphics(gcf,figpath+save_name+'-UAV_IndividualSD.png','Resolution',png_dpi);
+    %     exportgraphics(gcf,figpath+save_name+'-UAV_IndividualSD.pdf',"ContentType","vector");
+    % else
+    %     fontsize_UAV = fontsize*screen_max_height_ratio;
+    %     figspecs_UAV = figspecs.*screen_max_height_ratio;
+    %     manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM_UV, ModelComponents_UV, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize_UAV, figspecs_UAV, lapse_type, Gaussian_lapse_SDs, plot_individual)
+    %     manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM_UA, ModelComponents_UA, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize_UAV, figspecs_UAV, lapse_type, Gaussian_lapse_SDs, plot_individual)
+    % 
+    %     exportgraphics(gcf,figpath+save_name+'-UAV.png','Resolution',png_dpi);
+    %     exportgraphics(gcf,figpath+save_name+'-UAV.pdf',"ContentType","vector");
+    % end
 
     %% BC
     manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, ModelComponents_UV, ModelComponents_UA, model_family, plot_lapse, ModelComponents_UV.CausalInfStrategy, fontsize, figspecs, plot_individual)
