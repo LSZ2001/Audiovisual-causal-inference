@@ -22,7 +22,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
     return_predictive_samples = false;
     return_response_distr = true;
     num_rels = 3;
-    reliability_titles=["High","Medium","Low"];
+    reliability_titles=["High","Med","Low"];
     switch model_family
         case "parametric"
             hetero_type = ModelComponents_V.SensoryNoise;

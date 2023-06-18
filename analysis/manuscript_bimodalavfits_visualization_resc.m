@@ -12,7 +12,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
     return_predictive_samples = true;
     return_response_distr = false;
     num_rels = 3;
-    reliability_titles=["High","Medium","Low"];
+    reliability_titles=["High","Med","Low"];
     switch model_family
         case "parametric"
             hetero_type = ModelComponents_V.SensoryNoise;
