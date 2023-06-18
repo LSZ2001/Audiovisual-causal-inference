@@ -203,16 +203,12 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
                     end
                     xlim([-35,35])
                     ylim([-15,15])
-                    if((mod(i,4)==1) && (strats==1))
-                        yticks(-15:5:15)
-                    elseif(strats==1)
-                        set(tt,'YTickMode', 'manual', 'YTick',-15:5:15,'Yticklabel',[]);
-                    else
-                        yticks([])
-                    end
-                    xticks([-20,0,20]);
-                    tt.TickLength(1)=0.03;
+                    xticks([-30,0,30]);
+                                        xticks([-30:15:30])
                     xtickangle(0)
+                    if(strats~=1 || (mod(i,4)~=1))
+                        set(tt,'YTickMode', 'manual', 'YTick',-10:0:10,'Yticklabel',[]);
+                    end
                     tt.XAxis.FontSize = 9;
                     tt.YAxis.FontSize = 9;
                 end

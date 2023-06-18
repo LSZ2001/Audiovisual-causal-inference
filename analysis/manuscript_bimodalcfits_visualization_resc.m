@@ -142,15 +142,21 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
                         patchline(bincenters, squeeze(Probs_C1s_modelfit(l,strats,i,:)),  'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level);
 %                         p = plot(bincenters, squeeze(Probs_C1s_modelfit(l,strats,i,:)), 'Color',color_AV,'LineWidth',1);
 %                         p.Color(4) = alpha_level;
-                        if(strats~=1 || (mod(i,4)~=1))
-                            set(tt,'YTickMode', 'manual', 'YTick',-10:0:10,'Yticklabel',[]);
+                        if((mod(i,4)==1) && (strats==1))
+                            yticks(0:0.25:1)
+                        elseif(strats==1)
+                            set(tt,'YTickMode', 'manual', 'YTick',0:0.25:1,'Yticklabel',[]);
+                        else
+                            yticks([])
                         end
                     end
                     xlim([-30,30])
                     ylim([0,1])
-                    yticks(0:0.25:1)
+                    xticks([-20,0,20])
+                    xtickangle(0)
                     tt.XAxis.FontSize = 9;
                     tt.YAxis.FontSize = 9;
+                    tt.TickLength(1) = 0.03;
                 end
             end
             
