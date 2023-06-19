@@ -23,6 +23,26 @@ data_path = "data\";
 analysis_path = "analysis\";
 addpath(analysis_path,data_path,model_path,"utils\");
 
+%% s_V, s_A generative distributions
+linewidth = 1;
+
+figure('Position', [0,0,figsize_RespDistr(3)./5,figsize_RespDistr(3)./8]); 
+tiledlayout(1,1,'TileSpacing','none', 'Padding','none'); set(gca,'TickDir','out'); hold on;
+sV_vals = [-25:1:-20,-20:1:20,20:1:25]; p_sV_vals = [zeros(size(-25:1:-20)),repmat(1/40,1,length(-20:1:20)),zeros(size(20:1:25))];
+plot(sV_vals, p_sV_vals, "k-", 'LineWidth',linewidth);  area(sV_vals, p_sV_vals,'FaceColor','k', 'FaceAlpha',0.2); 
+xlim([-25,25]);  ylim([0,0.03]); xticks(-20:20:20); yticks([0,1/40]); yticklabels(["0","1/40"])
+xlabel("{\its}_V",'FontSize',fontsize+1); ylabel("p({\its}_V)",'FontSize',fontsize+1);
+set(gca,'FontSize',fontsize)
+exportgraphics(gcf,figpath+'sV_gen'+'.pdf',"ContentType","vector");
+
+figure('Position', [0,0,figsize_RespDistr(3)./5,figsize_RespDistr(3)./8]); 
+tiledlayout(1,1,'TileSpacing','none', 'Padding','tight'); set(gca,'TickDir','out'); hold on;
+sA_vals = [-15:5:15]; p_sA_vals = repmat(1/length(sA_vals), 1,length(sA_vals)); 
+h=stem(sA_vals, p_sA_vals,"k-", 'LineWidth',linewidth); set(h, 'Marker', 'none')
+xlim([-20,20]); ylim([0,0.16]); xticks(-15:15:15); xtickangle(0); yticks([0,1/length(sA_vals)]); yticklabels(["0","1/7"])
+xlabel("{\its}_A",'FontSize',fontsize); ylabel("p({\its}_A)",'FontSize',fontsize);
+set(gca,'FontSize',fontsize)
+exportgraphics(gcf,figpath+'sA_gen'+'.pdf',"ContentType","vector");
 
 %% UAV data visualized, without model prediction ribbons.
 prior = "NaN";
@@ -145,8 +165,6 @@ num_params = [40,14,13,13,12,10,14,8,7,7];
 figure('Position', [0 0 figsize_RespDistr(3)*0.5 figsize_RespDistr(4)*0.9]);
 set(gcf, 'Color', 'w')
 UnimodalData_ModelComparison_FinalTables_Vanilla = unimodaldata_modelcomparison_visualize(priors((end-2):end), noises((end-2):end), rescales((end-2):end), model_types((end-2):end), num_params((end-2):end), true, fontsize+1, model_path, data_path, false);
-ax = gca; 
-ax.FontSize = fontsize+1; 
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_vanilla'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_vanilla'+'.pdf',"ContentType","vector");
 save(analysis_path+'unimodaldata_modelcomparison_finaltables_vanilla','UnimodalData_ModelComparison_FinalTables_Vanilla');
@@ -155,16 +173,12 @@ save(analysis_path+'unimodaldata_modelcomparison_finaltables_vanilla','UnimodalD
 figure('Position', [0 0 figsize_RespDistr(3) figsize_RespDistr(3)*0.6]);
 set(gcf, 'Color', 'w')
 UnimodalData_ModelComparison_FinalTables = unimodaldata_modelcomparison_visualize(priors, noises, rescales, model_types, num_params, true, fontsize+1, model_path, data_path, true);
-ax = gca; 
-ax.FontSize = fontsize+1; 
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_BIC'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_BIC'+'.pdf',"ContentType","vector");
 
 figure('Position', [0 0 figsize_RespDistr(3) figsize_RespDistr(3)]);
 set(gcf, 'Color', 'w')
 UnimodalData_ModelComparison_FinalTables = unimodaldata_modelcomparison_visualize(priors, noises, rescales, model_types, num_params, true, fontsize+1, model_path, data_path, false);
-ax = gca; 
-ax.FontSize = fontsize+1; 
 exportgraphics(gcf,figpath+'UJoint_ModelSelection'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'UJoint_ModelSelection'+'.pdf',"ContentType","vector");
 save(analysis_path+'unimodaldata_modelcomparison_finaltables','UnimodalData_ModelComparison_FinalTables');
@@ -338,7 +352,7 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
     % Plot
     bootstraps_errorbars_allstats = {NLL_bootstraps_errorbars, AIC_bootstraps_errorbars, BIC_bootstraps_errorbars};
     allstats = {NLL_sumvalues_diff, AIC_sumvalues_diff, BIC_sumvalues_diff};
-    stat_names = ["$\Delta NLL$", "$\Delta AIC$", "$\Delta BIC$"];
+    stat_names = ["\DeltaNLL", "\DeltaAIC", "\DeltaBIC"];
     
     if(is_plot)
         if(plot_BIC_only)
@@ -365,7 +379,8 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
                     xticklabels([]);
                     set(gca,'xtick',[])
                 end
-                ylabel(stat_names(statistic), 'interpreter', 'latex')
+                set(gca,'FontSize',9)
+                ylabel(stat_names(statistic))
                 %set(gca,'xticklabel',["diff","max","ent"].')
         end
     end
@@ -378,7 +393,6 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
         final_table(:,3) = bootstraps_errorbars_allstats{stat}(:,2); % 97.5% percentile
         UnimodalData_ModelComparison_FinalTables{stat} = final_table;
     end
-    set(gca,'fontsize', fontsize)
 end
 
 %%
@@ -436,7 +450,7 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
     % Plot
     bootstraps_errorbars_allstats = {NLL_bootstraps_errorbars, AIC_bootstraps_errorbars, BIC_bootstraps_errorbars};
     allstats = {NLL_allmodels_sumdiff, AIC_allmodels_sumdiff, BIC_allmodels_sumdiff};
-    stat_names = ["$\Delta NLL$", "$\Delta AIC$", "$\Delta BIC$"];
+    stat_names = ["\DeltaNLL", "\DeltaAIC", "\DeltaBIC"];
 
     if(false)
         tiledlayout(length(stat_names),1, 'TileSpacing', 'tight','Padding', 'none')
@@ -456,7 +470,8 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
                 xticklabels(allmodel_xticklabels)
                 xtickangle(20)
             end
-            ylabel(stat_names(statistic), 'interpreter', 'latex')
+            set(gca,'FontSize',9)
+            ylabel(stat_names(statistic), 'FontSize',9)
             xlim([0, num_models+0.7])
         end
     end
@@ -535,7 +550,7 @@ function [AllData_ModelComparison_FinalTables] = alldata_modelcomparison_visuali
     % Plot
     bootstraps_errorbars_allstats = {NLL_bootstraps_errorbars, AIC_bootstraps_errorbars, BIC_bootstraps_errorbars};
     allstats = {NLL_allmodels_sumdiff, AIC_allmodels_sumdiff, BIC_allmodels_sumdiff};
-    stat_names = ["$\Delta NLL$", "$\Delta AIC$", "$\Delta BIC$"];
+    stat_names = ["\DeltaNLL", "\DeltaAIC", "\DeltaBIC"];
     if(is_plot)
         if(plot_BIC_only)
             statistics = 3;
@@ -559,7 +574,8 @@ function [AllData_ModelComparison_FinalTables] = alldata_modelcomparison_visuali
                 xticklabels(allmodel_xticklabels)
                 xtickangle(20)
             end
-            ylabel(stat_names(statistic), 'interpreter', 'latex')
+            set(gca,'FontSize',9)
+            ylabel(stat_names(statistic), 'FontSize', 9)
             xlim([0, 3*num_models+0.7])
         end
     end
@@ -573,7 +589,6 @@ function [AllData_ModelComparison_FinalTables] = alldata_modelcomparison_visuali
         final_table(:,3) = bootstraps_errorbars_allstats{stat}(:,2); % 97.5% percentile
         AllData_ModelComparison_FinalTables{stat} = final_table;
     end
-    set(gca,'fontsize', fontsize)
 end
 
 
@@ -831,15 +846,17 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     x_labels_pos = (3*num_pivots):num_params;
     x_labels = "$"+{"\alpha_\mathrm{med}", "\alpha_\mathrm{low}", "\lambda","\sigma_\mathrm{motor}","\rho_\mathrm{A}"}+"$";
 
-    t=nexttile(T,[1,3])
-    boxplot(theta_fitted_cmaes(:,x_labels_pos([1,2,5])))
+    t=nexttile(T,[1,3]);
+    boxplot(theta_fitted_cmaes(:,x_labels_pos([1,2,5])), 'Color','k')
     hold on
     idx=0
     for param=[1,2,5]
         idx=idx+1
-        scatter1 = scatter(repmat(idx,num_subjects,1), theta_fitted_cmaes(:,x_labels_pos(param)),'o','MarkerFaceColor','k','MarkerEdgeColor','k');
-        %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
-        scatter1.SizeData = 5;
+        for subj=1:num_subjects
+            scatter1 = scatter(repmat(idx,1), theta_fitted_cmaes(subj,x_labels_pos(param)),'o','MarkerFaceColor','k','MarkerEdgeColor','none');
+            %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
+            scatter1.SizeData = 5;
+        end
     end
     xticks(1:3);
     xaxisproperties=get(gca, 'XAxis');
@@ -856,11 +873,16 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     box off 
     set(gca,'TickDir','out');
         
-    t=nexttile(T)
-    boxplot(theta_fitted_cmaes(:,x_labels_pos(3)))
+    t=nexttile(T);
+    boxplot(theta_fitted_cmaes(:,x_labels_pos(3)), 'Color','k')
     hold on
-    scatter1 = scatter(repmat(1,num_subjects,1), theta_fitted_cmaes(:,x_labels_pos(3)),'o','MarkerFaceColor','k','MarkerEdgeColor','k');
-    scatter1.SizeData = 5;
+    for subj=1:num_subjects
+        scatter1 = scatter(1, theta_fitted_cmaes(subj,x_labels_pos(3)),'o','MarkerFaceColor','k','MarkerEdgeColor','none');
+        %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
+        scatter1.SizeData = 5;
+    end
+    % scatter1 = scatter(repmat(1,num_subjects,1), theta_fitted_cmaes(:,x_labels_pos(3)),'o','MarkerFaceColor','k','MarkerEdgeColor','k');
+    % scatter1.SizeData = 5;
     xticks([1])
     xtickangle(0);
     yticks(0:0.005:0.015)
@@ -876,11 +898,16 @@ function [] = semiparam_sigmafun_prior_visualization(fontsize, figspec, model_pa
     set(gca,'TickDir','out');
     box off 
     
-    t=nexttile(T)
-    boxplot(theta_fitted_cmaes(:,x_labels_pos(4)))
+    t=nexttile(T);
+    boxplot(theta_fitted_cmaes(:,x_labels_pos(4)), 'Color','k')
     hold on
-    scatter1 = scatter(repmat(1,num_subjects,1), theta_fitted_cmaes(:,x_labels_pos(4)),'o','MarkerFaceColor','k','MarkerEdgeColor','k');
-    scatter1.SizeData = 5;
+    for subj=1:num_subjects
+        scatter1 = scatter(1, theta_fitted_cmaes(subj,x_labels_pos(4)),'o','MarkerFaceColor','k','MarkerEdgeColor','none');
+        %scatter1.MarkerFaceAlpha = .2; scatter1.MarkerEdgeAlpha = .2; 
+        scatter1.SizeData = 5;
+    end
+    % scatter1 = scatter(repmat(1,num_subjects,1), theta_fitted_cmaes(:,x_labels_pos(4)),'o','MarkerFaceColor','k','MarkerEdgeColor','k');
+    % scatter1.SizeData = 5;
     xticks([1])
     yticks(0:0.1:0.5);
     xtickangle(0);
