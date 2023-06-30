@@ -36,7 +36,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
     for i=1:num_subjects
         subj_idx{i} = "subj "+num2str(i);
         BAV_data_alltrials = [BAV_data_alltrials; BAV_data{i}];
-        s_diff_alltrials = [s_diff_alltrials; BAV_data{i}(:,2){\its}_A- BAV_data{i}(:,3)];
+        s_diff_alltrials = [s_diff_alltrials; BAV_data{i}(:,2) - BAV_data{i}(:,3)];
         s_sum_alltrials = [s_sum_alltrials; BAV_data{i}(:,2)+ BAV_data{i}(:,3)];
     end
 %     binedges = quantile(s_diff_alltrials(abs(s_diff_alltrials)>0.01), linspace(0,1,7));
@@ -243,12 +243,12 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
             yticks(-15:5:15)
             
             
-            xlabel(T, "Stimulus location disparity ({\its}_A - {\its}_V)", 'FontSize',fontsize)
+            xlabel(T, "Stimulus location disparity, {\its}_A– {\its}_V (\circ)", 'FontSize',fontsize)
             switch response_type
                 case 1
-                    ylabel(T, "{\rm \fontsize{9} {Mean visual bias (resp - true)}}");
+                    ylabel(T, "{\rm \fontsize{9} {Visual bias (\circ)}}");
                 case 2
-                    ylabel(T, "{\rm \fontsize{9} {Mean auditory bias (resp - true)}}");
+                    ylabel(T, "{\rm \fontsize{9} {Auditory bias (\circ)}}");
             end
                 
 
@@ -292,15 +292,15 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
                     if(l==1)
                         title(stratify_labels(strats), 'FontSize', 10)
                     elseif(l==3)
-                        xlabel("Stimulus location disparity ({\its}_A - {\its}_V)", 'FontSize',fontsize)
+                        xlabel("Stimulus location disparity, {\its}_A"+char(8722)+"{\its}_V (\circ)", 'FontSize',fontsize)
                     end
-                    sensory_bias_type = ["visual","auditory"];
+                    sensory_bias_type = ["Visual","Auditory"];
                     if(strats==1)
-                        ylabel({"{\fontsize{10} \bf{"+reliability_titles(l)+" Visual Reliability}}","{\rm \fontsize{9} {Mean "+sensory_bias_type(response_type)+" bias (resp - true)}}"})
+                        ylabel({"{\fontsize{10} \bf{"+reliability_titles(l)+" Visual Reliability}}","{\rm \fontsize{9} {"+sensory_bias_type(response_type)+" bias (\circ)}}"})
                         % if(l==2)
-                        %     ylabel({"{\fontsize{10} \bf{Visual}}", "{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Mean "+sensory_bias_type(response_type)+" bias (resp - true)}}"})
+                        %     ylabel({"{\fontsize{10} \bf{Visual}}", "{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Mean "+sensory_bias_type(response_type)+" bias}}"})
                         % else
-                        %     ylabel({"","{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Mean "+sensory_bias_type(response_type)+" bias (resp - true)}}"})
+                        %     ylabel({"","{\fontsize{9} \bf{"+reliability_titles(l)+" Reliability}}","{\rm \fontsize{9} {Mean "+sensory_bias_type(response_type)+" bias}}"})
                         % end
                     end
                     xlim([-35,35])

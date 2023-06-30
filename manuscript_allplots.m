@@ -188,7 +188,7 @@ causal_inf_strategy = "ProbMatching";
 save_name = "PM";
 manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 
-%%
+%
 causal_inf_strategy = "ModelSelection";
 save_name = "MS";
 manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
@@ -1143,7 +1143,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         t3=tiledlayout(T,1,2, 'Padding','none','TileSpacing','compact');
         t3.Layout.Tile = 7;
         t3.Layout.TileSpan = [1 6];
-        xlabel(t3,"Stimulus location disparity ({\its}_A - {\its}_V)", 'FontSize',fontsize)
+        xlabel(t3,"Stimulus location disparity, {\its}_A– {\its}_V (\circ)", 'FontSize',fontsize)
         ylabel(t3,{"{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"}, 'FontSize',fontsize);
         
         BC_strat_names = ["Center", "Periphery"];
@@ -1159,7 +1159,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
                 ttl.Position(1) = -0.3; % use negative values (ie, -0.1) to move further left
                 ttl.HorizontalAlignment = 'left'; 
                 subtitle(tt,"Center",'Fontsize', fontsize, 'FontWeight','bold')
-                yticks(0:0.25:1)
+                yticks(0:0.2:1)
             else
                 fig32 = get(ax3_periphery,'children');
                 copyobj(fig32, tt);
@@ -1187,8 +1187,8 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         t4=tiledlayout(T,1,3, 'Padding','none','TileSpacing','compact');
         t4.Layout.Tile = 13;
         t4.Layout.TileSpan = [1 6];
-        xlabel(t4, "Stimulus location disparity ({\its}_A - {\its}_V)", 'FontSize',fontsize)
-        ylabel(t4,"{\rm \fontsize{10} {Mean visual bias (resp - true)}}");
+        xlabel(t4, "Stimulus location disparity, {\its}_A– {\its}_V (\circ)", 'FontSize',fontsize)
+        ylabel(t4,"{\rm \fontsize{10} {Visual bias (\circ)}}");
         for strats=1:3
             tt = nexttile(t4);
             set(gca,'TickDir','out');
@@ -1232,8 +1232,8 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         t5=tiledlayout(T,1,3, 'Padding','none','TileSpacing','compact');
         t5.Layout.Tile = 19;
         t5.Layout.TileSpan = [1 6];
-        xlabel(t5, "Stimulus location disparity ({\its}_A - {\its}_V)", 'FontSize',fontsize)
-        ylabel(t5,"{\rm \fontsize{10} {Mean auditory bias (resp - true)}}");
+        xlabel(t5, "Stimulus location disparity, {\its}_A– {\its}_V (\circ)", 'FontSize',fontsize)
+        ylabel(t5,"{\rm \fontsize{10} {Auditory bias (\circ)}}");
         for strats=1:3
             tt = nexttile(t5);
             set(gca,'TickDir','out');

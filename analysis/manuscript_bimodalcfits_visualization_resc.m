@@ -143,9 +143,9 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
 %                         p = plot(bincenters, squeeze(Probs_C1s_modelfit(l,strats,i,:)), 'Color',color_AV,'LineWidth',1);
 %                         p.Color(4) = alpha_level;
                         if((mod(i,4)==1) && (strats==1))
-                            yticks(0:0.25:1)
+                            yticks(0:0.2:1)
                         elseif(strats==1)
-                            set(tt,'YTickMode', 'manual', 'YTick',0:0.25:1,'Yticklabel',[]);
+                            set(tt,'YTickMode', 'manual', 'YTick',0:0.2:1,'Yticklabel',[]);
                         else
                             yticks([])
                         end
@@ -185,7 +185,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
             ylim([0,1])
             
             
-            xlabel(T, "Stimulus location disparity ({\its}_A - {\its}_V)", 'FontSize',fontsize)
+            xlabel(T, "Stimulus location disparity, {\its}_A– {\its}_V (\circ)", 'FontSize',fontsize)
             ylabel(T, {"{\rm \fontsize{"+fontsize+"} {Proportion responding "+ '"'+'same'+ '"'+"}}"});
 
         else % Default plots -- mean+-SEM across subjects
@@ -209,7 +209,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
                     if(l==1)
                         title(stratify_labels(strats), 'FontSize',10)
                     elseif(l==3)
-                        xlabel("Stimulus location disparity ({\its}_A - {\its}_V)", 'FontSize',fontsize)
+                        xlabel("Stimulus location disparity, {\its}_A"+char(8722)+"{\its}_V (\circ)", 'FontSize',fontsize)
                     end
                     if(strats==1)
                         ylabel({"{\fontsize{10} \bf{"+reliability_titles(l)+" Visual Reliability}}","{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"})
