@@ -36,7 +36,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
     for i=1:num_subjects
         subj_idx{i} = "subj "+num2str(i);
         BAV_data_alltrials = [BAV_data_alltrials; BAV_data{i}];
-        s_diff_alltrials = [s_diff_alltrials; BAV_data{i}(:,2)- BAV_data{i}(:,3)];
+        s_diff_alltrials = [s_diff_alltrials; BAV_data{i}(:,2){\its}_A- BAV_data{i}(:,3)];
         s_sum_alltrials = [s_sum_alltrials; BAV_data{i}(:,2)+ BAV_data{i}(:,3)];
     end
 %     binedges = quantile(s_diff_alltrials(abs(s_diff_alltrials)>0.01), linspace(0,1,7));

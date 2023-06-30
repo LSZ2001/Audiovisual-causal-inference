@@ -1143,7 +1143,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         t3=tiledlayout(T,1,2, 'Padding','none','TileSpacing','compact');
         t3.Layout.Tile = 7;
         t3.Layout.TileSpan = [1 6];
-        xlabel(t3,"Stimulus location disparity (A - V)", 'FontSize',fontsize)
+        xlabel(t3,"Stimulus location disparity ({\its}_A - {\its}_V)", 'FontSize',fontsize)
         ylabel(t3,{"{\rm \fontsize{9} {Proportion responding "+ '"'+'same'+ '"'+"}}"}, 'FontSize',fontsize);
         
         BC_strat_names = ["Center", "Periphery"];
@@ -1187,7 +1187,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         t4=tiledlayout(T,1,3, 'Padding','none','TileSpacing','compact');
         t4.Layout.Tile = 13;
         t4.Layout.TileSpan = [1 6];
-        xlabel(t4, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
+        xlabel(t4, "Stimulus location disparity ({\its}_A - {\its}_V)", 'FontSize',fontsize)
         ylabel(t4,"{\rm \fontsize{10} {Mean visual bias (resp - true)}}");
         for strats=1:3
             tt = nexttile(t4);
@@ -1232,7 +1232,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         t5=tiledlayout(T,1,3, 'Padding','none','TileSpacing','compact');
         t5.Layout.Tile = 19;
         t5.Layout.TileSpan = [1 6];
-        xlabel(t5, "Stimulus location disparity (A - V)", 'FontSize',fontsize)
+        xlabel(t5, "Stimulus location disparity ({\its}_A - {\its}_V)", 'FontSize',fontsize)
         ylabel(t5,"{\rm \fontsize{10} {Mean auditory bias (resp - true)}}");
         for strats=1:3
             tt = nexttile(t5);
