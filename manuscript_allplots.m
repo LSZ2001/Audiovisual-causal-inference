@@ -1048,7 +1048,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         fig1 = get(ax1,'children');
         copyobj(fig1, t1);
         xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
-        ylabel("Mean loc. response (\circ)", 'FontSize', fontsize)
+        ylabel("Mean location response (\circ)", 'FontSize', fontsize)
         ylim([-20,20])
         xticks(-20:10:20)
         set(gca,"FontSize",9)
@@ -1058,12 +1058,12 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         set(gca,'TickDir','out');
         copyobj(fig2, t2);
         xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
-        ylabel("SD of loc. response (\circ)", 'FontSize', fontsize)
+        ylabel("SD of location response (\circ)", 'FontSize', fontsize)
         h = findall(gca, 'LineStyle', '-');
         for i=1:4
             h(i).HandleVisibility="off";
         end
-        lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory");
+        lg = legend("Visual (high reliability)","Visual (med. reliability)", "Visual (low reliability)", "Auditory");
         set(lg,'Box','off')
         lg.FontSize = max(9,fontsize-1);
         lg.Location="northeast";
@@ -1111,7 +1111,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         fig1 = get(ax1,'children');
         copyobj(fig1, t1);
         xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
-        ylabel("Mean loc. response (\circ)", 'FontSize', fontsize)
+        ylabel("Mean location response (\circ)", 'FontSize', fontsize)
         ylim([-20,20])
         ttl = title('(a)', "Fontsize", 10);
         ttl.Units = 'Normalize'; 
@@ -1125,13 +1125,13 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         fig2 = get(ax2,'children');
         copyobj(fig2, t2);
         xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
-        ylabel("SD of loc. response (\circ)", 'FontSize', fontsize)
+        ylabel("SD of location response (\circ)", 'FontSize', fontsize)
         ylim([0,9])
         h = findall(gca, 'LineStyle', '-');
         for i=1:4
             h(i).HandleVisibility="off";
         end
-        lg = legend("Visual (high rel)","Visual (med rel)", "Visual (low rel)", "Auditory");
+        lg = legend("Visual (high rel.)","Visual (med. rel.)", "Visual (low rel.)", "Auditory");
         set(lg,'Box','off')
         lg.FontSize = 9;
         lg.ItemTokenSize(1) = 10;
@@ -1176,7 +1176,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             xtickangle(0)
             set(gca,"FontSize",9)
             
-            lg = legend({"High vis rel","Med vis rel","Low vis rel"});
+            lg = legend({"High vis. rel.","Med. vis. rel.","Low vis. rel."});
             set(lg,'Box','off')
             lg.FontSize = 9;
             lg.Location="south";
@@ -1222,7 +1222,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             xticks(-30:15:30)
             xtickangle(0)
             set(gca,"FontSize",9)
-            lg = legend({"High vis rel","Med vis rel","Low vis rel"});
+            lg = legend({"High vis. rel.","Med. vis. rel.","Low vis. rel."});
             set(lg,'Box','off')
             lg.FontSize = 9;
             lg.Location="north";
@@ -1267,7 +1267,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
             xticks(-30:15:30)
             xtickangle(0)
             
-            lg = legend({"High vis rel","Med vis rel","Low vis rel"});
+            lg = legend({"High vis. rel.","Med. vis. rel.","Low vis. rel."});
             set(lg,'Box','off')
             lg.FontSize = 9;
             lg.Location="north";

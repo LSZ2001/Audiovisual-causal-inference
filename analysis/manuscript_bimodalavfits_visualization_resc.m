@@ -12,7 +12,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
     return_predictive_samples = true;
     return_response_distr = false;
     num_rels = 3;
-    reliability_titles=["High","Med","Low"];
+    reliability_titles=["High","Med.","Low"];
     switch model_family
         case "parametric"
             hetero_type = ModelComponents_V.SensoryNoise;
@@ -188,12 +188,13 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
                 t=tiledlayout(T,1,3, 'Padding', 'none', 'TileSpacing', 'tight');
                 t.Layout.Tile = i;
                 t.Layout.TileSpan = [1 1];
+                title(t,"Subject " + i, 'FontSize',fontsize, 'FontWeight', 'bold')
                 for strats=1:3
                     color_AV = colors_AV(strats,:);
                     tt=nexttile(t);
                     set(gca,'TickDir','out');
                     hold on
-                    title(t,"Subject " + i, 'FontSize',fontsize, 'FontWeight', 'bold')
+                    %title(t,"Subject " + i, 'FontSize',fontsize, 'FontWeight', 'bold')
                     for l=1:3
                         alpha_level = rel_level_alphas(l);
                         scatter(squeeze(bincenters_stratrels(l,strats,i,:)), squeeze(Mean_Biases(l,strats,i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor','none','MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
@@ -233,7 +234,7 @@ function manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM,
             end
             axis off
             fill([-40,-40,40,40],[-40,40,40,-40],"w", 'EdgeColor','none','HandleVisibility','off')
-            lg = legend("Left, High visual rel","Left, Med visual rel","Left, Low visual rel","Center, High visual rel","Center, Med visual rel","Center, Low visual rel", "Right, High visual rel", "Right, Med visual rel", "Right, Low visual rel");
+            lg = legend("Left, High visual rel.","Left, Med. visual rel.","Left, Low visual rel.","Center, High visual rel.","Center, Med. visual rel.","Center, Low visual rel.", "Right, High visual rel.", "Right, Med. visual rel.", "Right, Low visual rel.");
             set(lg,'Box','off')
             lg.FontSize = 9;
             lg.ItemTokenSize(1) = 10;

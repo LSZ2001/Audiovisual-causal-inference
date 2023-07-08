@@ -30,7 +30,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
     if(~is_visual)
         num_rels=4;
     end
-    reliability_titles=["High","Med","Low"];
+    reliability_titles=["High","Med.","Low"];
 
     
     mu=0; 
@@ -218,27 +218,19 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 title("Subject " + i)
                 plot([-20,20],[-20,20], "k--",'HandleVisibility','off')
                 scatter(squeeze(s_range), squeeze(s_cond_s_hat_means(i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor','none','MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
-                % if(i>=12)
-                %     xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
-                % end
-                % if(mod(i,4)==1)
-                %     ylabel("Mean loc. response (\circ)", 'FontSize', fontsize)
-                % end
                 ylim([-20,20])
                 if(idx==(num_subjects+1))
                     title("")
                     axis off
                     fill([-20,-20,20,20],[-20,20,20,-20],"w", 'EdgeColor','none','HandleVisibility','off')
-                    lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory", 'Fontsize',fontsize);
-                    lg.Position(1) = 0.75;
+                    lg = legend("Visual (high reliability)","Visual (med. reliability)", "Visual (low reliability)", "Auditory", 'Fontsize',fontsize);
+                    lg.Position(1) = 0.72;
                     lg.ItemTokenSize(1) = 6;
                     set(lg,'Box','off')
                 else
                     if(~not_plot_model_preds)
                         patchline(squeeze(s_range), squeeze(model_params(i,:,1)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level);
                     end
-%                     p1=plot(squeeze(s_range), squeeze(model_params(i,:,1)), 'Color',color_AV, 'LineWidth', 1);
-%                     p1.Color(4) = alpha_level;
                 end
                 axis equal
                 pbaspect([1 1 1])
@@ -250,84 +242,38 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 
                 figure(2)
                 tt2 = nexttile(idx);
-                %subplot(3,5,i)
                 set(gca,'TickDir','out');
                 hold on;
                 title("Subject " + i)
                 scatter(squeeze(s_range), squeeze(s_cond_s_hat_stds(i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor','none','MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
-                % if(i>=12)
-                %     xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
-                % end
-                % if(mod(i,4)==1)
-                %     ylabel("SD of loc. response (\circ)", 'FontSize', fontsize)
-                % end
                 ylim([0,9])
                 if(idx==(num_subjects+1))
                     title("")
                     axis off
                     fill([-20,-20,20,20],[-20,20,20,-20],"w", 'EdgeColor','none','HandleVisibility','off')
-                    lg = legend("Visual (high reliability)","Visual (med reliability)", "Visual (low reliability)", "Auditory", 'Fontsize',fontsize);
-                    lg.Position(1) = 0.75;
+                    lg = legend("Visual (high reliability)","Visual (med. reliability)", "Visual (low reliability)", "Auditory", 'Fontsize',fontsize);
+                    lg.Position(1) = 0.72;
                     lg.ItemTokenSize(1) = 6;
                     set(lg,'Box','off')
                 else
                     if(~not_plot_model_preds)
                         patchline(squeeze(s_range), squeeze(model_params(i,:,2)), 'edgecolor',color_AV,'linewidth',1,'edgealpha',alpha_level);
                     end
-%                     p2 = plot(squeeze(s_range), squeeze(model_params(i,:,2)), 'Color',color_AV,'LineWidth',1);
-%                     p2.Color(4) = alpha_level;
                 end
                 xticks(-20:10:20)
                 xtickangle(0)
                 tt2.XAxis.FontSize = 9;
                 tt2.YAxis.FontSize = 9;
-                
-%                 if(l==4 && i==7) % Exemplary subject
-%                     myAxes=findobj(tt1,'Type','Axes');
-%                     saveas(myAxes,'plots\UAV_Individualmean_onesubj.fig')
-%                     myAxes=findobj(tt2,'Type','Axes');
-%                     saveas(myAxes,'plots\UAV_IndividualSD_onesubj.fig')
-%                 end
+
             end
             figure(1)
             T1 = gca().Parent;
             xlabel(T1,"Stimulus location (\circ)", 'FontSize', fontsize)
-            ylabel(T1,"Mean loc. response (\circ)", 'FontSize', fontsize)
+            ylabel(T1,"Mean location response (\circ)", 'FontSize', fontsize)
             figure(2)
             T2 = gca().Parent;
             xlabel(T2,"Stimulus location (\circ)", 'FontSize', fontsize)
-            ylabel(T2,"SD of loc. response (\circ)", 'FontSize', fontsize)
-
-
-            
-             %%
-%             % Plot mean responses
-%             figure('Position', figspecs);
-%             set(gcf, 'Color', 'w')
-%             tcl=tiledlayout(3,5,'Padding', 'tight', 'TileSpacing', 'tight');                  
-%             for i=1:num_subjects
-%                 nexttile;
-%                 set(gca,'TickDir','out');
-%                 hold on;
-%                 title("Subject " + i)
-%                 plot(squeeze(s_range), squeeze(s_cond_s_hat_means(i,:)), "k.");
-%                 plot(squeeze(s_range), squeeze(model_params(i,:,1)), "k-");
-%             end
-%             
-%             % Plot SD of responses
-%             figure('Position', figspecs);
-%             set(gcf, 'Color', 'w')
-%             tcl2=tiledlayout(3,5,'Padding', 'tight', 'TileSpacing', 'tight');
-%             for i=1:num_subjects
-%                 nexttile;
-%                 set(gca,'TickDir','out');
-%                 hold on;
-%                 title("Subject " + i)
-%                 plot(squeeze(s_range), squeeze(s_cond_s_hat_stds(i,:)), "k.");
-%                 plot(squeeze(s_range), squeeze(model_params(i,:,2)), "k-");
-%             end
-            %%
-            
+            ylabel(T2,"SD of location response (\circ)", 'FontSize', fontsize)           
             
             
 

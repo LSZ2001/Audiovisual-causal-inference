@@ -192,17 +192,17 @@ function [] = manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_
     %     exportgraphics(gcf,figpath+save_name+'-UAV.png','Resolution',png_dpi);
     %     exportgraphics(gcf,figpath+save_name+'-UAV.pdf',"ContentType","vector");
     % end
-
-    %% BC
-    manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, ModelComponents_UV, ModelComponents_UA, model_family, plot_lapse, ModelComponents_UV.CausalInfStrategy, fontsize, figspecs, plot_individual)
-    if(plot_individual)
-        saveas(gca, figpath+save_name+'-BC_Individual.fig')
-        exportgraphics(gcf,figpath+save_name+'-BC_Individual.png','Resolution',png_dpi);
-        exportgraphics(gcf,figpath+save_name+'-BC_Individual.pdf',"ContentType","vector");
-    else
-        exportgraphics(gcf,figpath+save_name+'-BC.png','Resolution',png_dpi);
-        exportgraphics(gcf,figpath+save_name+'-BC.pdf',"ContentType","vector");
-    end
+    % 
+    % %% BC
+    % manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, ModelComponents_UV, ModelComponents_UA, model_family, plot_lapse, ModelComponents_UV.CausalInfStrategy, fontsize, figspecs, plot_individual)
+    % if(plot_individual)
+    %     saveas(gca, figpath+save_name+'-BC_Individual.fig')
+    %     exportgraphics(gcf,figpath+save_name+'-BC_Individual.png','Resolution',png_dpi);
+    %     exportgraphics(gcf,figpath+save_name+'-BC_Individual.pdf',"ContentType","vector");
+    % else
+    %     exportgraphics(gcf,figpath+save_name+'-BC.png','Resolution',png_dpi);
+    %     exportgraphics(gcf,figpath+save_name+'-BC.pdf',"ContentType","vector");
+    % end
     %% BA, BV
     manuscript_bimodalavfits_visualization_resc(BAV_data, fitted_params_PM, ModelComponents_UV, ModelComponents_UA, PMIntegrationParams, dx_max, model_family, plot_lapse, ModelComponents_UV.CausalInfStrategy, unique_bins_subj, fontsize, figspecs, figpath, save_name, png_dpi, lapse_type, Gaussian_lapse_SDs, plot_individual);
 

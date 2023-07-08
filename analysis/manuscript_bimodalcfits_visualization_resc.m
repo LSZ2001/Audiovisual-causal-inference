@@ -22,7 +22,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
     return_predictive_samples = false;
     return_response_distr = true;
     num_rels = 3;
-    reliability_titles=["High","Med","Low"];
+    reliability_titles=["High","Med.","Low"];
     switch model_family
         case "parametric"
             hetero_type = ModelComponents_V.SensoryNoise;
@@ -175,7 +175,7 @@ function manuscript_bimodalcfits_visualization_resc(BC_data, fitted_params_PM, M
             end
             axis off
             fill([-40,-40,40,40],[-40,40,40,-40],"w", 'EdgeColor','none','HandleVisibility','off')
-            lg = legend("Center, High visual rel","Center, Med visual rel","Center, Low visual rel", "Periphery, High visual rel", "Periphery, Med visual rel", "Periphery, Low visual rel");
+            lg = legend("Center, High visual rel..","Center, Med. visual rel.","Center, Low visual rel.", "Periphery, High visual rel.", "Periphery, Med. visual rel.", "Periphery, Low visual rel.");
             set(lg,'Box','off')
             lg.FontSize = max(9,fontsize-1);
             lg.Position(1) = 0.75;
