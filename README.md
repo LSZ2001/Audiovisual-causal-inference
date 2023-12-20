@@ -10,7 +10,7 @@ Before running any code, install BADS at the following link for model fitting:
 All code assumes that the current directory of Matlab is the main folder.
 
 ## Main folder
-- **fast_fit_visualzize.m** is an fast example code for fitting and visualizing models.  It serves as a pipeline example for what the other two pieces of code above do. It fits the Exp-GaussianLaplace model with free audiovisual rescale and uniform lapse on UV+UA data (only 1 init per subject), and visualizes the fits. The resulting model fits are saved in a separate subfolder *fast_modefit_example*, to avoid confusion and overwriting of the proper model fits saved in the *modelfits* subfolder. 
+- **fast_fit_visualize.m** is an fast example code for fitting and visualizing models.  It serves as a pipeline example for what the other two pieces of code above do. It fits the Exp-GaussianLaplace model with free audiovisual rescale and uniform lapse on UV+UA data (only 1 init per subject), and visualizes the fits. The resulting model fits are saved in a separate subfolder *fast_modefit_example*, to avoid confusion and overwriting of the proper model fits saved in the *modelfits* subfolder. 
 
 - **fit_models.m** contains example model fits for one parametric model on UA+UV data, the semiparametric model on UA+UV data, one semiparamInspired model on all data, and one parametric model on all data. The number of iters per subject in the code is used to generate the saved *.mat* files (model fits) in the *modelfits* folder.
 - **manuscript_allplots.m** creates all figures for the manuscript, based on the datafiles and the saved model fits.
