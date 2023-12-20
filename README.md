@@ -7,7 +7,7 @@ AudioVisual Perception Modeling with Dr. Luigi Acerbi and Dr. Wei Ji Ma.
 Before running any code, install BADS at the following link for model fitting:
   - Acerbi, L. & Ma, W. J. (2017). Practical Bayesian Optimization for Model Fitting with Bayesian Adaptive Direct Search. In Advances in Neural Information Processing Systems 30, pages 1834-1844. https://github.com/acerbilab/bads
 
-All code assumes that the current directory of Matlab is the main folder.
+All code assumes that the current directory of Matlab is the main folder. The code runs on Matlab version R2023a. 
 
 ## Main folder
 - **fast_fit_visualize.m** is an fast example code for fitting and visualizing models.  It serves as a pipeline example for what the other two pieces of code above do. It fits the Exp-GaussianLaplace model with free audiovisual rescale and uniform lapse on UV+UA data (only 1 init per subject), and visualizes the fits. The resulting model fits are saved in a separate subfolder *fast_modefit_example*, to avoid confusion and overwriting of the proper model fits saved in the *modelfits* subfolder. 
