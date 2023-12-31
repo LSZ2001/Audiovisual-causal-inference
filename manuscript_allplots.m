@@ -158,7 +158,7 @@ exportgraphics(gcf,figpath+'Semiparam_FittedParams'+'.pdf',"ContentType","vector
 priors = ["","GaussianLaplaceBothFixedZero","GaussianLaplaceBothFixedZero","GaussianLaplaceBothFixedZero", "SingleGaussian", "GaussianLaplaceBothFixedZero", "TwoGaussiansBothFixedZero","SingleGaussian","SingleGaussian","SingleGaussian"];
 noises = ["","exp", "exp", "exp", "exp", "constant", "exp", "constant","constant","constant"];
 rescales = ["","free", "4over3", "1", "free","free","free","free","4over3","1"];
-model_types = ["semi-parametric","exp-GaussianLaplace", "exp-GaussianLaplace\_4/3","exp-GaussianLaplace\_1", "exp-SingleGaussian", "const-GaussianLaplace","exp-TwoGaussians","const-SingleGaussian","const-SingleGaussian\_4/3","const-SingleGaussian\_1"];
+model_types = ["semiparametric","exp-GaussianLaplace", "exp-GaussianLaplace\_4/3","exp-GaussianLaplace\_1", "exp-SingleGaussian", "const-GaussianLaplace","exp-TwoGaussians","const-SingleGaussian","const-SingleGaussian\_4/3","const-SingleGaussian\_1"];
 num_params = [40,14,13,13,12,10,14,8,7,7];
 
 % Vanila 3 models on unimodal data only
@@ -183,12 +183,11 @@ exportgraphics(gcf,figpath+'UJoint_ModelSelection'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'UJoint_ModelSelection'+'.pdf',"ContentType","vector");
 save(analysis_path+'unimodaldata_modelcomparison_finaltables','UnimodalData_ModelComparison_FinalTables');
 
-%% AllData semiparamInsp Response distribution visualization
+%% AllData FrozenSemiparam Response distribution visualization
 causal_inf_strategy = "ProbMatching";
 save_name = "PM";
 manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 
-%
 causal_inf_strategy = "ModelSelection";
 save_name = "MS";
 manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
@@ -227,7 +226,7 @@ manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_i
 
 %% AllData ModelComparison
 causal_inf_strategies = ["ModelSelection","ModelAveraging","ProbMatching"];
-param_model_names = ["paramBest", "semiparamInsp","exp-GaussianLaplace","exp-SingleGaussian","const-GaussianLaplace","exp-TwoGaussians","const-SingleGaussian"];
+param_model_names = ["paramBest", "FrozenSemiparam","exp-GaussianLaplace","exp-SingleGaussian","const-GaussianLaplace","exp-TwoGaussians","const-SingleGaussian"];
 
 figure('Position', [0 0 figsize_RespDistr(3) figsize_RespDistr(3)*0.6]);
 set(gcf, 'Color', 'w')
@@ -298,7 +297,7 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
     
     % load nonparam indv UJoint fits
     model_start_idx = 1;
-    if(model_types(1)=="semi-parametric")
+    if(model_types(1)=="semiparametric")
         load(model_path + "fittedparams_UJoint_Semiparam_rescalefree_lapseUniform.mat")
         [min_val, min_idx] = min(F_vals,[],1);
         [num_inits,num_params_nonparam]=size(theta_fitted);
@@ -649,29 +648,29 @@ function [out_struct_allmodels] = alldata_modelcomparison_visualize_helper(causa
     end
     [NLL_param_min, NLL_param_min_idx] = min(NLLs_param, [],1);
 
-    % SemiparamInsp model for this causal_inf_strategy
+    % FrozenSemiparam model for this causal_inf_strategy
     filename_basis = "fittedparams_All_UBresc_SemiparamInspired_"+causal_inf_strategy+"_rescalefree_lapseUniform.mat";
     load(model_path + filename_basis)
-    num_SemiparamInsp_params = 9;
+    num_FrozenSemiparam_params = 9;
     [F_min_val, F_min_idx] = min(F_vals,[],1);
 
-    % Plot best semiparamInspired fit NLL - best param fit NLL
+    % Plot best FrozenSemiparam fit NLL - best param fit NLL
     NLLs = [NLL_param_min;F_min_val;NLLs_param];
 
     % AIC
-    AIC_semiparamInspired_best = 2.*(num_SemiparamInsp_params+F_min_val);
+    AIC_FrozenSemiparam_best = 2.*(num_FrozenSemiparam_params+F_min_val);
     AIC_param_best = 2.*(num_parametric_model_params(NLL_param_min_idx)'+NLL_param_min);
-    AICs = [AIC_param_best; AIC_semiparamInspired_best];
+    AICs = [AIC_param_best; AIC_FrozenSemiparam_best];
     for model=1:num_models
         AICs = [AICs; 2.*(num_parametric_model_params(repmat(model,1,num_subjects))'+NLLs_param(model,:))];
     end
 
     % BIC
     %load("NumTrials_allsubjects")
-    BIC_semiparamInspired_best = 2.*F_min_val + num_SemiparamInsp_params.*log(n_data);
+    BIC_FrozenSemiparam_best = 2.*F_min_val + num_FrozenSemiparam_params.*log(n_data);
     BIC_param_best = 2.*NLL_param_min + num_parametric_model_params(NLL_param_min_idx)'.*log(n_data);
 
-    BICs = [BIC_param_best; BIC_semiparamInspired_best];
+    BICs = [BIC_param_best; BIC_FrozenSemiparam_best];
     for model=1:num_models
         BICs = [BICs; 2.*NLLs_param(model,:) + num_parametric_model_params(repmat(model,1,num_subjects))'.*log(n_data)];
     end
