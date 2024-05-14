@@ -1,4 +1,4 @@
-function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM, ModelComponents, is_visual, colors, s_range, model_family, plot_lapse, is_pred_samples, fontsize, figspecs, lapse_type, Gaussian_lapse_SDs, plot_individual)
+function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM, ModelComponents, is_visual, colors, s_range, model_family, plot_lapse, is_pred_samples, fontsize, figspecs, lapse_type, Gaussian_lapse_SDs, plot_individual,  connect_human_errorbars)
     %cd('C:\Users\liu_s\OneDrive\桌面\MATLAB\AudioVisual\Analysis')
     return_predictive_samples = true;
     return_response_distribution=false;
@@ -7,11 +7,13 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
     not_plot_model_preds = isnan(fitted_params_PM(1,1));
     
     if(nargin<12)
-        lapse_type = "Uniform"; Gaussian_lapse_SDs = NaN(1,15); plot_individual=false;
+        lapse_type = "Uniform"; Gaussian_lapse_SDs = NaN(1,15); plot_individual=false; connect_human_errorbars=false;
     elseif(nargin<13)
-        Gaussian_lapse_SDs = NaN(1,15); plot_individual=false;
+        Gaussian_lapse_SDs = NaN(1,15); plot_individual=false; connect_human_errorbars=false;
     elseif(nargin<14)
-        plot_individual=false;
+        plot_individual=false; connect_human_errorbars=false;
+    elseif(nargin<15)
+        connect_human_errorbars=false;
     end
         
     if(is_visual)
@@ -57,7 +59,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
     binedges = [-Inf, hist_range(1:(end-1)), +Inf] + 1.5;
     
     PMR_distr_params = zeros(num_subjects, num_s_bins, 3);
-    s_cond_s_hat_means = zeros(num_subjects, num_s_bins);
+    s_cond_s_hat_meanbiases = zeros(num_subjects, num_s_bins);
     s_cond_s_hat_stds = zeros(num_subjects, num_s_bins);
     s_cond_s_hat_iqrs = zeros(num_subjects, num_s_bins);
     raw_data_histcounts = zeros(num_subjects, num_s_bins, length(binedges)-1);
@@ -90,9 +92,9 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
 
                     for i=1:num_subjects
                         Gaussian_lapse_SD = Gaussian_lapse_SDs(i);
+                        S_vals = data{i}(:,[1,3]);
                         switch model_family                  
                             case "parametric"
-                                S_vals = data{i}(:,[1,3]);
                                 samples = nllfun_uav_parametric(ModelComponents,fitted_params_PM(i,:),R_grid,S_vals, return_predictive_samples, return_response_distribution, plot_lapse, lapse_type, Gaussian_lapse_SD);
                             case "semiparam"
                                 samples = nllfun_uav_semiparam(fitted_params_PM(i,:)', {data{i}}, return_predictive_samples, return_response_distribution, plot_lapse, lapse_type, Gaussian_lapse_SD);
@@ -102,8 +104,8 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                                 ModelComponents.SigmaFuns = ModelComponents.SigmaFunsAllSubjs{i};
                                 samples = nllfun_uav_semiparaminsp(fitted_params_PM(i,:),data{i},ModelComponents,return_predictive_samples, return_response_distribution,plot_lapse, lapse_type, Gaussian_lapse_SD);
                         end
-
-                        PMR_distr_params(i,j,:) = [mean(samples(:)),mean(std(samples,[],1)), mean(iqr(samples,1))];
+                        samples_biases = samples - S_vals(:,1);
+                        PMR_distr_params(i,j,:) = [mean(samples_biases(:)),mean(std(samples,[],1)), mean(iqr(samples,1))];
                         PMRs = [];
                         for k=1:(length(binedges)-1)
                             [l,i,j,k]
@@ -127,9 +129,9 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                     dataset_startidx_bysubj = [0,cumsum(dataset_size_bysubj)];
 
                     for i=1:num_subjects
+                        S_vals = data{i}(:,1);
                         switch model_family
                             case "parametric"
-                                S_vals = data{i}(:,1);
                                 Gaussian_lapse_SD = Gaussian_lapse_SDs(i);
                                 %PMRs_vector = midpoint_postmean_NLLfun_comprehensive(ModelComponents,fitted_params_PM(i,:),R_grid,S_vals, NaN,[-45,45,201], false, true,plot_lapse, lapse_type, Gaussian_lapse_SD);
                                 PMRs_vector = nllfun_uav_parametric(ModelComponents,fitted_params_PM(i,:),R_grid,S_vals, false, true,plot_lapse, lapse_type, Gaussian_lapse_SD);
@@ -144,7 +146,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                         Q1 = find(cumsum(PMRs_vector) <= 0.25*sum(PMRs_vector)); Q3 = find(cumsum(PMRs_vector) > 0.75*sum(PMRs_vector));
                         Q1 = R_grid(Q1(end));
                         Q3 = R_grid(Q3(1));
-                        PMR_distr_params(i,j,:) = [sum(R_grid'.*PMRs_vector.*dr),sqrt(sum(R_grid'.^2.*PMRs_vector.*dr) - sum(R_grid'.*PMRs_vector.*dr).^2), Q3-Q1];
+                        PMR_distr_params(i,j,:) = [sum(R_grid'.*PMRs_vector.*dr)-S_vals(1), sqrt(sum(R_grid'.^2.*PMRs_vector.*dr) - sum(R_grid'.*PMRs_vector.*dr).^2), Q3-Q1];
                         PMRs = [];
                         for k=1:(length(binedges)-1)
                             [l,i,j,k]
@@ -170,15 +172,16 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                     rel_trial_idx = find(reliabilities_alltrials==l);
                     S_vals = [s_matrix(rel_trial_idx,1), s_matrix(rel_trial_idx,3)];
                     r_relevant = s_matrix(rel_trial_idx,2);
+                    s_cond_s_hat_meanbiases(i,j) = mean(r_relevant - S_vals(:,1));
                 else % Auditory, no reliability levels.
                     s = s_matrix(1,1);
                     S_vals = repmat(s, 1,length(R_grid));
                     r_relevant = s_matrix(:,2);
+                    s_cond_s_hat_meanbiases(i,j) = mean(r_relevant - s);
                 end
                 
                 [N,edges] = histcounts(r_relevant, binedges, 'Normalization','pdf');
                 raw_data_histcounts(i,j,:) = N ./ sum(N);
-                s_cond_s_hat_means(i,j) = mean(r_relevant);
                 s_cond_s_hat_stds(i,j) = std(r_relevant);
                 s_cond_s_hat_iqrs(i,j) = iqr(r_relevant);
             end
@@ -216,8 +219,8 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 set(gca,'TickDir','out');
                 hold on;
                 title("Subject " + i)
-                plot([-20,20],[-20,20], "k--",'HandleVisibility','off')
-                scatter(squeeze(s_range), squeeze(s_cond_s_hat_means(i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor','none','MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
+                plot([-20,20],[0,0], "k--",'HandleVisibility','off')
+                scatter(squeeze(s_range), squeeze(s_cond_s_hat_meanbiases(i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor','none','MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
                 ylim([-20,20])
                 if(idx==(num_subjects+1))
                     title("")
@@ -269,7 +272,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
             figure(1)
             T1 = gca().Parent;
             xlabel(T1,"Stimulus location (\circ)", 'FontSize', fontsize)
-            ylabel(T1,"Mean location response (\circ)", 'FontSize', fontsize)
+            ylabel(T1,"Bias (\circ)", 'FontSize', fontsize)
             figure(2)
             T2 = gca().Parent;
             xlabel(T2,"Stimulus location (\circ)", 'FontSize', fontsize)
@@ -307,7 +310,11 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                     inBetween = [curve1, fliplr(curve2)];
                     p=fill(x2, inBetween, colors(j,:),'FaceAlpha',0.25, 'EdgeColor', 'none');
                     p.Annotation.LegendInformation.IconDisplayStyle = 'off';
-                    errorbar(squeeze(hist_range(keep_x_idx)), raw_data_histcounts_meanoversubj(j,keep_x_idx), raw_data_histcounts_SEMoversubj(j,keep_x_idx), ".", 'Color', colors(j,:), 'CapSize', 3);
+                    if(connect_human_errorbars)
+                         errorbar(squeeze(hist_range(keep_x_idx)), raw_data_histcounts_meanoversubj(j,keep_x_idx), raw_data_histcounts_SEMoversubj(j,keep_x_idx), ".:", 'Color', colors(j,:), 'CapSize', 3);
+                    else
+                        errorbar(squeeze(hist_range(keep_x_idx)), raw_data_histcounts_meanoversubj(j,keep_x_idx), raw_data_histcounts_SEMoversubj(j,keep_x_idx), ".", 'Color', colors(j,:), 'CapSize', 3);
+                    end
                 else
                     errorbar(squeeze(hist_range(keep_x_idx)), raw_data_histcounts_meanoversubj(j,keep_x_idx), raw_data_histcounts_SEMoversubj(j,keep_x_idx), ".", 'Color', colors(j,:), 'CapSize', 3);
                     plot(squeeze(hist_range(keep_x_idx)), raw_data_histcounts_meanoversubj(j,keep_x_idx), "-", 'Color', colors(j,:), 'HandleVisibility', 'off');
@@ -363,9 +370,9 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
             t=nexttile([1,5]);
             set(gca,'TickDir','out');
             hold on
-            plot([-20,20],[-20,20], "k--")
-            s_cond_s_hat_means_meanoversubj = squeeze(mean(s_cond_s_hat_means,1));
-            s_cond_s_hat_means_SEMsoversubj = squeeze(std(s_cond_s_hat_means)) ./ sqrt(num_subjects);
+            plot([-20,20],[0,0], "k--")
+            s_cond_s_hat_means_meanoversubj = squeeze(mean(s_cond_s_hat_meanbiases,1));
+            s_cond_s_hat_means_SEMsoversubj = squeeze(std(s_cond_s_hat_meanbiases)) ./ sqrt(num_subjects);
             if(~not_plot_model_preds)
                 model_params_mu = model_params(:,:,1);
                 model_params_mu_meanoversubj = squeeze(mean(model_params_mu,1));
@@ -376,7 +383,7 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 inBetween = [curve1, fliplr(curve2)];
                 p=fill(x2, inBetween, "k",'FaceAlpha',0.2, 'EdgeColor', 'none');
                 p.Annotation.LegendInformation.IconDisplayStyle = 'off';
-                h2 = plot([s_range(1),s_range(end)], [s_range(1),s_range(end)], "k--");
+                h2 = plot([s_range(1),s_range(end)], [0,0], "k--");
                 h2.Annotation.LegendInformation.IconDisplayStyle = 'off';
                 for j=1:num_s_bins
                     errorbar(squeeze(s_range), s_cond_s_hat_means_meanoversubj, s_cond_s_hat_means_SEMsoversubj, ".", 'Color', 'k', 'CapSize', 3);
@@ -387,12 +394,8 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 end
             end
           
-            ylabel("Mean loc. response (\circ)", 'FontSize', fontsize)
-            if(is_visual)
-                xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
-            else
-                xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
-            end
+            ylabel("Bias (\circ)", 'FontSize', fontsize)
+            xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
             if(l==1)
                 ttl = title('(b)', "Fontsize", fontsize+1);
                 ttl.Units = 'Normalize'; 

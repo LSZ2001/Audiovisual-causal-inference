@@ -57,7 +57,7 @@ exportgraphics(gcf,figpath+'UAV_dataonly'+'.pdf',"ContentType","vector");
 prior = "SingleGaussian";
 noise = "constant";
 aud_rescale = "1";
-manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_RespDistr, model_path, plot_lapse, lapse_type);
+manuscript_ujoint_respdistrvisualization(prior, noise, aud_rescale, fontsize, figsize_RespDistr, model_path, plot_lapse, lapse_type, false, true);
 exportgraphics(gcf,figpath+'Const-SingleGaussian_rescaleaud1'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'Const-SingleGaussian_rescaleaud1'+'.pdf',"ContentType","vector");
 %%
@@ -1048,7 +1048,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         fig1 = get(ax1,'children');
         copyobj(fig1, t1);
         xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
-        ylabel("Mean location response (\circ)", 'FontSize', fontsize)
+        ylabel("Bias (\circ)", 'FontSize', fontsize)
         ylim([-20,20])
         xticks(-20:10:20)
         set(gca,"FontSize",9)

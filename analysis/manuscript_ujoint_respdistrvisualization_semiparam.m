@@ -1,16 +1,18 @@
 % This code does model recovery. It is same as 3_withlapse, but it is now
 % compatible with a fake dataset with lapse rates.
-function [] = manuscript_ujoint_respdistrvisualization_semiparam(fontsize, figspecs, model_path, plot_lapse, lapse_type, plot_individual)
+function [] = manuscript_ujoint_respdistrvisualization_semiparam(fontsize, figspecs, model_path, plot_lapse, lapse_type, plot_individual, connect_human_errorbars)
     if(nargin==0)
         figsize = get(0, 'ScreenSize');fontsize = 9; figspecs = [0 0 figsize(4)*0.9*0.65 figsize(4)*0.9];
         model_path = "modelfits\"
-        plot_lapse = true; lapse_type = "Uniform"; plot_individual=false;
+        plot_lapse = true; lapse_type = "Uniform"; plot_individual=false; connect_human_errorbars=false;
     elseif(nargin==3) % Default is plot the lapse component in fitted response distributions
-        plot_lapse = true; lapse_type = "Uniform"; plot_individual=false;
+        plot_lapse = true; lapse_type = "Uniform"; plot_individual=false; connect_human_errorbars=false;
     elseif(nargin==4)
-        lapse_type = "Uniform"; plot_individual=false;
+        lapse_type = "Uniform"; plot_individual=false; connect_human_errorbars=false;
     elseif(nargin==5)
-        plot_individual=false;
+        plot_individual=false; connect_human_errorbars=false;
+    elseif(nargin==6)
+        connect_human_errorbars=false;
     end
     data_path = "data\";
 
@@ -90,7 +92,7 @@ function [] = manuscript_ujoint_respdistrvisualization_semiparam(fontsize, figsp
     UV_use_pred_samples = true;
     UA_use_pred_samples = true; % can be false;
     model_family="semiparam";
-    manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM, ModelComponents, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize*screen_max_height_ratio, figspecs.*screen_max_height_ratio, lapse_type, Gaussian_lapse_SDs, plot_individual)
-    manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM, ModelComponents, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize*screen_max_height_ratio, NaN, lapse_type, Gaussian_lapse_SDs, plot_individual)
+    manuscript_unimodalfits_visualization(data_stratified_UV, fitted_params_PM, ModelComponents, true, colors, s_v_range, model_family, plot_lapse, UV_use_pred_samples, fontsize*screen_max_height_ratio, figspecs.*screen_max_height_ratio, lapse_type, Gaussian_lapse_SDs, plot_individual, connect_human_errorbars)
+    manuscript_unimodalfits_visualization(data_stratified_UA, fitted_params_PM, ModelComponents, false, colors, s_a_range, model_family, plot_lapse, UA_use_pred_samples, fontsize*screen_max_height_ratio, NaN, lapse_type, Gaussian_lapse_SDs, plot_individual, connect_human_errorbars)
 
 end
