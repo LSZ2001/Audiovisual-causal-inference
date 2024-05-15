@@ -235,29 +235,18 @@ manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_i
 
 %% AllData ModelComparison
 causal_inf_strategies = ["ModelSelection","ModelAveraging","ProbMatching"];
-param_model_names = ["exp-GaussianLaplace","exp-SingleGaussian","const-GaussianLaplace","exp-TwoGaussians","const-SingleGaussian","paramBest", "LiftedSemiparam"];
+param_model_names = ["paramBest", "LiftedSemiparam","exp-GaussianLaplace","exp-SingleGaussian","const-GaussianLaplace","exp-TwoGaussians","const-SingleGaussian"];
 
-% Only BIC for PM models 
-figure('Position', [0 0 5.2*Res figsize_RespDistr(3)*0.3]);
-hold on;
+figure('Position', [0 0 figsize_RespDistr(3) figsize_RespDistr(3)*0.6]);
 set(gcf, 'Color', 'w')
-alldata_modelcomparison_visualize([causal_inf_strategies(3)], param_model_names, true, fontsize, model_path, data_path, true, true, true);
-alldata_modelcomparison_visualize([causal_inf_strategies(3)], param_model_names, true, fontsize, model_path, data_path, true, false, false);
+alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path, true);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection_BIC'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection_BIC'+'.pdf',"ContentType","vector");
 
-% Only BIC for all models
-figure('Position', [0 0 5.2*Res figsize_RespDistr(3)*0.6]);
-set(gcf, 'Color', 'w')
-alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path, true, true, true);
-alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path, true, false, false);
-exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection_BIC_full'+'.png','Resolution',png_dpi);
-exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection_BIC_full'+'.pdf',"ContentType","vector");
 
-% NLL, AIC, BIC for all models
 figure('Position', [0 0 figsize_RespDistr(3) figsize_RespDistr(3)]);
 set(gcf, 'Color', 'w')
-AllData_ModelComparison_FinalTables = alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path, false, false, true);
+AllData_ModelComparison_FinalTables = alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path, false);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection'+'.pdf',"ContentType","vector");
 save(analysis_path+'alldata_modelcomparison_finaltables','AllData_ModelComparison_FinalTables');
@@ -511,15 +500,10 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
 end
 
 %%
-function [AllData_ModelComparison_FinalTables] = alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, is_plot, fontsize, model_path, data_path, plot_BIC_only, LiftedSemiparamParamAll, new_figure)
+function [AllData_ModelComparison_FinalTables] = alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, is_plot, fontsize, model_path, data_path, plot_BIC_only)
     num_strategies = length(causal_inf_strategies);
     num_models = length(param_model_names);
     num_subjects = 15;
-    if(LiftedSemiparamParamAll)
-        barcolor = [1,1,1];
-    else
-        barcolor = [204,204,204]./255;
-    end
     
     out_structs = cell(1,num_strategies);
     NLL_allmodels = zeros(num_models*num_strategies, 15);
@@ -527,52 +511,41 @@ function [AllData_ModelComparison_FinalTables] = alldata_modelcomparison_visuali
     BIC_allmodels = zeros(num_models*num_strategies, 15);
     for causal_inf_strategy_idx=1:num_strategies
         causal_inf_strategy_idx
-        out_struct = alldata_modelcomparison_visualize_helper(causal_inf_strategies(causal_inf_strategy_idx), param_model_names, model_path, data_path, LiftedSemiparamParamAll);
+        out_struct = alldata_modelcomparison_visualize_helper(causal_inf_strategies(causal_inf_strategy_idx), model_path, data_path);
         out_structs{causal_inf_strategy_idx} = out_struct;
-        NLL_allmodels(causal_inf_strategy_idx:num_strategies:end,:) = out_struct.NLLs;
-        AIC_allmodels(causal_inf_strategy_idx:num_strategies:end,:) = out_struct.AICs;
-        BIC_allmodels(causal_inf_strategy_idx:num_strategies:end,:) = out_struct.BICs;
+        NLL_allmodels(causal_inf_strategy_idx:3:end,:) = out_struct.NLLs;
+        AIC_allmodels(causal_inf_strategy_idx:3:end,:) = out_struct.AICs;
+        BIC_allmodels(causal_inf_strategy_idx:3:end,:) = out_struct.BICs;
     end
 
     % deltaNLL and deltaAIC across all 18 models
-    baseline_modelidx = find(causal_inf_strategies=="ProbMatching"); % Use the first model's PM version as baseline.
     NLL_allmodels_sum = sum(NLL_allmodels,2);
-    NLL_allmodels_sumdiff = NLL_allmodels_sum - NLL_allmodels_sum(baseline_modelidx);
-    NLL_min_model = baseline_modelidx;
+    NLL_allmodels_sumdiff = NLL_allmodels_sum - min(NLL_allmodels_sum);
+    [~,NLL_min_model] = min(NLL_allmodels_sum);
 
     AIC_allmodels_sum = sum(AIC_allmodels,2);
-    AIC_allmodels_sumdiff = AIC_allmodels_sum - AIC_allmodels_sum(baseline_modelidx);
-    AIC_min_model = baseline_modelidx;
+    AIC_allmodels_sumdiff = AIC_allmodels_sum - min(AIC_allmodels_sum);
+    [~,AIC_min_model] = min(AIC_allmodels_sum);
 
     BIC_allmodels_sum = sum(BIC_allmodels,2);
-    BIC_allmodels_sumdiff = BIC_allmodels_sum - BIC_allmodels_sum(baseline_modelidx);
-    BIC_min_model = baseline_modelidx;
+    BIC_allmodels_sumdiff = BIC_allmodels_sum - min(BIC_allmodels_sum);
+    [~,BIC_min_model] = min(BIC_allmodels_sum);
 
-    %causal_inf_strategies_abbrev = strrep(causal_inf_strategies,["ModelSelection", "ModelAveraging","ProbMatching"], "-"+["MS","MA","PM"]);
-    causal_inf_strategies_abbrev = [];
-    for strategy=1:num_strategies
-        if(causal_inf_strategies(strategy)=="ModelSelection")
-            causal_inf_strategies_abbrev = [causal_inf_strategies_abbrev,"-MS"];
-        elseif(causal_inf_strategies(strategy)=="ModelAveraging")
-            causal_inf_strategies_abbrev = [causal_inf_strategies_abbrev,"-MA"];
-        else(causal_inf_strategies(strategy)=="ProbMatching")
-            causal_inf_strategies_abbrev = [causal_inf_strategies_abbrev,"-PM"];
-        end
-    end
+    causal_inf_strategies_abbrev = "-"+["MS","MA","PM"];
     allmodel_xticklabels =  param_model_names' + causal_inf_strategies_abbrev;
     allmodel_xticklabels = allmodel_xticklabels';
     allmodel_xticklabels = allmodel_xticklabels(:);
     
     % AIC/BIC bootstrapping
     num_bootstrap_samps = 100000;
-    NLL_sum_bootstraps = zeros(num_strategies*num_models,num_bootstrap_samps);
-    AIC_sum_bootstraps = zeros(num_strategies*num_models,num_bootstrap_samps);
-    BIC_sum_bootstraps = zeros(num_strategies*num_models,num_bootstrap_samps);
+    NLL_sum_bootstraps = zeros(3*num_models,num_bootstrap_samps);
+    AIC_sum_bootstraps = zeros(3*num_models,num_bootstrap_samps);
+    BIC_sum_bootstraps = zeros(3*num_models,num_bootstrap_samps);
     rng('default')
     rng(0)
     for samp = 1:num_bootstrap_samps
         sampled_subj = datasample(1:num_subjects,num_subjects); 
-        for model=1:(num_strategies*num_models)
+        for model=1:(3*num_models)
             NLL_sum_bootstraps(model, samp) = sum(NLL_allmodels(model, sampled_subj));
             AIC_sum_bootstraps(model, samp) = sum(AIC_allmodels(model, sampled_subj));
             BIC_sum_bootstraps(model, samp) = sum(BIC_allmodels(model, sampled_subj));
@@ -593,36 +566,35 @@ function [AllData_ModelComparison_FinalTables] = alldata_modelcomparison_visuali
         if(plot_BIC_only)
             statistics = 3;
         else
-            statistics = 1:length(stat_names);
+            statistics = 1:length(stat_names)
         end
-        if(new_figure)
-            tiledlayout(length(statistics),1, 'TileSpacing', 'tight','Padding', 'none')
-        end
+        tiledlayout(length(statistics),1, 'TileSpacing', 'tight','Padding', 'none')
         for statistic=statistics
-            if(new_figure)
-                nexttile
-            end
+            nexttile
             set(gca,'TickDir','out');
             bootstraps_errorbars = bootstraps_errorbars_allstats{statistic};
             mean_stat = allstats{statistic};
             hold on
-            barh(1:(num_strategies*num_models),mean_stat,'FaceColor',barcolor, 'FaceAlpha',1)
-            errorbar(mean_stat,(1:(num_strategies*num_models))', mean_stat-squeeze(bootstraps_errorbars(:, 1)),squeeze(bootstraps_errorbars(:, 2))-mean_stat,'horizontal', 'k.')
-                yticks(1:(num_strategies*num_models));
-                yticklabels(allmodel_xticklabels)
-                %ytickangle(20)
-            
-            ylim([0.2, num_strategies*num_models+0.7])
-            set(gca, 'YDir','reverse')
+            bar(1:(3*num_models),mean_stat,'FaceColor','k', 'FaceAlpha',0.2)
+            errorbar(1:(3*num_models)',mean_stat,mean_stat-squeeze(bootstraps_errorbars(:, 1)),squeeze(bootstraps_errorbars(:, 2))-mean_stat, 'k.')
+            if(statistic~=length(stat_names))
+                xticklabels([])
+                set(gca,'xtick',[])
+            else
+                xticks(1:(3*num_models));
+                xticklabels(allmodel_xticklabels)
+                xtickangle(20)
+            end
             set(gca,'FontSize',9)
-            xlabel(stat_names(statistic), 'FontSize', 9)
+            ylabel(stat_names(statistic), 'FontSize', 9)
+            xlim([0, 3*num_models+0.7])
         end
     end
 
     % Create a .mat file with the delta NLL, AIC, and BIC tables
     AllData_ModelComparison_FinalTables = cell(1,3); 
     for stat=1:3
-        final_table = zeros(num_models*num_strategies,3);
+        final_table = zeros(num_models*3,3);
         final_table(:,1) = bootstraps_errorbars_allstats{stat}(:,1); % 2.5% percentile
         final_table(:,2) = allstats{stat}; % Sum
         final_table(:,3) = bootstraps_errorbars_allstats{stat}(:,2); % 97.5% percentile
@@ -632,7 +604,7 @@ end
 
 
 %%
-function [out_struct_allmodels] = alldata_modelcomparison_visualize_helper(causal_inf_strategy, param_model_names, model_path, data_path, LiftedSemiparamParamAll)
+function [out_struct_allmodels] = alldata_modelcomparison_visualize_helper(causal_inf_strategy, model_path, data_path)
     if(nargin==0)
         causal_inf_strategy = "ModelSelection";
         is_plot=false;
@@ -666,14 +638,13 @@ function [out_struct_allmodels] = alldata_modelcomparison_visualize_helper(causa
 
     colors = brewermap(10,"Accent");
     colors = colors([1,2,3,5:10],:);
-        
-    noises = ["exp","exp","constant","exp","constant"];
+    
+    % AllData parametric model fit NLLs for this causal_inf_strategy
+    noises = ["exp","exp","constant","exp","constant"]
     priors = ["GaussianLaplaceBothFixedZero", "SingleGaussian", "GaussianLaplaceBothFixedZero", "TwoGaussiansBothFixedZero","SingleGaussian"];
-    helper_model_order = strrep(noises+"-"+priors,"constant","const");
-    helper_model_order = strrep(helper_model_order,"BothFixedZero","");
-    helper_model_order = ["paramBest","LiftedSemiparam",helper_model_order]; % Order used by this helper function to read files.
-
+    causal_inf = ["ModelSelection","ModelAveraging","ProbMatching"];
     num_models = length(priors);
+    fitted_last3_params = zeros(num_models,15,3);
     NLLs_param = zeros(num_models,15);
     num_parametric_model_params = zeros(num_models,1);
     idx=0;
@@ -692,13 +663,10 @@ function [out_struct_allmodels] = alldata_modelcomparison_visualize_helper(causa
     % LiftedSemiparam model for this causal_inf_strategy
     filename_basis = "fittedparams_All_UBresc_SemiparamInspired_"+causal_inf_strategy+"_rescalefree_lapseUniform.mat";
     load(model_path + filename_basis)
-    num_LiftedSemiparam_params = 9; %12+12+11
-    if(LiftedSemiparamParamAll) % Count in the sigma_v(s), sigma_a(s), p(s) pivot points from the semiparametric fits
-        num_LiftedSemiparam_params = num_LiftedSemiparam_params + 12+12+11;
-    end
+    num_LiftedSemiparam_params = 9;
     [F_min_val, F_min_idx] = min(F_vals,[],1);
 
-    % Order: paramBest,LiftedSemiParam, ParamModels.
+    % Plot best LiftedSemiparam fit NLL - best param fit NLL
     NLLs = [NLL_param_min;F_min_val;NLLs_param];
 
     % AIC
@@ -719,11 +687,9 @@ function [out_struct_allmodels] = alldata_modelcomparison_visualize_helper(causa
         BICs = [BICs; 2.*NLLs_param(model,:) + num_parametric_model_params(repmat(model,1,num_subjects))'.*log(n_data)];
     end
 
-    [~,prompted_model_order] = ismember(param_model_names,helper_model_order);
-    out_struct_allmodels.NLLs = NLLs(prompted_model_order,:);
-    out_struct_allmodels.AICs = AICs(prompted_model_order,:);
-    out_struct_allmodels.BICs = BICs(prompted_model_order,:);
-    out_struct_allmodels.n_data = n_data;
+    out_struct_allmodels.NLLs = NLLs;
+    out_struct_allmodels.AICs = AICs;
+    out_struct_allmodels.BICs = BICs;
 end
 
 
