@@ -161,8 +161,8 @@ rescales = ["","free", "4over3", "1", "free","free","free","free","4over3","1"];
 model_types = ["semiparametric","exp-GaussianLaplace", "exp-GaussianLaplace\_4/3","exp-GaussianLaplace\_1", "exp-SingleGaussian", "const-GaussianLaplace","exp-TwoGaussians","const-SingleGaussian","const-SingleGaussian\_4/3","const-SingleGaussian\_1"];
 num_params = [40,14,13,13,12,10,14,8,7,7];
 
-% Vanila 3 models on unimodal data only
-figure('Position', [0 0 figsize_RespDistr(3)*0.5 figsize_RespDistr(4)*0.9]);
+%% Vanila 3 models on unimodal data only
+figure('Position', [0 0 5.2*Res figsize_RespDistr(4)*0.4]);
 set(gcf, 'Color', 'w')
 UnimodalData_ModelComparison_FinalTables_Vanilla = unimodaldata_modelcomparison_visualize(priors((end-2):end), noises((end-2):end), rescales((end-2):end), model_types((end-2):end), num_params((end-2):end), true, fontsize+1, model_path, data_path, false);
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_vanilla'+'.png','Resolution',png_dpi);
@@ -170,11 +170,19 @@ exportgraphics(gcf,figpath+'UJoint_ModelSelection_vanilla'+'.pdf',"ContentType",
 save(analysis_path+'unimodaldata_modelcomparison_finaltables_vanilla','UnimodalData_ModelComparison_FinalTables_Vanilla');
         
 % All models on unimodal data
-figure('Position', [0 0 figsize_RespDistr(3) figsize_RespDistr(3)*0.6]);
+keep_modelidx = [2,5,6,7,8,1];
+figure('Position', [0 0 5.2*Res figsize_RespDistr(3)*0.6*0.5]);
 set(gcf, 'Color', 'w')
-UnimodalData_ModelComparison_FinalTables = unimodaldata_modelcomparison_visualize(priors, noises, rescales, model_types, num_params, true, fontsize+1, model_path, data_path, true);
+UnimodalData_ModelComparison_FinalTables = unimodaldata_modelcomparison_visualize(priors(keep_modelidx), noises(keep_modelidx), rescales(keep_modelidx), model_types(keep_modelidx), num_params(keep_modelidx), true, fontsize+1, model_path, data_path, true);
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_BIC'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_BIC'+'.pdf',"ContentType","vector");
+
+keep_modelidx = [2,3,4,5,6,7,8,9,10,1];
+figure('Position', [0 0 5.2*Res figsize_RespDistr(3)*0.6*0.7]);
+set(gcf, 'Color', 'w')
+UnimodalData_ModelComparison_FinalTables = unimodaldata_modelcomparison_visualize(priors(keep_modelidx), noises(keep_modelidx), rescales(keep_modelidx), model_types(keep_modelidx), num_params(keep_modelidx), true, fontsize+1, model_path, data_path, true);
+exportgraphics(gcf,figpath+'UJoint_ModelSelection_BIC_full'+'.png','Resolution',png_dpi);
+exportgraphics(gcf,figpath+'UJoint_ModelSelection_BIC_full'+'.pdf',"ContentType","vector");
 
 figure('Position', [0 0 figsize_RespDistr(3) figsize_RespDistr(3)]);
 set(gcf, 'Color', 'w')
@@ -297,23 +305,22 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
     BICs = zeros(num_models, num_subjects);
     
     % load nonparam indv UJoint fits
-    model_start_idx = 1;
-    if(model_types(1)=="semiparametric")
-        load(model_path + "fittedparams_UJoint_Semiparam_rescalefree_lapseUniform.mat")
-        [min_val, min_idx] = min(F_vals,[],1);
-        [num_inits,num_params_nonparam]=size(theta_fitted);
-        NLLs(1,:) = min_val;
-        AICs(1,:) = 2.*min_val + 2.* num_params(1);
-        BICs(1,:) = 2.*min_val + num_params(1).*log(n_data);
-        model_start_idx = model_start_idx+1;
-    end
+    for model=1:(num_models)
+        if(model_types(model)=="semiparametric")
+            load(model_path + "fittedparams_UJoint_Semiparam_rescalefree_lapseUniform.mat")
+            [min_val, min_idx] = min(F_vals,[],1);
+            [num_inits,num_params_nonparam]=size(theta_fitted);
+            NLLs(model,:) = min_val;
+            AICs(model,:) = 2.*min_val + 2.* num_params(model);
+            BICs(model,:) = 2.*min_val + num_params(model).*log(n_data);
 
-    for model=model_start_idx:(num_models)
-        load(model_path + "fittedparams_UJoint_"+noises(model)+"-"+priors(model)+"_rescale"+rescales(model)+"_lapseUniform.mat")
-        [min_val, min_idx] = min(F_vals,[],2);
-        NLLs(model,:) = min_val';
-        AICs(model,:) = 2.*min_val' + 2.* num_params(model);
-        BICs(model,:) = 2.*min_val' + num_params(model).*log(n_data);
+        else
+            load(model_path + "fittedparams_UJoint_"+noises(model)+"-"+priors(model)+"_rescale"+rescales(model)+"_lapseUniform.mat")
+            [min_val, min_idx] = min(F_vals,[],2);
+            NLLs(model,:) = min_val';
+            AICs(model,:) = 2.*min_val' + 2.* num_params(model);
+            BICs(model,:) = 2.*min_val' + num_params(model).*log(n_data);
+        end
     end
     NLL_sum = sum(NLLs,2);
     AIC_sum = sum(AICs,2);
@@ -372,15 +379,19 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
                 cats = insertBefore(cats,"_no","\");
                 C = categorical(cats);
                 C = reordercats(C,cellstr(C)');
-                bar(C,mean_stat,'FaceColor','k', 'FaceAlpha',0.2)
-                errorbar(C,mean_stat,mean_stat-squeeze(bootstraps_errorbars(:, 1)),squeeze(bootstraps_errorbars(:, 2))-mean_stat, 'k.')
+                barh(0:(length(C)-1),mean_stat,'FaceColor','k', 'FaceAlpha',0.2)
+                errorbar(mean_stat,0:(length(C)-1),mean_stat-squeeze(bootstraps_errorbars(:, 1)),squeeze(bootstraps_errorbars(:, 2))-mean_stat,'horizontal', 'k.')
+                yticks(0:(length(C)-1))
+                yticklabels(C)
+                ylim([0-0.5, length(C)-0.5])
+                set(gca,'YDir','reverse')
                 %end
                 if(statistic~=length(stat_names))
                     xticklabels([]);
                     set(gca,'xtick',[])
                 end
                 set(gca,'FontSize',9)
-                ylabel(stat_names(statistic))
+                xlabel(stat_names(statistic))
                 %set(gca,'xticklabel',["diff","max","ent"].')
         end
     end
