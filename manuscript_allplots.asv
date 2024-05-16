@@ -237,7 +237,7 @@ manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_i
 causal_inf_strategies = ["ModelSelection","ModelAveraging","ProbMatching"];
 param_model_names = ["exp-GaussianLaplace","exp-SingleGaussian","const-GaussianLaplace","exp-TwoGaussians","const-SingleGaussian","paramBest", "LiftedSemiparam"];
 
-% Only BIC for PM models 
+%% Only BIC for PM models 
 figure('Position', [0 0 5.2*Res figsize_RespDistr(3)*0.3]);
 hold on;
 set(gcf, 'Color', 'w')
@@ -246,7 +246,7 @@ alldata_modelcomparison_visualize([causal_inf_strategies(3)], param_model_names,
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection_BIC'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection_BIC'+'.pdf',"ContentType","vector");
 
-% Only BIC for all models
+%% Only BIC for all models
 figure('Position', [0 0 5.2*Res figsize_RespDistr(3)*0.6]);
 set(gcf, 'Color', 'w')
 alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path, true, true, true);
@@ -254,7 +254,7 @@ alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection_BIC_full'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection_BIC_full'+'.pdf',"ContentType","vector");
 
-% NLL, AIC, BIC for all models
+%% NLL, AIC, BIC for all models
 figure('Position', [0 0 figsize_RespDistr(3) figsize_RespDistr(3)]);
 set(gcf, 'Color', 'w')
 AllData_ModelComparison_FinalTables_liftedsemiparam_count = alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path, false, true, true);
@@ -262,6 +262,7 @@ AllData_ModelComparison_FinalTables = alldata_modelcomparison_visualize(causal_i
 writematrix(round(AllData_ModelComparison_FinalTables{1},2), figpath+"NLL.csv")
 writematrix(round(AllData_ModelComparison_FinalTables{2},2), figpath+"AIC.csv")
 writematrix(round(AllData_ModelComparison_FinalTables{3},2), figpath+"BIC.csv")
+
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection'+'.pdf',"ContentType","vector");
 save(analysis_path+'alldata_modelcomparison_finaltables','AllData_ModelComparison_FinalTables');
@@ -1093,7 +1094,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         t1 = nexttile(1);
         set(gca,'TickDir','out');
         hold on
-        plot([-20,20],[0,0],"k--",'HandleVisibility','off');
+        plot([-20,20],[-20,20],"k--",'HandleVisibility','off');
         fig1 = get(ax1,'children');
         copyobj(fig1, t1);
         xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
@@ -1156,7 +1157,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         t1 = nexttile(t12);
         hold on
         set(gca,'TickDir','out');
-        plot([-20,20],[0,0],"k--",'HandleVisibility','off');
+        plot([-20,20],[-20,20],"k--",'HandleVisibility','off');
         fig1 = get(ax1,'children');
         copyobj(fig1, t1);
         xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
