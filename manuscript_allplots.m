@@ -194,6 +194,7 @@ save(analysis_path+'unimodaldata_modelcomparison_finaltables','UnimodalData_Mode
 %% AllData LiftedSemiparam Response distribution visualization
 causal_inf_strategy = "ProbMatching";
 save_name = "PM";
+manuscript_allfits_respdistrvisual_semiparaminsp_maintext(causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 manuscript_allfits_respdistrvisualization_semiparaminsp_resc(causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type);
 
 %%
@@ -210,8 +211,8 @@ prior_type = "GaussianLaplaceBothFixedZero";
 hetero_type = "exp";
 causal_inf_strategy = "ProbMatching";
 save_name = "exp-GaussianLaplace-PM";
+manuscript_allfits_respdistrvisualization_resc_maintext(prior_type, hetero_type, causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
 manuscript_allfits_respdistrvisualization_resc(prior_type, hetero_type, causal_inf_strategy, fontsize, figsize_RespDistr, figpath, save_name, png_dpi, model_path, plot_lapse, lapse_type)
-
 %% Individual-level plots for the above model
 prior_type = "GaussianLaplaceBothFixedZero";
 hetero_type = "exp";
