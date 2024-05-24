@@ -184,7 +184,6 @@ function manuscript_bimodalavfits_visualization_resc_maintext(T,BAV_data, fitted
                     t=tiledlayout(T,1,3, 'Padding', 'none', 'TileSpacing', 'tight');
                     t.Layout.Tile = 5+(l-1)*10;
                     t.Layout.TileSpan = [1 6];
-
                     ts(l) = t;
                 else
                     t=ts(l);
@@ -231,6 +230,8 @@ function manuscript_bimodalavfits_visualization_resc_maintext(T,BAV_data, fitted
                             lg.ItemTokenSize(1) = 10;
                             lg.Position(1) = 0.1; %0.19
                             lg.Position(2) = 0.12; %0.72
+
+                            text(-0.25, 1.15, '(b)', 'FontWeight', 'bold', 'FontSize', fontsize+1, 'HorizontalAlignment', 'left', 'Units', 'normalized');
                         end
                     else
                         yticklabels([])

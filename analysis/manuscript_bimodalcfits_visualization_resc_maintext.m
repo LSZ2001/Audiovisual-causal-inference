@@ -126,6 +126,9 @@ function manuscript_bimodalcfits_visualization_resc_maintext(T,BC_data, fitted_p
 
                 if(l==1)
                     title(stratify_labels(strats), 'FontSize',10)
+                    if(strats==1)
+                        text(-0.3, 1.15, '(a)', 'FontWeight', 'bold', 'FontSize', fontsize+1, 'HorizontalAlignment', 'left', 'Units', 'normalized');
+                    end
                 end
                 yticks(0:0.2:1)
                 if(strats==1)
