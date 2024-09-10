@@ -168,7 +168,7 @@ UnimodalData_ModelComparison_FinalTables_Vanilla = unimodaldata_modelcomparison_
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_vanilla'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'UJoint_ModelSelection_vanilla'+'.pdf',"ContentType","vector");
 save(analysis_path+'unimodaldata_modelcomparison_finaltables_vanilla','UnimodalData_ModelComparison_FinalTables_Vanilla');
-        
+
 % All models on unimodal data
 keep_modelidx = [2,5,6,7,8,1];
 figure('Position', [0 0 5.2*Res figsize_RespDistr(3)*0.6*0.5]);
@@ -399,7 +399,12 @@ function [UnimodalData_ModelComparison_FinalTables] = unimodaldata_modelcomparis
                 barh(0:(length(C)-1),mean_stat,'FaceColor','k', 'FaceAlpha',0.2)
                 errorbar(mean_stat,0:(length(C)-1),mean_stat-squeeze(bootstraps_errorbars(:, 1)),squeeze(bootstraps_errorbars(:, 2))-mean_stat,'horizontal', 'k.')
                 yticks(0:(length(C)-1))
-                yticklabels(C)
+                C_capitalized = C;
+                for c=1:length(C)
+                    cat_char = char(string(C(c)));
+                    C_capitalized(c) = convertCharsToStrings([upper(cat_char(1)), cat_char(2:end)]);
+                end
+                yticklabels(C_capitalized)
                 ylim([0-0.5, length(C)-0.5])
                 set(gca,'YDir','reverse')
                 %end
@@ -568,6 +573,10 @@ function [AllData_ModelComparison_FinalTables] = alldata_modelcomparison_visuali
     allmodel_xticklabels =  param_model_names' + causal_inf_strategies_abbrev;
     allmodel_xticklabels = allmodel_xticklabels';
     allmodel_xticklabels = allmodel_xticklabels(:);
+    for lab_idx = 1:length(allmodel_xticklabels)
+        lab = char(allmodel_xticklabels(lab_idx));
+        allmodel_xticklabels(lab_idx) = convertCharsToStrings([upper(lab(1)) lab(2:end)]);
+    end
     
     % AIC/BIC bootstrapping
     num_bootstrap_samps = 100000;
@@ -997,7 +1006,7 @@ function [] = sigmafun_prior_examples(fontsize)
     set(lg,'Box','off')
     ylim([0,6])
     yticks(0:1:6)
-    xlabel("Visual/Auditory stimulus location (\circ)", 'FontSize', fontsize)
+    xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
     ylabel("$\sigma(s)$", 'Interpreter', 'latex', 'FontSize', fontsize)
     title("Constant sensory noise", 'FontSize', fontsize+1)
     
@@ -1016,7 +1025,7 @@ function [] = sigmafun_prior_examples(fontsize)
     lg.Position(1:2) = [0.63,0.8];
     ylim([0,6])
     yticks(0:1:6)
-    xlabel("Visual/Auditory stimulus location (\circ)", 'FontSize', fontsize)
+    xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
     title("Exponential sensory noise", 'FontSize', fontsize+1)
     
     % Priors
@@ -1030,7 +1039,7 @@ function [] = sigmafun_prior_examples(fontsize)
     lg = legend("$\sigma_s="+sigma_s_vals+"$", 'Interpreter', 'latex', 'FontSize', fontsize);
     set(lg,'Box','off')
     lg.Position(1) = 0.25;
-    xlabel("Visual/Auditory stimulus location (\circ)", 'FontSize', fontsize)
+    xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
     ylabel("$p(s)$", 'Interpreter', 'latex', 'FontSize', fontsize)
     title("SingleGaussian prior", 'FontSize', fontsize+1)
     ylim([0,0.15])
@@ -1045,7 +1054,7 @@ function [] = sigmafun_prior_examples(fontsize)
     for i=1:length(sigma_s_vals)
         plot(s_grid, (1-w_vals(i)).*normpdf(s_grid, 0, sigma_s_vals(i)) + w_vals(i).*1./(2.*b_vals(i)).*exp(-abs(s_grid)./b_vals(i)), "-", 'Color', colors(i,:))
     end
-    xlabel("Visual/Auditory stimulus location (\circ)", 'FontSize', fontsize)
+    xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
     lg = legend("$\sigma_s="+sigma_s_vals+", b="+b_vals+", w="+w_vals+"$", 'Interpreter', 'latex', 'FontSize', fontsize);
     set(lg,'Box','off')
     lg.Position(1:2) = [0.69,0.48];
@@ -1063,7 +1072,7 @@ function [] = sigmafun_prior_examples(fontsize)
         plot(s_grid, (1-w_vals(i)).*normpdf(s_grid, 0, sigma_s_vals(i)) + w_vals(i).*normpdf(s_grid, 0, sigma_s_vals(i)+sigma_s2_vals(i)), "-", 'Color', colors(i,:))
     end
     ylim([0,0.15])
-    xlabel("Visual/Auditory stimulus location (\circ)", 'FontSize', fontsize)
+    xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
     lg = legend("$\sigma_s="+sigma_s_vals+", \sigma_{\Delta}="+sigma_s2_vals+", w="+w_vals+"$", 'Interpreter', 'latex', 'FontSize', fontsize);
     set(lg,'Box','off')
     lg.Position(1:2) = [0.42, 0.348];
