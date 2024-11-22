@@ -60,6 +60,8 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
     
     PMR_distr_params = zeros(num_subjects, num_s_bins, 3);
     s_cond_s_hat_meanbiases = zeros(num_subjects, num_s_bins);
+    s_cond_s_hat_sembiases = zeros(num_subjects, num_s_bins);
+    ntrials_subjbins = zeros(num_subjects, num_s_bins);
     s_cond_s_hat_stds = zeros(num_subjects, num_s_bins);
     s_cond_s_hat_iqrs = zeros(num_subjects, num_s_bins);
     raw_data_histcounts = zeros(num_subjects, num_s_bins, length(binedges)-1);
@@ -173,17 +175,20 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                     S_vals = [s_matrix(rel_trial_idx,1), s_matrix(rel_trial_idx,3)];
                     r_relevant = s_matrix(rel_trial_idx,2);
                     s_cond_s_hat_meanbiases(i,j) = mean(r_relevant - S_vals(:,1));
+                    s_cond_s_hat_sembiases(i,j) = std(r_relevant - S_vals(:,1))./sqrt(length(r_relevant));
                 else % Auditory, no reliability levels.
                     s = s_matrix(1,1);
                     S_vals = repmat(s, 1,length(R_grid));
                     r_relevant = s_matrix(:,2);
                     s_cond_s_hat_meanbiases(i,j) = mean(r_relevant - s);
+                    s_cond_s_hat_sembiases(i,j) = std(r_relevant - s)./sqrt(length(r_relevant));
                 end
                 
                 [N,edges] = histcounts(r_relevant, binedges, 'Normalization','pdf');
                 raw_data_histcounts(i,j,:) = N ./ sum(N);
                 s_cond_s_hat_stds(i,j) = std(r_relevant);
                 s_cond_s_hat_iqrs(i,j) = iqr(r_relevant);
+                ntrials_subjbins(i,j) = length(r_relevant);
             end
 
         end
@@ -220,7 +225,16 @@ function manuscript_unimodalfits_visualization(data_stratified, fitted_params_PM
                 hold on;
                 title("Subject " + i)
                 plot([-20,20],[0,0], "k--",'HandleVisibility','off')
+
+
+                % h=errorbar(squeeze(s_range), squeeze(s_cond_s_hat_meanbiases(i,:)), squeeze(s_cond_s_hat_sembiases(i,:)), "Marker","none","LineStyle","none", 'Color', [color_AV, alpha_level], 'MarkerSize',10, 'CapSize', 0, "HandleVisibility","off"); 
+                % % Set transparency (undocumented)
+                % set([h.Bar, h.Line], 'ColorType', 'truecoloralpha', 'ColorData', [h.Line.ColorData(1:3); 255*alpha_level])
+                
+
+
                 scatter(squeeze(s_range), squeeze(s_cond_s_hat_meanbiases(i,:)),10,'MarkerFaceColor',color_AV,'MarkerEdgeColor','none','MarkerFaceAlpha',alpha_level,'MarkerEdgeAlpha',alpha_level);
+
                 ylim([-20,20])
                 if(idx==(num_subjects+1))
                     title("")

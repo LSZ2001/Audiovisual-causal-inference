@@ -248,7 +248,7 @@ alldata_modelcomparison_visualize([causal_inf_strategies(3)], param_model_names,
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection_BIC'+'.png','Resolution',png_dpi);
 exportgraphics(gcf,figpath+'SemiparamIndv_ModelSelection_BIC'+'.pdf',"ContentType","vector");
 
-% Only BIC for all models
+%% Only BIC for all models
 figure('Position', [0 0 5.2*Res figsize_RespDistr(3)*0.6]);
 set(gcf, 'Color', 'w')
 alldata_modelcomparison_visualize(causal_inf_strategies, param_model_names, true, fontsize, model_path, data_path, true, true, true);
@@ -1171,7 +1171,7 @@ function [] = allindvsubjplots_to_onesubjplot(save_name, subjidx, fitted_on_all_
         fig1 = get(ax1,'children');
         copyobj(fig1, t1);
         xlabel("Stimulus location (\circ)", 'FontSize', fontsize)
-        ylabel("Mean location response (\circ)", 'FontSize', fontsize)
+        ylabel("Bias of location response (\circ)", 'FontSize', fontsize)
         ylim([-20,20])
         ttl = title('(a)', "Fontsize", 10);
         ttl.Units = 'Normalize'; 
