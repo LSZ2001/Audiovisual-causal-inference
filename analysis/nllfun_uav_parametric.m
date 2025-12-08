@@ -13,9 +13,6 @@ function [output] = nllfun_uav_parametric(ModelComponents, theta, R, S, return_p
     end
     
     if(lapse_type=="Gaussian")
-%         sigma_lapse = 10; % For plotting models that do not have
-%         sigma_lapse, and want to visualize some other fixed Gaussian
-%         lapse distribution with some predefined SD value.
         sigma_lapse = theta(end);
         theta = theta(1:(end-1));
     end
@@ -88,7 +85,7 @@ function [output] = nllfun_uav_parametric(ModelComponents, theta, R, S, return_p
         rel_multiply_factors = reliabilities;
     end
     if(return_predictive_samples && num_rels==1) % For visualizing UA response distributions using post pred samples
-        reliabilities = S(:,2);
+        reliabilities = 4*ones(length(S),1);
         S = S(:,1);
     end
     
@@ -109,59 +106,60 @@ function [output] = nllfun_uav_parametric(ModelComponents, theta, R, S, return_p
         if(return_predictive_samples) % If return predictive samples, cannot return response distribution despite input args.
             return_response_distr=false;
             num_samps = 100; % Number of samples for this trial.
-            
+            s_hats_PM = zeros(length(S), num_samps);
             % Assume input only contains one reliability level (1 to 4)!!
-            rel_level = reliabilities(1);
-            if(rel_level ~=4) % visual
-                rel_multiply_factor = rel_multiply_factors_uniq(rel_level);
-            else
-                rel_multiply_factor = rel_multiply_factors_uniq;
+            rel_levels = squeeze(unique(reliabilities))';
+            for rel_level = rel_levels
+                if(rel_level ~=4) % visual
+                    rel_multiply_factor = rel_multiply_factors_uniq(rel_level);
+                    relevant_trials = find(reliabilities==rel_level);
+                else
+                    rel_multiply_factor = rel_multiply_factors_uniq;
+                end
+                relevant_trials = find(reliabilities==rel_level);
+                S_temp = S(relevant_trials);
+            
+                sigma = sigma_fun(S_temp, sigma0, k) .* rel_multiply_factor;
+                x_obs_vals = S_temp + sigma.*randn([length(S_temp),num_samps]);
+                
+                binedges = linspace(a,b,num_bins+1);
+                binwidth =  binedges(2)-binedges(1);
+                s_grid_integrate = (binedges(1:end-1) + binwidth/2)';
+                switch prior_type
+                    case "SingleGaussian"
+                        log_prior = -log(sigma_s) - 0.5*log(2*pi) - 0.5.*(((s_grid_integrate-mu)/sigma_s).^2);
+                    case "TwoGaussiansOneFixedZero"
+                        % The free moving gaussian is N(mu, sigma_s), both defined
+                        % above. (Hence prior_type="TwoGaussiansOneFixedZero" must be paired with IsFixedPriorMean=false)
+                        % sigma_center is the center of the gaussian fixed at mu_fixed=0.
+                        % w is the weight of the fix gaussian as a mixture component for the prior.
+                        sigma_center=theta(end-2); w=theta(end-1);
+                        % Since 1/sqrt(2pi*sigma_s) and 1/sqrt(2pi*sigma_center) are
+                        % constants wrt to s, hence absorbed into proportionality sign.
+                        prior = (1-w).*normpdf(s_grid_integrate, mu, sigma_s) + w.* normpdf(s_grid_integrate, 0, sigma_center);
+                    case "TwoGaussiansBothFixedZero"
+                        delta_sigma=theta(end-2); w=theta(end-1);
+                        sigma_s_larger = sigma_s + delta_sigma;
+                        % Since 1/sqrt(2pi*sigma_s) and 1/sqrt(2pi*sigma_center) are
+                        % constants wrt to s, hence absorbed into proportionality sign.
+                        log_prior = log((1-w).*normpdf(s_grid_integrate, 0, sigma_s) + w.* normpdf(s_grid_integrate, 0, sigma_s_larger));
+                    case "GaussianLaplaceBothFixedZero"
+                        % simga_s is width of Gaussian component, with mixture
+                        % weight (1-w).
+                        laplace_scale = theta(end-2); w=theta(end-1);
+                        log_prior = log((1-w).*normpdf(s_grid_integrate, 0, sigma_s) + w./(2.*laplace_scale).*exp(-abs(s_grid_integrate-0)./laplace_scale));       
+    
+                end
+                x_grid_rescale = x_obs_vals(:)' .* rescale;            
+                log_likelihood = -log(sigma_fun(s_grid_integrate, sigma0,k).*rel_multiply_factor)-0.5.*log(2*pi) - ((x_grid_rescale-s_grid_integrate).^2)./(2.*((sigma_fun(s_grid_integrate, sigma0,k).*rel_multiply_factor).^2));
+                log_expr = log_likelihood + log_prior;
+                log_expr_shifted = log_expr - max(log_expr);
+                expr = exp(log_expr_shifted);
+            
+                s_hats_pm = sum(s_grid_integrate.*expr,1) ./ sum(expr,1);
+                s_hats_PM(relevant_trials,:) = reshape(s_hats_pm', length(S_temp), num_samps);
             end
-            
-            sigma = sigma_fun(S, sigma0, k) .* rel_multiply_factor;
-            
-            
-            x_obs_vals = S + sigma.*randn([length(S),num_samps]);
-            
-            
-            
-            binedges = linspace(a,b,num_bins+1);
-            binwidth =  binedges(2)-binedges(1);
-            s_grid_integrate = (binedges(1:end-1) + binwidth/2)';
-            switch prior_type
-                case "SingleGaussian"
-                    log_prior = -log(sigma_s) - 0.5*log(2*pi) - 0.5.*(((s_grid_integrate-mu)/sigma_s).^2);
-                case "TwoGaussiansOneFixedZero"
-                    % The free moving gaussian is N(mu, sigma_s), both defined
-                    % above. (Hence prior_type="TwoGaussiansOneFixedZero" must be paired with IsFixedPriorMean=false)
-                    % sigma_center is the center of the gaussian fixed at mu_fixed=0.
-                    % w is the weight of the fix gaussian as a mixture component for the prior.
-                    sigma_center=theta(end-2); w=theta(end-1);
-                    % Since 1/sqrt(2pi*sigma_s) and 1/sqrt(2pi*sigma_center) are
-                    % constants wrt to s, hence absorbed into proportionality sign.
-                    prior = (1-w).*normpdf(s_grid_integrate, mu, sigma_s) + w.* normpdf(s_grid_integrate, 0, sigma_center);
-                case "TwoGaussiansBothFixedZero"
-                    delta_sigma=theta(end-2); w=theta(end-1);
-                    sigma_s_larger = sigma_s + delta_sigma;
-                    % Since 1/sqrt(2pi*sigma_s) and 1/sqrt(2pi*sigma_center) are
-                    % constants wrt to s, hence absorbed into proportionality sign.
-                    log_prior = log((1-w).*normpdf(s_grid_integrate, 0, sigma_s) + w.* normpdf(s_grid_integrate, 0, sigma_s_larger));
-                case "GaussianLaplaceBothFixedZero"
-                    % simga_s is width of Gaussian component, with mixture
-                    % weight (1-w).
-                    laplace_scale = theta(end-2); w=theta(end-1);
-                    log_prior = log((1-w).*normpdf(s_grid_integrate, 0, sigma_s) + w./(2.*laplace_scale).*exp(-abs(s_grid_integrate-0)./laplace_scale));       
-
-            end
-            x_grid_rescale = x_obs_vals(:)' .* rescale;            
-            log_likelihood = -log(sigma_fun(s_grid_integrate, sigma0,k).*rel_multiply_factor)-0.5.*log(2*pi) - ((x_grid_rescale-s_grid_integrate).^2)./(2.*((sigma_fun(s_grid_integrate, sigma0,k).*rel_multiply_factor).^2));
-            log_expr = log_likelihood + log_prior;
-            log_expr_shifted = log_expr - max(log_expr);
-            expr = exp(log_expr_shifted);
-        
-            s_hats_pm = sum(s_grid_integrate.*expr,1) ./ sum(expr,1);
-            s_hats_PM = reshape(s_hats_pm', length(S), num_samps);
-            
+                
             % Add motor noise
             output = s_hats_PM + sigma_motor .* randn([length(S),num_samps]);
             

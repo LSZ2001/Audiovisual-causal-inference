@@ -278,6 +278,222 @@ exportgraphics(gcf,figpath+'SensoryNoisePriorParamFamilies'+'.pdf',"ContentType"
 
 
 
+%% Parameter recovery
+load(model_path+"fittedparams_UJoint_exp-GaussianLaplaceBothFixedZero_rescalefree_lapseUniform.mat")
+theta_fitted_orig = theta_fitted;
+F_vals_orig = F_vals;
+
+load(model_path+"fittedparams_UJoint_exp-GaussianLaplaceBothFixedZero_rescalefree_lapseUniform__exp-GaussianLaplaceBothFixedZero_rescalefree_lapseUniform")
+num_params_model = length(theta_fitted(1,:));
+param_names = ["\sigma_{0,V}","k_{1,V}","k_{2,V}","\alpha_{med}","\alpha_{low}","\sigma_s","\lambda","b","w","\sigma_{motor}","\sigma_{0,A}","k_{1,A}","k_{2,A}", "\rho_A"];
+figure('Position',[50,100,700,500]);
+t=tiledlayout(3,ceil(num_params_model/3),'Padding', 'tight', 'TileSpacing', 'tight');
+for param =1:num_params_model
+    nexttile(t); hold on;
+    theta_aug = [theta_fitted_orig(:,param); theta_fitted(:,param)];
+    scatter(theta_fitted_orig(:,param), theta_fitted(:,param), "k.")
+    plot([min(0,min(theta_aug)), max(theta_aug)], [min(0,min(theta_aug)), max(theta_aug)], "g-")
+    title("$"+param_names(param)+"$",'interpreter','latex','fontsize',12)
+end
+xlabel(t,'Ground-truth parameter value','FontSize',12)
+ylabel(t,'Recovered parameter value','FontSize',12)
+exportgraphics(gcf,figpath+"UAV_Exp-GaussianLaplace_ParamRecovery"+".pdf","ContentType","vector");
+
+%% Check model recovery
+prior_types = ["SingleGaussian","GaussianLaplaceBothFixedZero","SingleGaussian","SingleGaussian","GaussianLaplaceBothFixedZero","GaussianLaplaceBothFixedZero"]; % "SingleGaussian", "GaussianLaplaceBothFixedZero", or "TwoGaussiansBothFixedZero"
+hetero_types = ["constant","exp","constant","exp","constant","exp"]; % "constant" or "exp";
+lapse_types = repmat("Uniform",1,length(prior_types)); % "Uniform" or "Gaussian";
+rescale_auds = ["free","free","1","free","free","1"]; % "1", "4/3", or "free";
+prior_type_modelrecovdatas = prior_types;
+hetero_type_modelrecovdatas = hetero_types; % "constant" or "exp";
+lapse_type_modelrecovdatas = lapse_types; % "Uniform" or "Gaussian";
+rescale_aud_modelrecovdatas = rescale_auds; % "1", "4/3", or "free";
+% Model parameters
+num_params = [8,14,7,12,10,13];
+
+num_datasets = length(prior_type_modelrecovdatas);
+num_models = length(prior_types);
+num_subjects = 15;
+load(data_path+"data_stratified_UV.mat");
+load(data_path+"data_stratified_UA.mat");
+data_UV = data_stratified_to_data(data_stratified_UV, false, true); % last argument is is_visual.
+data_UA = data_stratified_to_data(data_stratified_UA, false, false);
+n_data = zeros(1,15);
+for subjidx=1:num_subjects
+    n_data(subjidx) = length(data_UA{subjidx}) +length(data_UV{subjidx}); 
+end
+
+% AIC, BIC
+NLLs = zeros(num_datasets, num_models, num_subjects);
+AICs = zeros(num_datasets, num_models, num_subjects);
+BICs = zeros(num_datasets, num_models, num_subjects);
+
+
+% load nonparam indv UJoint fits
+for model_idx =1:6
+    prior_type = prior_types(model_idx);
+    hetero_type = hetero_types(model_idx);
+    lapse_type = lapse_types(model_idx);
+    rescale_aud = rescale_auds(model_idx);
+
+    for dataset_idx =1:6
+        prior_type_modelrecovdata = prior_type_modelrecovdatas(dataset_idx); % "SingleGaussian", "GaussianLaplaceBothFixedZero", or "TwoGaussiansBothFixedZero"
+        hetero_type_modelrecovdata = hetero_type_modelrecovdatas(dataset_idx); % "constant" or "exp";
+        lapse_type_modelrecovdata = lapse_type_modelrecovdatas(dataset_idx); % "Uniform" or "Gaussian";
+        rescale_aud_modelrecovdata = rescale_aud_modelrecovdatas(dataset_idx); % "1", "4/3", or "free";
+
+        filename = 'fittedparams_UJoint_'+hetero_type+"-"+prior_type+"_rescale"+rescale_aud+"_lapse"+lapse_type;
+        datafilename = hetero_type_modelrecovdata+"-"+prior_type_modelrecovdata+"_rescale"+rescale_aud_modelrecovdata+"_lapse"+lapse_type_modelrecovdata;
+        filename_final = filename + "__" + datafilename;
+
+        for model=1:(num_models)
+            load(model_path + filename_final+".mat")
+            [min_val, min_idx] = min(F_vals,[],2);
+            NLLs(dataset_idx, model_idx,:) = min_val';
+            AICs(dataset_idx, model_idx,:) = 2.*min_val' + 2.* num_params(model_idx);
+            BICs(dataset_idx, model_idx,:) = 2.*min_val' + num_params(model_idx).*log(n_data);
+
+        end
+    end
+end
+NLL_sum = sum(NLLs,3);
+AIC_sum = sum(AICs,3);
+BIC_sum = sum(BICs,3);
+
+% figure; hold on;
+NLL_sumvalues_diff = NLL_sum - diag(NLL_sum);
+[~,min_NLL_model] = min(NLL_sum,[],2);
+AIC_sumvalues_diff = AIC_sum - diag(AIC_sum);
+[~,min_AIC_model] = min(AIC_sum,[],2);
+BIC_sumvalues_diff = BIC_sum - diag(BIC_sum);
+[~,min_BIC_model] = min(BIC_sum,[],2);
+
+
+
+%% Manuscript polished figure
+num_colors  = 64; 
+half_colors = num_colors/2;
+
+green_to_white = [linspace(0,1,half_colors)', linspace(0.5,1,half_colors)', linspace(0,1,half_colors)']; % dark blue→white
+white_to_red  = [linspace(1,1,half_colors)',   linspace(1,0,half_colors)',   linspace(1,0.5,half_colors)']; % white→dark red
+diverging_cmap = flip([green_to_white; white_to_red]);
+
+% Data stack (3 x 6 x 6)
+matrices = zeros(3,6,6);
+matrices(1,:,:) = NLL_sumvalues_diff;
+matrices(2,:,:) = AIC_sumvalues_diff;
+matrices(3,:,:) = BIC_sumvalues_diff;
+
+% Panel letters
+panel_letters = {'(a)','(b)','(c)'};
+
+% Original names (as currently aligned with matrices rows/cols = 1..6)
+model_names = {'Const-SingleGaussian', ...
+               'Exp-GaussianLaplace', ...
+               'Const-SingleGaussian-1', ...
+               'Exp-SingleGaussian', ...
+               'Const-GaussianLaplace', ...
+               'Exp-GaussianLaplace-1'};
+nModels = numel(model_names);
+
+% --- NEW desired order for both axes ---
+new_order_names = { ...
+    'Exp-GaussianLaplace', ...
+    'Exp-GaussianLaplace-1', ...
+    'Exp-SingleGaussian', ...
+    'Const-GaussianLaplace', ...
+    'Const-SingleGaussian', ...
+    'Const-SingleGaussian-1'};
+
+% Map names -> indices in the current matrices
+new_idx = cellfun(@(nm) find(strcmp(model_names, nm), 1, 'first'), new_order_names);
+
+% Precompute signed-log to unify color limits across all tiles (order doesn't affect max)
+A_signedlog_all = zeros(size(matrices));
+for i = 1:3
+    A0 = squeeze(matrices(i,:,:));
+    A_signedlog_all(i,:,:) = sign(A0) .* log10(1 + abs(A0));
+end
+clim_abs = max(abs(A_signedlog_all(:)));
+
+% Figure & layout
+figure('Position',[50,100,1200,400]);
+t = tiledlayout(1,3,'TileSpacing','compact','Padding','tight');  % annotations use figure coords
+
+ax = gobjects(1,3);
+for subplot_idx = 1:3
+    ax(subplot_idx) = nexttile; hold on;
+
+    % --- Apply the row/col permutation by name ---
+    A0 = squeeze(matrices(subplot_idx,:,:));
+    A  = A0(new_idx, new_idx);  % reorder rows and columns
+    A_signedlog = sign(A) .* log10(1 + abs(A));
+
+    % Heatmap
+    imagesc(A_signedlog);
+    set(gca,'YDir','reverse');
+    axis image tight
+
+    % Unified color scale (no per-axes colorbar)
+    caxis([-clim_abs, clim_abs]);
+
+    % Tick setup:
+    set(gca, 'XTick', 1:nModels, 'XTickLabel', '', 'TickLabelInterpreter','none');
+    xtickangle(45);
+
+    % Y: show labels only on the first subplot to reduce clutter; others keep ticks but hide labels
+    set(gca, 'YTick', 1:nModels, 'YTickLabel', new_order_names, 'TickLabelInterpreter','none');
+    if subplot_idx > 1
+        set(gca, 'YTickLabel', []);
+    end
+
+    % Axis labels per subplot (no shared x-axis)
+    xlabel('Fitted model');
+    if subplot_idx == 1
+        ylabel('Ground-truth generative model');
+    end
+
+    % Overlay original (untransformed) values (matching the permuted grid)
+    [cols, rows] = deal(size(A,2), size(A,1));
+    [X, Y] = meshgrid(1:cols, 1:rows);
+    textStrings = compose('%.2f', A(:));
+
+    high_contrast = abs(A_signedlog(:)) > 0.6*clim_abs;
+    textColors = repmat([0 0 0], numel(textStrings), 1);
+    textColors(high_contrast,:) = repmat([1 1 1], sum(high_contrast), 1);
+
+    for k = 1:numel(textStrings)
+        text(X(k), Y(k), textStrings{k}, ...
+            'HorizontalAlignment','center', ...
+            'VerticalAlignment','middle', ...
+            'Color', textColors(k,:), ...
+            'FontSize', 9, 'FontWeight','bold');
+    end
+
+    set(gca,'TickDir','out','Box','on');
+    box off;
+end
+
+% One unified colorbar on the very right (compatible with older MATLAB)
+colormap(gcf, diverging_cmap);
+cb = colorbar(ax(end));         
+cb.Layout.Tile = 'east';         
+cb.Label.String = 'signed log_{10}(1 + |\Delta|) · sign(\Delta)';
+
+% --- Panel letters ---
+for i = 1:3
+    pos = ax(i).Position; 
+    x = pos(1); y = pos(2) + pos(4);
+    dx = -0.03; dy = 0.05;   
+    if i == 1
+        x = x - 0.01;       
+    end
+    annotation('textbox', [x+dx, y+dy, 0.01, 0.01], ...
+        'String', panel_letters{i}, ...
+        'FontSize', 11, 'FontWeight','bold', ...
+        'LineStyle', 'none', 'HorizontalAlignment','left', 'VerticalAlignment','top');
+end
+exportgraphics(gcf,figpath+"UAV_ModelRecovery"+".pdf","ContentType","vector");
 
 
 
