@@ -1,6 +1,6 @@
 # AudioVisual-causal-inference
 
-AudioVisual Perception Modeling with Dr. Luigi Acerbi and Dr. Wei Ji Ma. 
+Data and code for "Distilling noise characteristics and prior expectations in multisensory causal inference" with Trevor Holland, Wei Ji Ma, and Luigi Acerbi. https://osf.io/preprints/psyarxiv/3cwm8_v1
 - **Bold** words are .m filenames.
 - *Italicized* words are .mat filenames or directory folder names.
 
