@@ -1,6 +1,9 @@
 # AudioVisual-causal-inference
 
-Data and code for "Distilling noise characteristics and prior expectations in multisensory causal inference" with Trevor Holland, Wei Ji Ma, and Luigi Acerbi. https://osf.io/preprints/psyarxiv/3cwm8_v1
+Data and code for "Distilling noise characteristics and prior expectations in multisensory causal inference" with Trevor Holland, Wei Ji Ma, and Luigi Acerbi, published in *PLOS Computational Biology* (2026). https://doi.org/10.1371/journal.pcbi.1014251 (see [Citation](#citation) for the BibTeX entry)
+
+For an interactive overview of the study, see [One cause or two? How the brain decides what goes with what](https://acerbilab.org/one-cause-or-two/).
+
 - **Bold** words are .m filenames.
 - *Italicized* words are .mat filenames or directory folder names.
 
@@ -116,3 +119,26 @@ This folder only saves the manuscript figures created by **manuscript_allplots**
 #### Truncated-Gaussian sampling
 - **trandn.m** generates posterior predictive samples out of the truncated Gaussian lapse distribution. Used for visualization for truncated-Gaussian lapse models. 
   - Zdravko Botev (2023). Truncated Normal Generator (https://www.mathworks.com/matlabcentral/fileexchange/53180-truncated-normal-generator), MATLAB Central File Exchange. Retrieved May 31, 2023.
+
+## Citation
+If you use this data or code, please cite:
+
+> Liu, S., Holland, T., Ma, W. J., & Acerbi, L. (2026). Distilling noise characteristics and prior expectations in multisensory causal inference. *PLOS Computational Biology*, 22(5), e1014251. https://doi.org/10.1371/journal.pcbi.1014251
+
+```bibtex
+@article{liu2026distilling,
+  title     = {Distilling noise characteristics and prior expectations in multisensory causal inference},
+  author    = {Liu, Shuze and Holland, Trevor and Ma, Wei Ji and Acerbi, Luigi},
+  journal   = {PLOS Computational Biology},
+  volume    = {22},
+  number    = {5},
+  pages     = {e1014251},
+  year      = {2026},
+  publisher = {Public Library of Science},
+  doi       = {10.1371/journal.pcbi.1014251},
+  url       = {https://doi.org/10.1371/journal.pcbi.1014251}
+}
+```
+
+## License
+The code in this repository is released under the MIT License (see [LICENSE](LICENSE)). The third-party files in *utils* (**brewermap.m**, **cmaes.m**, **cmaes_modded.m**, **patchline.m**, **trandn.m**) remain under their original authors' licenses; see the notices in those files and the sources credited above.
